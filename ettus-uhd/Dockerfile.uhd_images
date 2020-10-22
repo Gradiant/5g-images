@@ -1,0 +1,4 @@
+FROM openverso/ettus-uhd:3.15.0
+
+# with images
+RUN uhd_images_downloader

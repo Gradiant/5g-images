@@ -1,0 +1,53 @@
+From 1791e867ae8fe3765e0c2bd714e66346a73fa3f8 Mon Sep 17 00:00:00 2001
+From: blackned GmbH <info@blackned.de>
+Date: Fri, 20 Apr 2018 12:13:58 +0200
+Subject: [PATCH] S6a dictionary: add CLR-Flags to Cancel-Location-Request
+
+---
+ extensions/dict_s6a/dict_s6a.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/extensions/dict_s6a/dict_s6a.c b/extensions/dict_s6a/dict_s6a.c
+index 72a7368..11518f2 100644
+--- a/extensions/dict_s6a/dict_s6a.c
++++ b/extensions/dict_s6a/dict_s6a.c
+@@ -613,6 +613,20 @@ int dict_s6a_init(char * conffile)
+ 			CHECK_dict_new( DICT_AVP, &data , NULL, NULL);
+ 		}
+ 
++		/* CLR-Flags - 3GPP TS 29.272  #7.3.152 */
++		{
++			struct dict_avp_data data = {
++				1638,				/* Code */
++                VENDOR_3GPP_Id,     /* Vendor */
++				"CLR-Flags",			/* Name */
++				AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,	/* Fixed flags */
++				AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,		/* Fixed flag values */
++				AVP_TYPE_UNSIGNED32		/* base type of data */
++			};
++
++			CHECK_dict_new( DICT_AVP, &data , NULL, NULL);
++		}
++
+ 		/* Visited-PLMN-Id AVP - 3GPP TS 29.272  #7.3.9 */
+ 		{
+ 			struct dict_avp_data data = {
+@@ -3381,6 +3395,7 @@ int dict_s6a_init(char * conffile)
+ 					{ User-Name }
+ 				   *[Supported-Features ]
+ 					{ Cancellation-Type }
++					[ CLR-Flags ]
+ 				   *[ AVP ]
+ 				   *[ Proxy-Info ]
+ 				   *[ Route-Record ]
+@@ -3405,6 +3420,7 @@ int dict_s6a_init(char * conffile)
+ 				,{  "User-Name",						RULE_REQUIRED,   -1,  1 }
+ 				,{  "Supported-Features",				RULE_OPTIONAL,   -1, -1 }
+ 				,{  "Cancellation-Type", 				RULE_REQUIRED,   -1,  1 }
++				,{  "CLR-Flags",						RULE_OPTIONAL,   -1,  1 }
+ 				,{  "Proxy-Info", 						RULE_OPTIONAL,   -1, -1 }
+ 				,{  "Route-Record", 					RULE_OPTIONAL,   -1, -1 }
+ 			};
+-- 
+2.7.4
+

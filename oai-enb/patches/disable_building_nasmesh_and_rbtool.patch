@@ -1,0 +1,25 @@
+diff --git a/cmake_targets/build_oai b/cmake_targets/build_oai
+index 6bf30c5..006a4cc 100755
+--- a/cmake_targets/build_oai
++++ b/cmake_targets/build_oai
+@@ -653,13 +653,13 @@ function main() {
+           $lte_build_dir coding \
+           libcoding.so $dbin/libcoding.so
+ # optional libs (used when noS1 with kernel modules 
+-    compilations \
+-          $lte_build_dir nasmesh \
+-          CMakeFiles/nasmesh/nasmesh.ko $dbin/nasmesh.ko
+-    compilations \
+-          $lte_build_dir rb_tool \
+-          rb_tool $dbin/rb_tool
+-          cp $OPENAIR_DIR/cmake_targets/tools/init_nas_nos1 $dbin
++#    compilations \
++#          $lte_build_dir nasmesh \
++#          CMakeFiles/nasmesh/nasmesh.ko $dbin/nasmesh.ko
++#    compilations \
++#          $lte_build_dir rb_tool \
++#          rb_tool $dbin/rb_tool
++#          cp $OPENAIR_DIR/cmake_targets/tools/init_nas_nos1 $dbin
+       # build RF device libraries
+       if [ "$HW" != "None" ] ; then
+          rm -f liboai_device.so
