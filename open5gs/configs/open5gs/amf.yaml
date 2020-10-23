@@ -1,0 +1,109 @@
+amf:
+  sbi:
+  ngap:
+  guami:
+    - plmn_id:
+        mcc: "001"
+        mnc: "01"
+      amf_id:
+        region: 2
+        set: 1
+  tai:
+    - plmn_id:
+        mcc: "001"
+        mnc: "01"
+      tac: "0001"
+  plmn_support:
+    - plmn_id:
+        mcc: "001"
+        mnc: "01"
+      s_nssai:
+        - sst: 1
+  security:
+      integrity_order : [ NIA2, NIA1, NIA0 ]
+      ciphering_order : [ NEA0, NEA1, NEA2 ]
+  network_name:
+      full: Open5GS
+  amf_name: open5gs-amf0
+
+nrf:
+    sbi:
+      - name: nrf
+
+#
+# parameter:
+#
+#  o Number of output streams per SCTP associations.
+#      sctp_streams: 30
+#
+#  o Disable use of IPv4 addresses (only IPv6)
+#      no_ipv4: true
+#
+#  o Disable use of IPv6 addresses (only IPv4)
+#      no_ipv6: true
+#
+#  o Prefer IPv4 instead of IPv6 for estabishing new GTP connections.
+#      prefer_ipv4: true
+#
+#  o Enable Multicast traffic to the UE
+#      multicast: true
+#
+#  o Disable Stateless Address Autoconfiguration for IPv6
+#      no_slaac: true
+#
+parameter:
+
+#
+# max:
+#
+# o Maximum Number of gNB per AMF
+#    gnb: 32
+# o Maximum Number of UE per gNB
+#    ue: 128
+# o Maximum Number of NF Instance
+#    nf: 512
+#
+max:
+
+#
+# pool:
+#
+# o The Number of Default Memory Pool Size
+#
+#   - Pool-size 128         => 8192 Number
+#   - Pool-size 256         => 4096 Number
+#   - Pool-size 512         => 2048 Number
+#   - Pool-size 1024        => 1024 Number
+#   - Pool-size 2048        => 512 Number
+#   - Pool-size 8192        => 128 Number
+#   - Pool-size 1024*1024   => 8 Number
+#
+#    128:  8192
+#    256:  4096
+#    512:  2048
+#    1024: 1024
+#    2048: 512
+#    8192: 128
+#    big:  8
+#
+# o Memory of Packet Buffering in SGW
+#   - Maximum Number of packet(SDU size = 8Kbytes) pool in SGW
+#   - SGW Memory Usage : 65536 * 8Kbytes = 512Mbytes
+#
+#   packet: 65536
+#
+pool:
+
+#
+# time:
+#
+#  o NF Instance Heartbeat (Default : 3 seconds)
+#
+#  o NF Instance Heartbeat (Disabled)
+#    nf_instance:
+#      heartbeat: 0
+#
+#  o NF Instance Heartbeat (5 seconds)
+#    nf_instance:
+#      heartbeat: 5
+time:

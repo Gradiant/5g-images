@@ -1,0 +1,6 @@
+### For reference, see `open5gs.yaml`
+
+parameter:
+
+hss:
+    freeDiameter: hss.conf

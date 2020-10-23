@@ -1,0 +1,40 @@
+version: '2.4'
+services: 
+  webui:
+    image: openverso/open5gs-webui:1.2.4
+    restart: on-failure
+    environment:
+      DB_URI: mongodb://mongo/open5gs
+    ports:
+      - 3000:3000
+  mme:
+    image: openverso/open5gs:1.2.4
+    command: open5gs-mmed
+    restart: on-failure
+  sgw:
+    image: openverso/open5gs:1.2.4
+    command: open5gs-sgwd
+  pgw:
+    image: openverso/open5gs:1.2.4
+    command: ["open5gs-pgwd", "-e","debug" ]
+    cap_add:
+      - all
+    privileged: true
+    restart: on-failure
+  pcrf:
+    image: openverso/open5gs:1.2.4
+    command: ["open5gs-pcrfd","-e","debug" ]
+    environment:
+      DB_URI: mongodb://mongo/open5gs
+    restart: on-failure
+  hss:
+    image: openverso/open5gs:1.2.4
+    restart: on-failure
+    command: open5gs-hssd
+    environment:
+      DB_URI: mongodb://mongo/open5gs
+    restart: on-failure
+  mongo:
+    image: mongo
+    environment:
+      MONGO_INITDB_DATABASE: open5gs

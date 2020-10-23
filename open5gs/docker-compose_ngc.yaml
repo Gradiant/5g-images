@@ -1,0 +1,59 @@
+version: '2.4'
+services:
+  webui:
+    image: openverso/open5gs-webui:2.0.18
+    restart: on-failure
+    environment:
+      DB_URI: mongodb://mongo/open5gs
+    ports:
+      - 3000:3000
+
+  mongo:
+    image: mongo
+    environment:
+      MONGO_INITDB_DATABASE: open5gs
+
+  nrf:
+    image: openverso/open5gs:2.0.18
+    restart: on-failure
+    environment:
+      DB_URI: mongodb://mongo/open5gs
+    command: 
+      - open5gs-nrfd
+
+  amf:
+    image: openverso/open5gs:2.0.18
+    command: 
+      - open5gs-amfd
+
+
+  smf:
+    image: openverso/open5gs:2.0.18
+    command: 
+      - open5gs-smfd
+
+  udm:
+    image: openverso/open5gs:2.0.18
+    command: 
+      - open5gs-udmd
+
+  upf:
+    image: openverso/open5gs:2.0.18
+    privileged: true
+    command: 
+      - open5gs-upfd
+
+  udr:
+    image: openverso/open5gs:2.0.18
+    restart: on-failure
+    command: 
+      - open5gs-udrd
+
+  ausf:
+    image: openverso/open5gs:2.0.18
+    command: 
+      - open5gs-ausfd
+
+
+
+
