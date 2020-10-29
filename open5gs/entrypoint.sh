@@ -23,7 +23,10 @@ fi
 
 # Temporary patch to solve the case of docker internal dns not resolving "not running" container names.
 # Just wait 10 seconds to be "running" and resolvable
-if [[ "$COMMAND"  == *"open5gs-pcrfd" ]] || [[ "$COMMAND"  == *"open5gs-mmed" ]]; then
+if [[ "$COMMAND"  == *"open5gs-pcrfd" ]] \
+    || [[ "$COMMAND"  == *"open5gs-mmed" ]] \
+    || [[ "$COMMAND"  == *"open5gs-sgwcd" ]] \
+    || [[ "$COMMAND"  == *"open5gs-upfd" ]]; then
 sleep 10
 fi
 

@@ -1,0 +1,94 @@
+version: '2.4'
+services: 
+  mongo:
+    image: mongo
+    environment:
+      MONGO_INITDB_DATABASE: open5gs
+  webui:
+    image: openverso/open5gs-webui:2.0.18
+    restart: on-failure
+    environment:
+      DB_URI: mongodb://mongo/open5gs
+    ports:
+      - 3000:3000
+  nrf:
+    image: openverso/open5gs:2.0.18
+    command: open5gs-nrfd    
+  amf:
+    image: openverso/open5gs:2.0.18
+    command: 
+      - open5gs-amfd
+  smf:
+    image: openverso/open5gs:2.0.18
+    command: open5gs-smfd    
+      
+  mme:
+    image: openverso/open5gs:2.0.18
+    command: ["open5gs-mmed", "-e","debug" ]
+    restart: on-failure
+    ports:
+      - 36412:36412/sctp
+  sgwc:
+    image: openverso/open5gs:2.0.18
+    command: open5gs-sgwcd
+  sgwu:
+    image: openverso/open5gs:2.0.18
+    command: open5gs-sgwud
+  upf:
+    image: openverso/open5gs:2.0.18
+    command: ["open5gs-upfd", "-e","debug" ]
+    cap_add:
+      - all
+    privileged: true
+    restart: on-failure
+    ports:
+      - 2152:2152
+  pcrf:
+    image: openverso/open5gs:2.0.18
+    command: ["open5gs-pcrfd","-e","debug" ]
+    environment:
+      DB_URI: mongodb://mongo/open5gs
+    restart: on-failure
+  hss:
+    image: openverso/open5gs:2.0.18
+    restart: on-failure
+    command: open5gs-hssd
+    environment:
+      DB_URI: mongodb://mongo/open5gs
+    restart: on-failure
+  udr:
+    image: openverso/open5gs:2.0.18
+    restart: on-failure
+    command: 
+      - open5gs-udrd
+  udm:
+    image: openverso/open5gs:2.0.18
+    command: 
+      - open5gs-udmd
+  ausf:
+    image: openverso/open5gs:2.0.18
+    command: 
+      - open5gs-ausfd
+  
+  # enodeb:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   image: openverso/srslte:20_04_1
+  #   command: enb
+  #   privileged: true
+  #   cap_add:
+  #     - all
+  #   environment:
+  #     MME_HOSTNAME: mme
+  # ue:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   image: openverso/srslte:20_04_1
+  #   command: 
+  #   - ue
+  #   privileged: true
+  #   cap_add:
+  #     - all
+  #   network_mode: "service:enodeb"

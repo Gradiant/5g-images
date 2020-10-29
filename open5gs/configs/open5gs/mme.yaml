@@ -1,7 +1,4 @@
-### For reference, see `open5gs.yaml`S
-
-parameter:
-
+### For reference, see `/opt/open5gs/etc/orig/open5gs/`
 mme:
     freeDiameter: mme.conf
     s1ap:
@@ -18,15 +15,24 @@ mme:
         mnc: "01"
       tac: "0001"
     security:
-        integrity_order : [ EIA1, EIA2, EIA0 ]
+        integrity_order : [ EIA2, EIA1, EIA0 ]
         ciphering_order : [ EEA0, EEA1, EEA2 ]
     network_name:
         full: Open5GS
+    mme_name: open5gs-mme0
 
-sgw:
+sgwc:
     gtpc:
-      - name: sgw
+      - name: sgwc
 
-pgw:
+smf:
     gtpc:
-      - name: pgw
+      - name: smf
+
+parameter:
+
+max:
+  
+pool:
+  
+sctp:

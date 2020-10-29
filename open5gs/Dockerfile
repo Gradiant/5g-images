@@ -72,11 +72,12 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
     libidn11 \
     libcurl4 \
     libmicrohttpd12 \
-    iproute2 iputils-ping procps net-tools && \
+    iproute2 iputils-ping procps net-tools iptables && \
     rm -rf /var/lib/apt/lists/*
 
 ENV APP_ROOT=/opt/open5gs
 COPY --from=builder /opt/open5gs/bin ${APP_ROOT}/bin/
+COPY --from=builder /opt/open5gs/etc ${APP_ROOT}/etc/orig
 COPY configs/ ${APP_ROOT}/etc/
 COPY --from=builder /opt/open5gs/lib/ /usr/local/lib/
 
@@ -94,7 +95,7 @@ COPY entrypoint.sh /entrypoint.sh
 
 #Default CONF values
 ENV DB_URI=mongodb://mongo/open5gs
-ENV IPV4_TUN_SUBNET="45.45.0.1/16"
+ENV IPV4_TUN_SUBNET="10.45.0.1/16"
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["/bin/bash"]
