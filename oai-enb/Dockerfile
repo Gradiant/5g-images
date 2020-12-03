@@ -20,16 +20,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
 	bison  \
 	build-essential \
 	cmake \
-	#cmake-curses-gui  \
-	#doxygen \
-	#doxygen-gui \
-	#texlive-latex-base \
 	ethtool \
 	flex  \
-	#gdb  \
 	git \
-	#graphviz \
-	#gtkwave \
 	guile-2.0-dev \
 	iperf \
 	iptables \
@@ -45,7 +38,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
 	libgmp-dev \
     libgoogle-glog-dev \
     libgflags-dev \
-	#libgtk-3-dev \
 	libidn2-0-dev  \
 	libidn11-dev \
 	libmysqlclient-dev  \
@@ -60,26 +52,18 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
 	libxml2 \
 	libxml2-dev  \
 	libxslt1-dev \
-	#mscgen  \
-	#octave-signal \
-	#openssh-client \
-	#openssl \
 	python  \
 	protobuf-c-compiler \
-	#subversion \
 	xmlstarlet \
 	libyaml-dev \
 	wget \
 	libxpm-dev \
     libboost-all-dev 
 
-#RUN apt-get install xxd
-
 RUN update-alternatives --set "liblapack.so-x86_64-linux-gnu" "/usr/lib/x86_64-linux-gnu/atlas/liblapack.so"
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y nettle-dev nettle-bin xxd
 
 # dependencies for ethus drivers
-#RUN apt-get update && 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     libuhd-dev \
     libuhd3.15.0
@@ -140,9 +124,6 @@ RUN ldconfig
 ENV PATH=${APP_ROOT}/bin:${PATH} HOME=${APP_ROOT}
 
 # TODO: run with non-root user
-#RUN groupadd -r oai && useradd --no-log-init -r -g oai oai
-#RUN chown -R oai:oai ${APP_ROOT}
-#USER oai
 
 WORKDIR ${APP_ROOT}
 
