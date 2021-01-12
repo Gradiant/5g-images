@@ -63,6 +63,7 @@ services:
       - open5gs-udrd
   udm:
     image: openverso/open5gs:2.0.18
+    restart: on-failure
     command: 
       - open5gs-udmd
   ausf:
