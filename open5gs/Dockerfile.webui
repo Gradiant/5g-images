@@ -2,7 +2,7 @@ FROM node:lts-buster as dev
 LABEL maintainer="cgiraldo@gradiant.org" \
       organization="gradiant.org"
 
-ARG version=2.0.4
+ARG version=2.0.18
 
 ENV VERSION=$version \
     USER=open5gs \

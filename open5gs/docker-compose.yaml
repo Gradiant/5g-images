@@ -5,6 +5,9 @@ services:
     environment:
       MONGO_INITDB_DATABASE: open5gs
   webui:
+    build:
+      context: .
+      dockerfile: Dockerfile.webui
     image: openverso/open5gs-webui:2.0.18
     restart: on-failure
     environment:
@@ -12,29 +15,41 @@ services:
     ports:
       - 3000:3000
   nrf:
+    build: .
     image: openverso/open5gs:2.0.18
+    restart: on-failure
     command: open5gs-nrfd    
   amf:
+    build: .
     image: openverso/open5gs:2.0.18
+    restart: on-failure
     command: 
       - open5gs-amfd
   smf:
+    build: .
     image: openverso/open5gs:2.0.18
+    restart: on-failure
     command: open5gs-smfd    
       
   mme:
+    build: .
     image: openverso/open5gs:2.0.18
     command: ["open5gs-mmed", "-e","debug" ]
     restart: on-failure
     ports:
       - 36412:36412/sctp
   sgwc:
+    build: .
     image: openverso/open5gs:2.0.18
     command: open5gs-sgwcd
+    restart: on-failure
   sgwu:
+    build: .
     image: openverso/open5gs:2.0.18
     command: open5gs-sgwud
+    restart: on-failure
   upf:
+    build: .
     image: openverso/open5gs:2.0.18
     command: ["open5gs-upfd", "-e","debug" ]
     cap_add:
@@ -44,32 +59,35 @@ services:
     ports:
       - 2152:2152
   pcrf:
+    build: .
     image: openverso/open5gs:2.0.18
     command: ["open5gs-pcrfd","-e","debug" ]
     environment:
       DB_URI: mongodb://mongo/open5gs
     restart: on-failure
   hss:
+    build: .
     image: openverso/open5gs:2.0.18
-    restart: on-failure
     command: open5gs-hssd
     environment:
       DB_URI: mongodb://mongo/open5gs
     restart: on-failure
   udr:
+    build: .
     image: openverso/open5gs:2.0.18
+    command: open5gs-udrd
     restart: on-failure
-    command: 
-      - open5gs-udrd
   udm:
+    build: .
     image: openverso/open5gs:2.0.18
+    command: open5gs-udmd
     restart: on-failure
-    command: 
-      - open5gs-udmd
   ausf:
+    build: .
     image: openverso/open5gs:2.0.18
-    command: 
-      - open5gs-ausfd
+    command: open5gs-ausfd
+    restart: on-failure
+
   
   # enodeb:
   #   build:

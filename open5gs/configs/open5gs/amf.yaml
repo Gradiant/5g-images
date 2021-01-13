@@ -1,6 +1,7 @@
 ### For reference, see `/opt/open5gs/etc/orig/open5gs/`
 amf:
   sbi:
+    port: 7777
   ngap:
   guami:
     - plmn_id:
@@ -30,6 +31,7 @@ amf:
 nrf:
     sbi:
       - name: nrf
+        port: 7777
 
 parameter:
 max:

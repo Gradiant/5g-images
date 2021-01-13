@@ -1,6 +1,7 @@
 ### For reference, see `/opt/open5gs/etc/orig/open5gs/`
 nrf:
-    sbi:
+  sbi:
+    port: 7777
 parameter:
 max:
 pool:

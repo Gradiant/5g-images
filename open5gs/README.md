@@ -17,4 +17,5 @@ Some services must have access to a mongodb. You can modify the container enviro
 
 We provide a `docker-compose.yaml` file to deploy open5gs.
 Just run `docker-compose up -d` and check the services are up with `docker-compose ps`.
-Sometimes services may start with error due to dependencies with other services. Just keep trying with `docker-compose up -d` multiple times. 
+
+To remove the containers run `docker-compose down`.
