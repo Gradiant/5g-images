@@ -1,9 +1,0 @@
-
-parameter:
-    no_ipv6: true
-
-sgw:
-    gtpc:
-      dev: eth0
-    gtpu:
-      dev: eth0
