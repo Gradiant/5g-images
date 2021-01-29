@@ -5,68 +5,37 @@ services:
     environment:
       MONGO_INITDB_DATABASE: open5gs
   webui:
-    build:
-      context: .
-      dockerfile: Dockerfile.webui
-      args:
-        version: ${OPEN5GS_VERSION}
+    image: openverso/open5gs-webui:2.0.18
     restart: on-failure
     environment:
       DB_URI: mongodb://mongo/open5gs
     ports:
       - 3000:3000
   nrf:
-    build:
-      context: .
-      args:
-        version: ${OPEN5GS_VERSION}
-    restart: on-failure
+    image: openverso/open5gs:2.0.18
     command: open5gs-nrfd    
   amf:
-    build:
-      context: .
-      args:
-        version: ${OPEN5GS_VERSION}
-    restart: on-failure
+    image: openverso/open5gs:2.0.18
     command: 
       - open5gs-amfd
   smf:
-    build:
-      context: .
-      args:
-        version: ${OPEN5GS_VERSION}
     image: openverso/open5gs:2.0.18
-    restart: on-failure
-    command: open5gs-smfd    
-      
+    command: open5gs-smfd     
   mme:
-    build:
-      context: .
-      args:
-        version: ${OPEN5GS_VERSION}
-    command: ["open5gs-mmed", "-e","debug" ]
+    image: openverso/open5gs:2.0.18
+    command: open5gs-mmed
     restart: on-failure
     ports:
-      - 36412:36412/sctp
+      - 36412:36412
+#/sctp
   sgwc:
-    build:
-      context: .
-      args:
-        version: ${OPEN5GS_VERSION}
+    image: openverso/open5gs:2.0.18
     command: open5gs-sgwcd
-    restart: on-failure
   sgwu:
-    build:
-      context: .
-      args:
-        version: ${OPEN5GS_VERSION}
+    image: openverso/open5gs:2.0.18
     command: open5gs-sgwud
-    restart: on-failure
   upf:
-    build:
-      context: .
-      args:
-        version: ${OPEN5GS_VERSION}
+    image: openverso/open5gs:2.0.18
     command: ["open5gs-upfd", "-e","debug" ]
     cap_add:
       - all
@@ -75,65 +44,54 @@ services:
     ports:
       - 2152:2152
   pcrf:
-    build:
-      context: .
-      args:
-        version: ${OPEN5GS_VERSION}
+    image: openverso/open5gs:2.0.18
     command: ["open5gs-pcrfd","-e","debug" ]
     environment:
       DB_URI: mongodb://mongo/open5gs
     restart: on-failure
   hss:
-    build:
-      context: .
-      args:
-        version: ${OPEN5GS_VERSION}
+    image: openverso/open5gs:2.0.18
+    restart: on-failure
     command: open5gs-hssd
     environment:
       DB_URI: mongodb://mongo/open5gs
     restart: on-failure
   udr:
-    build:
-      context: .
-      args:
-        version: ${OPEN5GS_VERSION}
-    command: open5gs-udrd
+    image: openverso/open5gs:2.0.18
     restart: on-failure
+    command: 
+      - open5gs-udrd
   udm:
-    build:
-      context: .
-      args:
-        version: ${OPEN5GS_VERSION}
-    command: open5gs-udmd
+    image: openverso/open5gs:2.0.18
     restart: on-failure
+    command: 
+      - open5gs-udmd
   ausf:
+    image: openverso/open5gs:2.0.18
+    command: 
+      - open5gs-ausfd
+  
+  enodeb:
     build:
       context: .
-      args:
-        version: ${OPEN5GS_VERSION}
-    command: open5gs-ausfd
-    restart: on-failure
+      dockerfile: Dockerfile
+    image: openverso/srs-lte:20_04_1
+    command: 
+      - enb
+    privileged: true
+    cap_add:
+      - all
+    environment:
+      MME_HOSTNAME: open5gs_mme_1
 
-  
-  # enodeb:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   image: openverso/srslte:20_04_1
-  #   command: enb
-  #   privileged: true
-  #   cap_add:
-  #     - all
-  #   environment:
-  #     MME_HOSTNAME: mme
-  # ue:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   image: openverso/srslte:20_04_1
-  #   command: 
-  #   - ue
-  #   privileged: true
-  #   cap_add:
-  #     - all
-  #   network_mode: "service:enodeb"
+  ue:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: openverso/srs-lte:20_04_1
+    command: 
+      - ue
+    privileged: true
+    cap_add:
+      - all
+    network_mode: "service:enodeb"

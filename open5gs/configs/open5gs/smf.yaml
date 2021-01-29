@@ -1,7 +1,6 @@
 ### For reference, see `/opt/open5gs/etc/orig/open5gs/`
 smf:
   sbi:
-    port: 7777
   gtpc:
   pfcp:
   pdn:
@@ -17,12 +16,11 @@ smf:
   freeDiameter: smf.conf
 
 nrf:
-  sbi:
-    - name: nrf
-      port: 7777
+    sbi:
+      - name: nrf
 upf:
-  pfcp:
-    - name: upf
+    pfcp:
+      - name: upf
 
 parameter:
 max:

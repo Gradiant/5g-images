@@ -1,10 +1,10 @@
 ### For reference, see `/opt/open5gs/etc/orig/open5gs/`
 udr:
-  sbi:
+    sbi:
 nrf:
-  sbi:
-    - name: nrf
-      port: 7777
+    sbi:
+      - name: nrf
+
 parameter:
 max:
 pool:

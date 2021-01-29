@@ -24,7 +24,6 @@ mme:
 sgwc:
     gtpc:
       - name: sgwc
-
 smf:
     gtpc:
       - name: smf
@@ -35,4 +34,4 @@ max:
   
 pool:
   
-sctp:
+###sctp:
