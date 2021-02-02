@@ -5,37 +5,61 @@ services:
     environment:
       MONGO_INITDB_DATABASE: open5gs
   webui:
-    image: openverso/open5gs-webui:2.0.18
+    build:
+      context: .
+      args:
+        version: ${OPEN5GS_VERSION}    
     restart: on-failure
     environment:
       DB_URI: mongodb://mongo/open5gs
     ports:
       - 3000:3000
   nrf:
-    image: openverso/open5gs:2.0.18
+    build:
+      context: .
+      args:
+        version: ${OPEN5GS_VERSION}
     command: open5gs-nrfd    
   amf:
-    image: openverso/open5gs:2.0.18
+    build:
+      context: .
+      args:
+        version: ${OPEN5GS_VERSION}
     command: 
       - open5gs-amfd
   smf:
-    image: openverso/open5gs:2.0.18
+    build:
+      context: .
+      args:
+        version: ${OPEN5GS_VERSION}
     command: open5gs-smfd     
   mme:
-    image: openverso/open5gs:2.0.18
+    build:
+      context: .
+      args:
+        version: ${OPEN5GS_VERSION}
     command: open5gs-mmed
     restart: on-failure
     ports:
       - 36412:36412
 #/sctp
   sgwc:
-    image: openverso/open5gs:2.0.18
+    build:
+      context: .
+      args:
+        version: ${OPEN5GS_VERSION}
     command: open5gs-sgwcd
   sgwu:
-    image: openverso/open5gs:2.0.18
+    build:
+      context: .
+      args:
+        version: ${OPEN5GS_VERSION}
     command: open5gs-sgwud
   upf:
-    image: openverso/open5gs:2.0.18
+    build:
+      context: .
+      args:
+        version: ${OPEN5GS_VERSION}
     command: ["open5gs-upfd", "-e","debug" ]
     cap_add:
       - all
@@ -44,30 +68,45 @@ services:
     ports:
       - 2152:2152
   pcrf:
-    image: openverso/open5gs:2.0.18
+    build:
+      context: .
+      args:
+        version: ${OPEN5GS_VERSION}
     command: ["open5gs-pcrfd","-e","debug" ]
     environment:
       DB_URI: mongodb://mongo/open5gs
     restart: on-failure
   hss:
-    image: openverso/open5gs:2.0.18
+    build:
+      context: .
+      args:
+        version: ${OPEN5GS_VERSION}
     restart: on-failure
     command: open5gs-hssd
     environment:
       DB_URI: mongodb://mongo/open5gs
     restart: on-failure
   udr:
-    image: openverso/open5gs:2.0.18
+    build:
+      context: .
+      args:
+        version: ${OPEN5GS_VERSION}
     restart: on-failure
     command: 
       - open5gs-udrd
   udm:
-    image: openverso/open5gs:2.0.18
+    build:
+      context: .
+      args:
+        version: ${OPEN5GS_VERSION}
     restart: on-failure
     command: 
       - open5gs-udmd
   ausf:
-    image: openverso/open5gs:2.0.18
+    build:
+      context: .
+      args:
+        version: ${OPEN5GS_VERSION}
     command: 
       - open5gs-ausfd
   
