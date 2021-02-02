@@ -9,7 +9,7 @@ services:
       context: .
       dockerfile: Dockerfile.webui
       args:
-        version: ${OPEN5GS_VERSION}
+        version: ${OPEN5GS_VERSION}    
     restart: on-failure
     environment:
       DB_URI: mongodb://mongo/open5gs
@@ -20,48 +20,47 @@ services:
       context: .
       args:
         version: ${OPEN5GS_VERSION}
-    restart: on-failure
-    command: open5gs-nrfd    
+    command: open5gs-nrfd   
+    restart : on-failure 
   amf:
     build:
       context: .
       args:
         version: ${OPEN5GS_VERSION}
-    restart: on-failure
     command: 
       - open5gs-amfd
+    restart : on-failure
   smf:
     build:
       context: .
       args:
         version: ${OPEN5GS_VERSION}
-    image: openverso/open5gs:2.0.18
-    restart: on-failure
     command: open5gs-smfd    
-      
+    restart : on-failure 
   mme:
     build:
       context: .
       args:
         version: ${OPEN5GS_VERSION}
-    command: ["open5gs-mmed", "-e","debug" ]
+    command: open5gs-mmed
     restart: on-failure
     ports:
-      - 36412:36412/sctp
+      - 36412:36412
+#/sctp
   sgwc:
     build:
       context: .
       args:
         version: ${OPEN5GS_VERSION}
     command: open5gs-sgwcd
-    restart: on-failure
+    restart : on-failure
   sgwu:
     build:
       context: .
       args:
         version: ${OPEN5GS_VERSION}
     command: open5gs-sgwud
-    restart: on-failure
+    restart : on-failure
   upf:
     build:
       context: .
@@ -88,6 +87,7 @@ services:
       context: .
       args:
         version: ${OPEN5GS_VERSION}
+    restart: on-failure
     command: open5gs-hssd
     environment:
       DB_URI: mongodb://mongo/open5gs
@@ -97,42 +97,46 @@ services:
       context: .
       args:
         version: ${OPEN5GS_VERSION}
-    command: open5gs-udrd
     restart: on-failure
+    command: 
+      - open5gs-udrd
   udm:
     build:
       context: .
       args:
         version: ${OPEN5GS_VERSION}
-    command: open5gs-udmd
     restart: on-failure
+    command: 
+      - open5gs-udmd
   ausf:
     build:
       context: .
       args:
         version: ${OPEN5GS_VERSION}
-    command: open5gs-ausfd
-    restart: on-failure
-
+    command: 
+      - open5gs-ausfd
+    restart : on-failure
   
   # enodeb:
   #   build:
-  #     context: .
+  #     context: ../srs-lte/
   #     dockerfile: Dockerfile
-  #   image: openverso/srslte:20_04_1
-  #   command: enb
+  #   image: openverso/srs-lte:20_04_1
+  #   command: 
+  #     - enb
   #   privileged: true
   #   cap_add:
   #     - all
   #   environment:
   #     MME_HOSTNAME: mme
+
   # ue:
   #   build:
-  #     context: .
+  #     context: ../srs-lte/
   #     dockerfile: Dockerfile
-  #   image: openverso/srslte:20_04_1
+  #   image: openverso/srs-lte:20_04_1
   #   command: 
-  #   - ue
+  #     - ue
   #   privileged: true
   #   cap_add:
   #     - all
