@@ -34,6 +34,7 @@ RUN apt-get update && \
         netbase \
         pkg-config \
         cmake \
+        libnghttp2-dev \
         libmicrohttpd-dev \
         libcurl4-openssl-dev \
         wget && \
@@ -72,6 +73,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
     libidn11 \
     libcurl4 \
     libmicrohttpd12 \
+    libnghttp2-14 \
     iproute2 iputils-ping procps net-tools iptables && \
     rm -rf /var/lib/apt/lists/*
 

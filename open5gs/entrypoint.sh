@@ -26,7 +26,6 @@ fi
 if [[ "$COMMAND"  == *"open5gs-pcrfd" ]] \
     || [[ "$COMMAND"  == *"open5gs-mmed" ]] \
     || [[ "$COMMAND"  == *"open5gs-sgwcd" ]] \
-    || [[ "$COMMAND"  == *"enb" ]] \
     || [[ "$COMMAND"  == *"open5gs-upfd" ]]; then
 sleep 10
 fi
