@@ -71,27 +71,27 @@ services:
     command: 
       - open5gs-ausfd
   
-  enodeb:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: openverso/srs-lte:20_04_1
-    command: 
-      - enb
-    privileged: true
-    cap_add:
-      - all
-    environment:
-      MME_HOSTNAME: open5gs_mme_1
+  # enodeb:
+  #   build:
+  #     context: ../srs-lte/
+  #     dockerfile: Dockerfile
+  #   image: openverso/srs-lte:20_04_1
+  #   command: 
+  #     - enb
+  #   privileged: true
+  #   cap_add:
+  #     - all
+  #   environment:
+  #     MME_HOSTNAME: mme
 
-  ue:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: openverso/srs-lte:20_04_1
-    command: 
-      - ue
-    privileged: true
-    cap_add:
-      - all
-    network_mode: "service:enodeb"
+  # ue:
+  #   build:
+  #     context: ../srs-lte/
+  #     dockerfile: Dockerfile
+  #   image: openverso/srs-lte:20_04_1
+  #   command: 
+  #     - ue
+  #   privileged: true
+  #   cap_add:
+  #     - all
+  #   network_mode: "service:enodeb"
