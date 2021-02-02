@@ -20,7 +20,8 @@ services:
       context: .
       args:
         version: ${OPEN5GS_VERSION}
-    command: open5gs-nrfd    
+    command: open5gs-nrfd   
+    restart : on-failure 
   amf:
     build:
       context: .
@@ -28,12 +29,14 @@ services:
         version: ${OPEN5GS_VERSION}
     command: 
       - open5gs-amfd
+    restart : on-failure
   smf:
     build:
       context: .
       args:
         version: ${OPEN5GS_VERSION}
-    command: open5gs-smfd     
+    command: open5gs-smfd    
+    restart : on-failure 
   mme:
     build:
       context: .
@@ -50,12 +53,14 @@ services:
       args:
         version: ${OPEN5GS_VERSION}
     command: open5gs-sgwcd
+    restart : on-failure
   sgwu:
     build:
       context: .
       args:
         version: ${OPEN5GS_VERSION}
     command: open5gs-sgwud
+    restart : on-failure
   upf:
     build:
       context: .
@@ -110,6 +115,7 @@ services:
         version: ${OPEN5GS_VERSION}
     command: 
       - open5gs-ausfd
+    restart : on-failure
   
   # enodeb:
   #   build:
