@@ -22,6 +22,13 @@ if [[ ! -z "$MME_HOSTNAME" ]] ; then
     export MME_ADDR="$(host -4 $MME_HOSTNAME |awk '/has.*address/{print $NF; exit}')"
 fi
 
+if [[ ! -z "$ENB_HOSTNAME" ]] ; then 
+    export ENB_ADDRESS="$(host -4 $ENB_HOSTNAME |awk '/has.*address/{print $NF; exit}')"
+fi
+if [[ ! -z "$UE_HOSTNAME" ]] ; then 
+    export UE_ADDRESS="$(host -4 $UE_HOSTNAME |awk '/has.*address/{print $NF; exit}')"
+fi
+
 command=$1
 shift
 
