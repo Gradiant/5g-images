@@ -32,7 +32,12 @@ services:
     image: openverso/open5gs:2.1.7
     command: 
       - open5gs-amfd
-    restart : on-failure
+    cap_add:
+      - all
+    privileged: true
+    restart: on-failure
+    ports:
+      - 38412:38412/sctp
   smf:
     build:
       context: .
