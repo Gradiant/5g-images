@@ -142,7 +142,7 @@ services:
     build:
       context: ../../ueransim/
       dockerfile: Dockerfile
-    image: openverso/ueransim:v3.1.0
+    image: openverso/ueransim:3.1.0
     command: 
       - gnb
     environment:
@@ -153,7 +153,7 @@ services:
     build:
       context: ../../ueransim/
       dockerfile: Dockerfile
-    image: openverso/ueransim:v3.1.0
+    image: openverso/ueransim:3.1.0
     command: 
       - ue
     cap_add:
