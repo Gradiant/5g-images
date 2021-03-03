@@ -74,7 +74,7 @@ services:
       args:
         version: 2.1.7
     image: openverso/open5gs:2.1.7
-    command: ["open5gs-upfd", "-e","debug" ]
+    command: ["open5gs-upfd"]
     cap_add:
       - all
     privileged: true
@@ -87,7 +87,7 @@ services:
       args:
         version: 2.1.7
     image: openverso/open5gs:2.1.7
-    command: ["open5gs-pcrfd","-e","debug" ]
+    command: ["open5gs-pcrfd"]
     environment:
       DB_URI: mongodb://mongo/open5gs
     restart: on-failure
@@ -138,8 +138,6 @@ services:
       - open5gs-pcfd
     restart : on-failure
   
-  # uncomment to test with UERANSIM
-  ###################
   gnb:
     build:
       context: ../../ueransim/
@@ -147,9 +145,6 @@ services:
     image: openverso/ueransim:v3.1.0
     command: 
       - gnb
-    privileged: true
-    cap_add:
-      - all
     environment:
       AMF_HOSTNAME: amf
       UE_HOSTNAME: ue
@@ -160,8 +155,5 @@ services:
     image: openverso/ueransim:v3.1.0
     command: 
       - ue
-    privileged: true
-    cap_add:
-      - all
     environment:
       ENB_HOSTNAME: enodeb

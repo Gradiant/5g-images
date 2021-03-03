@@ -15,12 +15,4 @@ push:
 	docker --config=.docker push ${REGISTRY}/${IMAGE}:${TAG}; \
 	rm -r .docker
 
-push-webui:
-	echo "Pushing the image ${IMAGE}-webui to ${REGISTRY}"; \
-	echo "Insert credentials to registry: "; \
-	docker --config=.docker login ${REGISTRY}; \
-	docker tag ${IMAGE}-webui:${TAG} ${REGISTRY}/${IMAGE}-webui:${TAG}; \
-	docker --config=.docker push ${REGISTRY}/${IMAGE}-webui:${TAG}; \
-	rm -r .docker
-
-all: build push build-webui push-webui
+all: build push
