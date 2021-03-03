@@ -32,9 +32,13 @@ FROM debian:stable-slim
 
 RUN apt-get update && \
     apt-get install -y  \
-    libsctp1 \
+    curl \
+    dnsutils \
     gettext-base \
-    dnsutils && \
+    iproute2 \
+    iputils-ping \
+    libsctp1 \
+    traceroute  && \
     rm -rf /var/lib/apt/lists/*
 
     
