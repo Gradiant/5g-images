@@ -1,9 +1,9 @@
-mcc: "001"         # Mobile Country Code value
-mnc: "01"           # Mobile Network Code value (2 or 3 digits)
+mcc: ${MCC}        # Mobile Country Code value
+mnc: ${MNC}           # Mobile Network Code value (2 or 3 digits)
 
 nci: '0x0000000100'  # NR Cell Identity (36-bit)
 idLength: 32        # NR gNB ID length in bits [22...32]
-tac: "0001"             # Tracking Area Code
+tac: ${TAC}             # Tracking Area Code
 
 linkIp: ${GNB_ADDR}   # gNB's local IP address for Radio Link Simulation (Usually same with local IP)
 ngapIp: ${GNB_ADDR}  # gNB's local IP address for N2 Interface (Usually same with local IP)
@@ -16,8 +16,8 @@ amfConfigs:
 
 # List of supported S-NSSAIs by this gNB
 slices:
-  - sst: 1
-    sd: 1
+  - sst: ${SST}
+    sd: ${SD}
 
 # Indicates whether or not SCTP stream number errors should be ignored.
 ignoreStreamIds: true

@@ -148,6 +148,7 @@ services:
     environment:
       AMF_HOSTNAME: amf
       UE_HOSTNAME: ue
+      GNB_HOSTNAME: gnb
   ue:
     build:
       context: ../../ueransim/
@@ -155,5 +156,9 @@ services:
     image: openverso/ueransim:v3.1.0
     command: 
       - ue
+    cap_add:
+      - all
+    privileged: true
     environment:
-      ENB_HOSTNAME: enodeb
+      GNB_HOSTNAME: gnb
+      APN: internet

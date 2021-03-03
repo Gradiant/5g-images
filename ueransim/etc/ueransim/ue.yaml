@@ -1,10 +1,10 @@
-snn: '5G:mnc001.mcc01.3gppnetwork.org'
+snn: '5G:mnc${MNC}.mcc${MCC}.3gppnetwork.org'
 # IMSI number of the UE. IMSI = [MCC|MNC|MSISDN] (In total 15 or 16 digits)
 supi: 'imsi-001010000000004'
 # Mobile Country Code value
-mcc: '001'
+mcc: ${MCC}
 # Mobile Network Code value (2 or 3 digits)
-mnc: '01'
+mnc: ${MNC}
 
 # Permanent subscription key
 key: '465B5CE8B199B49FAA5F0A2EE238A6BC'
@@ -26,21 +26,21 @@ gnbSearchList:
 # Initial PDU sessions to be established
 sessions:
   - type: 'IPv4'
-    apn: 'internet'
+    apn: ${APN}
     slice:
-      sst: 1
-      sd: 1
+      sst: ${SST}
+      sd: ${SD}
 
 requestedNssai:
   - sst:
-      value: 1
+      value: ${SST}
     sd:
-      value: 1
+      value: ${SD}
 
 # List of requested S-NSSAIs by this UE
 slices:
-  - sst: 1
-    sd: 1
+  - sst: ${SST}
+    sd: ${SD}
 
 # Supported encryption and integrity algorithms by this UE
 integrity:

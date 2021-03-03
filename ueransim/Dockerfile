@@ -45,6 +45,19 @@ RUN cd ~/UERANSIM && echo "cmake --version" && make
 
 COPY /etc/ueransim /etc/ueransim
 
+ENV ENB_ID=0x19B \
+    MCC=001 \
+    MNC=01 \
+    TAC=0001 \
+    SST=1 \
+    SD=1 \
+    GTP_BIND_INTERFACE=eth0 \
+    S1C_BIND_INTERFACE=eth0 \
+    UE_HOSTNAME=ue \
+    ENB_HOSTNAME=enodeb
+#ENV MME_HOSTNAME=mme 
+#ENV MME_ADDR=192.168.0.2
+
 COPY entrypoint.sh /entrypoint.sh
 
 ENTRYPOINT ["sh", "/entrypoint.sh"]
