@@ -1,31 +1,66 @@
-# Open5gs Container Image
+# open5gs and ueransim 
 
-This repository provides a container image to deploy [Open5gs](https://open5gs.org/) services as a containers.
+5G end to end communication demo with open5gs and ueransim.
 
-[Open5gs](https://open5gs.org/) is an open source project of 5GC and EPC (Release-16).
+# Deployment NGC and register subscribers
 
-This project can be used to configure your own NR/LTE network. If gNB/eNB and USIM are available, you can build a private network using Open5GS.
+deploy the ngc core (open5gs) with:
 
-Open5GS implemented 5GC and EPC using C-language. And WebUI is provided for testing purposes and is implemented in Node.JS and React.
+```
+docker-compose -f ngc.yaml up -d
+```
+
+Register subscribers in ngc with `/register_subscribers.sh`.
 
 
-## Usage
+# RAN option1: 1 gnodeb and 1 ue
 
-The idea is to deploy a container image for each of the core network services (i.e. hss, sgwc, amf, etc.). The image default CMD launches `/bin/bash`, so the recommendation is to change the command to `open5gs-hssd`, `open5gs-sgwcd`, `open5gs-amfd` or the corresponding daemon for the service you want to deploy. 
+Deploy 1 gnodeb and 1 ue:
 
-The daemons take their configuration from the `/opt/open5gs/etc/open5gs/` and the `/opt/open5gs/etc/freeDiameter` image folders.
-The folders include minimal working configurations for all the services.
-The original open5gs configuration files are also provided at `/opt/open5gs/etc/orig`, with comments on available parameters.
+```
+docker-compose -f 1gnb-1ue.yaml up -d
+```
 
-Data plane service upf needs `/dev/ogstun` tun device access. You can create the tun interface in your host and mount it in the container or you can run upf container in privileged mode.
+Undeploy with:
 
-Some services must have access to a mongodb. You can modify the container environment variable `DB_URI=mongodb://mongo/open5gs` to configure access to mongodb.
+```
+docker-compose -f 1gnb-1ue.yaml down
+```
 
-### Deployment with Docker Compose
+# RAN option2: 1 gnodeb and 4 ues
 
-We provide a `docker-compose.yaml` file to deploy open5gs.
+Deploy 1 gnodeb and 4 ues:
 
-Just run `docker-compose up -d $(<open5gs-services.txt)` and check the services are up with `docker-compose ps`. To register the UE run `./register_subscriber.sh` or use the webui. 
+```
+docker-compose -f 1gnb-4ue.yaml up -d
+```
 
-Add the UERANSIM services running `docker-compose up -d gnb ue` and check the services are up with `docker-compose ps`. 
-To remove the containers run `docker-compose down`.
+Undeploy with:
+
+```
+docker-compose -f 1gnb-4ue.yaml down
+```
+
+# RAN option3: 2 gnodeb and 4 ues
+
+Deploy 2 gnodeb and 4 ues:
+
+```
+docker-compose -f 2gnb-4ue.yaml up -d
+```
+
+Undeploy with:
+
+```
+docker-compose -f 2gnb-4ue.yaml down
+```
+
+
+
+# Undeploy NGC
+
+Run:
+
+```
+docker-compose -f ngc.yaml down
+```

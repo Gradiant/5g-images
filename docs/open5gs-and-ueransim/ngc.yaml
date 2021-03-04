@@ -1,4 +1,4 @@
-version: '2.4'
+version: '3'
 services: 
   mongo:
     image: mongo
@@ -137,28 +137,3 @@ services:
     command: 
       - open5gs-pcfd
     restart : on-failure
-  
-  gnb:
-    build:
-      context: ../../ueransim/
-      dockerfile: Dockerfile
-    image: openverso/ueransim:3.1.0
-    command: 
-      - gnb
-    environment:
-      AMF_HOSTNAME: amf
-      UE_HOSTNAME: ue
-      GNB_HOSTNAME: gnb
-  ue:
-    build:
-      context: ../../ueransim/
-      dockerfile: Dockerfile
-    image: openverso/ueransim:3.1.0
-    command: 
-      - ue
-    cap_add:
-      - all
-    privileged: true
-    environment:
-      GNB_HOSTNAME: gnb
-      APN: internet
