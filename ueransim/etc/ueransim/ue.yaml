@@ -1,6 +1,6 @@
 snn: '5G:mnc${MNC}.mcc${MCC}.3gppnetwork.org'
 # IMSI number of the UE. IMSI = [MCC|MNC|MSISDN] (In total 15 or 16 digits)
-supi: 'imsi-001010000000004'
+supi: 'imsi-${MCC}${MNC}${MSISDN}'
 # Mobile Country Code value
 mcc: ${MCC}
 # Mobile Network Code value (2 or 3 digits)

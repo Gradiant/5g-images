@@ -52,6 +52,7 @@ ENV ENB_ID=0x19B \
     MCC=001 \
     MNC=01 \
     TAC=0001 \
+    MSISDN=0000000001 \
     SST=1 \
     SD=1 \
     GTP_BIND_INTERFACE=eth0 \
