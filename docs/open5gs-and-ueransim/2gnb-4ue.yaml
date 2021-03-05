@@ -37,6 +37,9 @@ services:
       GNB_HOSTNAME: gnb1
       APN: internet
       MSISDN: '0000000001'
+      KEY: '465B5CE8B199B49FAA5F0A2EE238A6BC'
+      OP_TYPE: OPC
+      OP: 'E8ED289DEBA952E4283B54E88E6183CA'
   ue2:
     build:
       context: ../../ueransim/
@@ -52,6 +55,9 @@ services:
       GNB_HOSTNAME: gnb1
       APN: internet
       MSISDN: '0000000002'
+      KEY: '465B5CE8B199B49FAA5F0A2EE238A6BC'
+      OP_TYPE: OPC
+      OP: 'E8ED289DEBA952E4283B54E88E6183CA'
   ue3:
     build:
       context: ../../ueransim/
@@ -67,6 +73,9 @@ services:
       GNB_HOSTNAME: gnb2
       APN: internet
       MSISDN: '0000000003'
+      KEY: '465B5CE8B199B49FAA5F0A2EE238A6BC'
+      OP_TYPE: OPC
+      OP: 'E8ED289DEBA952E4283B54E88E6183CA'
   ue4:
     build:
       context: ../../ueransim/
@@ -82,4 +91,7 @@ services:
       GNB_HOSTNAME: gnb2
       APN: internet
       MSISDN: '0000000004'
+      KEY: '465B5CE8B199B49FAA5F0A2EE238A6BC'
+      OP_TYPE: OPC
+      OP: 'E8ED289DEBA952E4283B54E88E6183CA'
 

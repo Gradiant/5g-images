@@ -1,4 +1,4 @@
-snn: '5G:mnc${MNC}.mcc${MCC}.3gppnetwork.org'
+snn: '5G:mnc${MNC}.mcc${MCC}.${NETWORK}'
 # IMSI number of the UE. IMSI = [MCC|MNC|MSISDN] (In total 15 or 16 digits)
 supi: 'imsi-${MCC}${MNC}${MSISDN}'
 # Mobile Country Code value
@@ -7,11 +7,11 @@ mcc: ${MCC}
 mnc: ${MNC}
 
 # Permanent subscription key
-key: '465B5CE8B199B49FAA5F0A2EE238A6BC'
+key: '${KEY}'
 # Operator code (OP or OPC) of the UE
-op: 'E8ED289DEBA952E4283B54E88E6183CA'
+op: '${OP}'
 # This value specifies the OP type and it can be either 'OP' or 'OPC'
-opType: 'OP'
+opType: '${OP_TYPE}'
 # Authentication Management Field (AMF) value
 amf: '8000'
 # IMEI number of the device. It is used if no SUPI is provided
