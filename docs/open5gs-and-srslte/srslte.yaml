@@ -1,0 +1,27 @@
+version: '3'
+services: 
+  enodeb:
+    build:
+      context: ../../srs-lte/
+      dockerfile: Dockerfile
+    image: openverso/srs-lte:20_04_1
+    command: 
+      - enb
+    privileged: true
+    cap_add:
+      - all
+    environment:
+      MME_HOSTNAME: mme
+      UE_HOSTNAME: ue
+  ue:
+    build:
+      context: ../../srs-lte/
+      dockerfile: Dockerfile
+    image: openverso/srs-lte:20_04_1
+    command: 
+      - ue
+    privileged: true
+    cap_add:
+      - all
+    environment:
+      ENB_HOSTNAME: enodeb
