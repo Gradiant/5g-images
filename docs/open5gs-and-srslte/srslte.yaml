@@ -12,6 +12,7 @@ services:
       - all
     environment:
       MME_HOSTNAME: mme
+      ENB_HOSTNAME: enodeb
       UE_HOSTNAME: ue
   ue:
     build:
@@ -25,3 +26,4 @@ services:
       - all
     environment:
       ENB_HOSTNAME: enodeb
+      UE_HOSTNAME: ue

@@ -1,14 +1,15 @@
-FROM ubuntu:18.04
-
-MAINTAINER Carlos Giraldo <cgiraldo@gradiant.org> 
+FROM ubuntu:20.04 as builder
 
 ARG version=20_04_1
-
 ENV VERSION=$version
 
+LABEL org.opencontainers.image.authors="Carlos Giraldo <cgiraldo@gradiant.org>" \
+      org.opencontainers.image.vendor="Gradiant" \
+      org.opencontainers.image.licenses="Apache-2.0" \
+      org.opencontainers.image.version="$version"
 
 RUN apt-get update && \
-    apt-get install -y  \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y  \
     git \
     build-essential \ 
     cmake \
@@ -17,24 +18,52 @@ RUN apt-get update && \
     libboost-program-options-dev \
     libconfig++-dev \
     libsctp-dev \
-    libzmq3-dev 
+    libuhd-dev \
+    libzmq3-dev
 
-RUN	cd /tmp && git clone https://github.com/srsLTE/srsLTE.git && \
+RUN	cd /opt && git clone https://github.com/srsLTE/srsLTE.git && \
 	cd srsLTE && git checkout release_$VERSION && \
     mkdir build && \
     cd build && \
-    cmake -DCMAKE_INSTALL_PREFIX=/usr ../ && \
+    cmake -DCMAKE_INSTALL_PREFIX=/opt/srsLTE/target ../ && \
     make
 
-RUN cd /tmp/srsLTE/build && make install 
+RUN cd /opt/srsLTE/build && make install 
 
-RUN apt-get install -y gettext-base iproute2 dnsutils curl iputils-ping traceroute
 
-COPY /etc/srslte /etc/srslte
 
-#zmq ports
-EXPOSE 2000/tcp
-EXPOSE 2001/tcp
+FROM ubuntu:20.04
+
+ARG version=20_04_1
+ENV VERSION=$version
+
+LABEL org.opencontainers.image.authors="Carlos Giraldo <cgiraldo@gradiant.org>" \
+      org.opencontainers.image.vendor="Gradiant" \
+      org.opencontainers.image.licenses="Apache-2.0" \
+      org.opencontainers.image.version="$version"
+
+COPY --from=builder /opt/srsLTE/target/ /usr/
+
+
+# libraries
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y  \
+    	libboost-program-options1.71.0 \
+        libconfig++9v5 \
+        libfftw3-single3 \ 
+        libmbedtls12 \
+        libsctp1 \
+        libuhd3.15.0 \
+        libzmq5 && \
+    rm -rf /var/lib/apt/lists/*
+
+#Tools
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y  \
+    gettext-base iproute2 dnsutils curl iputils-ping traceroute && \
+    rm -rf /var/lib/apt/lists/*
+     
+COPY etc/srslte /etc/srslte
 
 ENV ENB_ID=0x19B \
     MCC=001 \
@@ -43,10 +72,15 @@ ENV ENB_ID=0x19B \
     GTP_BIND_INTERFACE=eth0 \
     S1C_BIND_INTERFACE=eth0 \
     UE_HOSTNAME=ue \
-    ENB_HOSTNAME=enodeb
+    ENB_HOSTNAME=enodeb \
+    DEVICE_NAME=auto \
+    DEVICE_ARGS=auto
 #ENV MME_HOSTNAME=mme 
 #ENV MME_ADDR=192.168.0.2
 
+#zmq ports
+EXPOSE 2000/tcp
+EXPOSE 2001/tcp
 
 COPY entrypoint.sh /
 
