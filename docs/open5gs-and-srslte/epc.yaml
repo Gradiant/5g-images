@@ -1,4 +1,4 @@
-version: '2.4'
+version: '3'
 services: 
   mongo:
     image: mongo
@@ -6,7 +6,7 @@ services:
       MONGO_INITDB_DATABASE: open5gs
   webui:
     build:
-      context: .
+      context: ../../open5gs/
       dockerfile: Dockerfile.webui
       args:
         version: 2.1.7
@@ -18,7 +18,7 @@ services:
       - 3000:3000
   nrf:
     build:
-      context: .
+      context: ../../open5gs/
       args:
         version: 2.1.7
     image: openverso/open5gs:2.1.7
@@ -26,16 +26,16 @@ services:
     restart : on-failure 
   amf:
     build:
-      context: .
+      context: ../../open5gs/
       args:
         version: 2.1.7
     image: openverso/open5gs:2.1.7
     command: 
-      - open5gs-amfd
+      - open5gs-amfd 
     restart : on-failure
   smf:
     build:
-      context: .
+      context: ../../open5gs/
       args:
         version: 2.1.7
     image: openverso/open5gs:2.1.7
@@ -43,7 +43,7 @@ services:
     restart : on-failure 
   mme:
     build:
-      context: .
+      context: ../../open5gs/
       args:
         version: 2.1.7
     image: openverso/open5gs:2.1.7
@@ -54,7 +54,7 @@ services:
 #/sctp
   sgwc:
     build:
-      context: .
+      context: ../../open5gs/
       args:
         version: 2.1.7
     image: openverso/open5gs:2.1.7
@@ -62,7 +62,7 @@ services:
     restart : on-failure
   sgwu:
     build:
-      context: .
+      context: ../../open5gs/
       args:
         version: 2.1.7
     image: openverso/open5gs:2.1.7
@@ -70,11 +70,11 @@ services:
     restart : on-failure
   upf:
     build:
-      context: .
+      context: ../../open5gs/
       args:
         version: 2.1.7
     image: openverso/open5gs:2.1.7
-    command: ["open5gs-upfd", "-e","debug" ]
+    command: ["open5gs-upfd"]
     cap_add:
       - all
     privileged: true
@@ -83,17 +83,17 @@ services:
       - 2152:2152
   pcrf:
     build:
-      context: .
+      context: ../../open5gs/
       args:
         version: 2.1.7
     image: openverso/open5gs:2.1.7
-    command: ["open5gs-pcrfd","-e","debug" ]
+    command: ["open5gs-pcrfd"]
     environment:
       DB_URI: mongodb://mongo/open5gs
     restart: on-failure
   hss:
     build:
-      context: .
+      context: ../../open5gs/
       args:
         version: 2.1.7
     image: openverso/open5gs:2.1.7
@@ -103,7 +103,7 @@ services:
     restart: on-failure
   udr:
     build:
-      context: .
+      context: ../../open5gs/
       args:
         version: 2.1.7
     image: openverso/open5gs:2.1.7
@@ -112,7 +112,7 @@ services:
       - open5gs-udrd
   udm:
     build:
-      context: .
+      context: ../../open5gs/
       args:
         version: 2.1.7
     image: openverso/open5gs:2.1.7
@@ -121,38 +121,19 @@ services:
       - open5gs-udmd
   ausf:
     build:
-      context: .
+      context: ../../open5gs/
       args:
         version: 2.1.7
     image: openverso/open5gs:2.1.7
     command: 
       - open5gs-ausfd
     restart : on-failure
-  
-  # uncomment to test with srslte RAN
-  ###################
-  enodeb:
+  pcf:
     build:
-      context: ../srs-lte/
-      dockerfile: Dockerfile
-    image: openverso/srs-lte:20_04_1
+      context: ../../open5gs/
+      args:
+        version: 2.1.7
+    image: openverso/open5gs:2.1.7
     command: 
-      - enb
-    privileged: true
-    cap_add:
-      - all
-    environment:
-      MME_HOSTNAME: mme
-      UE_HOSTNAME: ue
-  ue:
-    build:
-      context: ../srs-lte/
-      dockerfile: Dockerfile
-    image: openverso/srs-lte:20_04_1
-    command: 
-      - ue
-    privileged: true
-    cap_add:
-      - all
-    environment:
-      ENB_HOSTNAME: enodeb
+      - open5gs-pcfd
+    restart : on-failure
