@@ -2,12 +2,12 @@
 
 5G end to end communication demo with open5gs and srsLTE.
 
-# Deployment NGC and register subscribers
+# Deployment EPC and register subscribers
 
-deploy the ngc core (open5gs) with:
+deploy the EPC core (open5gs) with:
 
 ```
-docker-compose -f ngc.yaml up -d
+docker-compose -f epc.yaml up -d
 ```
 
 Register subscriber in ngc with `/register_subscriber.sh`.
