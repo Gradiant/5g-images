@@ -15,7 +15,7 @@ services:
       ENB_HOSTNAME: enodeb
       UE_HOSTNAME: ue
       DEVICE_NAME: "zmq"
-      DEVICE_ARGS: "fail_on_disconnect=true,tx_port=tcp://*:2000,rx_port=tcp://${UE_ADDRESS}:2001,id=enb,base_srate=23.04e6"
+      DEVICE_ARGS: "fail_on_disconnect=true,tx_port=tcp://*:2000,rx_port=tcp://ue:2001,id=enb,base_srate=23.04e6"
   ue:
     build:
       context: ../../srs-lte/
@@ -30,7 +30,7 @@ services:
       ENB_HOSTNAME: enodeb
       UE_HOSTNAME: ue
       DEVICE_NAME: "zmq"
-      DEVICE_ARGS: "fail_on_disconnect=true,tx_port=tcp://*:2000,rx_port=tcp://${UE_ADDRESS}:2001,id=enb,base_srate=23.04e6"
+      DEVICE_ARGS: "tx_port=tcp://*:2001,rx_port=tcp://enodeb:2000,id=ue,base_srate=23.04e6"
       MCC: "001"
       MNC: "01"
       MSISDN: "0000000001"
