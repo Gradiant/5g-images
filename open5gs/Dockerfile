@@ -97,7 +97,12 @@ COPY entrypoint.sh /entrypoint.sh
 
 #Default CONF values
 ENV DB_URI=mongodb://mongo/open5gs
-ENV IPV4_TUN_SUBNET="10.45.0.1/16"
+
+ENV IPV4_TUN_SUBNET="10.45.0.0/16" \
+    IPV4_TUN_ADDR="10.45.0.1/16" \
+    IPV6_TUN_ADDR="cafe::1/64" \
+    ENABLE_NAT=true
+
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["/bin/bash"]
