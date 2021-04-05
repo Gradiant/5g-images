@@ -2,7 +2,7 @@
 upf:
     pfcp:
     gtpu:
-    pdn:
+    subnet:
       - addr: 10.45.0.1/16
       #- addr: cafe::1/64
 smf:

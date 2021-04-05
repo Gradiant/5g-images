@@ -2,7 +2,7 @@
 
 REGISTRY=docker.io
 IMAGE=openverso/open5gs
-TAG=2.0.18
+TAG=2.2.3
 
 build:
 	docker build -t ${IMAGE}:${TAG} --build-arg version=${TAG} . 
