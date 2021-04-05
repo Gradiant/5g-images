@@ -9,8 +9,8 @@ services:
       context: ../../open5gs/
       dockerfile: Dockerfile.webui
       args:
-        version: 2.1.7
-    image: openverso/open5gs-webui:2.1.7  
+        version: 2.2.3
+    image: openverso/open5gs-webui:2.2.3  
     restart: on-failure
     environment:
       DB_URI: mongodb://mongo/open5gs
@@ -20,16 +20,24 @@ services:
     build:
       context: ../../open5gs/
       args:
-        version: 2.1.7
-    image: openverso/open5gs:2.1.7
+        version: 2.2.3
+    image: openverso/open5gs:2.2.3
     command: open5gs-nrfd   
+    restart : on-failure 
+  nssf:
+    build:
+      context: .
+      args:
+        version: 2.2.3
+    image: openverso/open5gs:2.2.3
+    command: open5gs-nssfd   
     restart : on-failure 
   amf:
     build:
       context: ../../open5gs/
       args:
-        version: 2.1.7
-    image: openverso/open5gs:2.1.7
+        version: 2.2.3
+    image: openverso/open5gs:2.2.3
     command: 
       - open5gs-amfd 
     restart : on-failure
@@ -37,16 +45,16 @@ services:
     build:
       context: ../../open5gs/
       args:
-        version: 2.1.7
-    image: openverso/open5gs:2.1.7
+        version: 2.2.3
+    image: openverso/open5gs:2.2.3
     command: open5gs-smfd    
     restart : on-failure 
   mme:
     build:
       context: ../../open5gs/
       args:
-        version: 2.1.7
-    image: openverso/open5gs:2.1.7
+        version: 2.2.3
+    image: openverso/open5gs:2.2.3
     command: open5gs-mmed
     restart: on-failure
     ports:
@@ -56,24 +64,24 @@ services:
     build:
       context: ../../open5gs/
       args:
-        version: 2.1.7
-    image: openverso/open5gs:2.1.7
+        version: 2.2.3
+    image: openverso/open5gs:2.2.3
     command: open5gs-sgwcd
     restart : on-failure
   sgwu:
     build:
       context: ../../open5gs/
       args:
-        version: 2.1.7
-    image: openverso/open5gs:2.1.7
+        version: 2.2.3
+    image: openverso/open5gs:2.2.3
     command: open5gs-sgwud
     restart : on-failure
   upf:
     build:
       context: ../../open5gs/
       args:
-        version: 2.1.7
-    image: openverso/open5gs:2.1.7
+        version: 2.2.3
+    image: openverso/open5gs:2.2.3
     command: ["open5gs-upfd"]
     cap_add:
       - all
@@ -85,8 +93,8 @@ services:
     build:
       context: ../../open5gs/
       args:
-        version: 2.1.7
-    image: openverso/open5gs:2.1.7
+        version: 2.2.3
+    image: openverso/open5gs:2.2.3
     command: ["open5gs-pcrfd"]
     environment:
       DB_URI: mongodb://mongo/open5gs
@@ -95,8 +103,8 @@ services:
     build:
       context: ../../open5gs/
       args:
-        version: 2.1.7
-    image: openverso/open5gs:2.1.7
+        version: 2.2.3
+    image: openverso/open5gs:2.2.3
     command: open5gs-hssd
     environment:
       DB_URI: mongodb://mongo/open5gs
@@ -105,8 +113,8 @@ services:
     build:
       context: ../../open5gs/
       args:
-        version: 2.1.7
-    image: openverso/open5gs:2.1.7
+        version: 2.2.3
+    image: openverso/open5gs:2.2.3
     restart: on-failure
     command: 
       - open5gs-udrd
@@ -114,8 +122,8 @@ services:
     build:
       context: ../../open5gs/
       args:
-        version: 2.1.7
-    image: openverso/open5gs:2.1.7
+        version: 2.2.3
+    image: openverso/open5gs:2.2.3
     restart: on-failure
     command: 
       - open5gs-udmd
@@ -123,8 +131,8 @@ services:
     build:
       context: ../../open5gs/
       args:
-        version: 2.1.7
-    image: openverso/open5gs:2.1.7
+        version: 2.2.3
+    image: openverso/open5gs:2.2.3
     command: 
       - open5gs-ausfd
     restart : on-failure
@@ -132,8 +140,8 @@ services:
     build:
       context: ../../open5gs/
       args:
-        version: 2.1.7
-    image: openverso/open5gs:2.1.7
+        version: 2.2.3
+    image: openverso/open5gs:2.2.3
     command: 
       - open5gs-pcfd
     restart : on-failure
