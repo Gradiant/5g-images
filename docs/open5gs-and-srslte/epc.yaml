@@ -26,7 +26,7 @@ services:
     restart : on-failure 
   nssf:
     build:
-      context: .
+      context: ../../open5gs/
       args:
         version: 2.2.3
     image: openverso/open5gs:2.2.3

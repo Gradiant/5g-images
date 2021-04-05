@@ -3,10 +3,10 @@ nssf:
   sbi: 
     port: 7777
   nsi:
-    - addr: nrf 
-      port: 7777
-      s_nssai:
-        - sst: 1
+    name: nrf 
+    port: 7777
+    s_nssai:
+      sst: 1
 
 nrf:
   sbi:
