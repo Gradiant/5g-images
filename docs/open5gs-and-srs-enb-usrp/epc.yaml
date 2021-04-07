@@ -36,6 +36,8 @@ services:
   upf:
     image: openverso/open5gs:2.2.3
     command: ["open5gs-upfd"]
+    volumes:
+    - $PWD/upf.yaml:/opt/open5gs/etc/open5gs/upf.yaml
     cap_add:
       - all
     privileged: true
@@ -54,11 +56,4 @@ services:
     environment:
       DB_URI: mongodb://mongo/open5gs
     restart: on-failure
-  portainer:
-    image: portainer/portainer-ce
-    ports:
-    - 9000:9000
-    volumes:
-    - /var/run/docker.sock:/var/run/docker.sock
-
 

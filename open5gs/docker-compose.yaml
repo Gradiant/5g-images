@@ -60,7 +60,6 @@ services:
     restart: on-failure
     ports:
       - 36412:36412
-#/sctp
   sgwc:
     build:
       context: .

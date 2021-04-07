@@ -1,10 +1,7 @@
 version: '3'
 services:
   gnb1:
-    build:
-      context: ../../ueransim/
-      dockerfile: Dockerfile
-    image: openverso/ueransim:3.1.0
+    image: openverso/ueransim:3.1.6
     container_name: gnb1
     command: 
       - gnb
@@ -12,10 +9,7 @@ services:
       AMF_HOSTNAME: amf
       GNB_HOSTNAME: gnb1
   gnb2:
-    build:
-      context: ../../ueransim/
-      dockerfile: Dockerfile
-    image: openverso/ueransim:3.1.0
+    image: openverso/ueransim:3.1.6
     container_name: gnb2
     command: 
       - gnb
@@ -23,10 +17,7 @@ services:
       AMF_HOSTNAME: amf
       GNB_HOSTNAME: gnb2
   ue1:
-    build:
-      context: ../../ueransim/
-      dockerfile: Dockerfile
-    image: openverso/ueransim:3.1.0
+    image: openverso/ueransim:3.1.6
     container_name: ue1
     command: 
       - ue
@@ -41,10 +32,7 @@ services:
       OP_TYPE: OPC
       OP: 'E8ED289DEBA952E4283B54E88E6183CA'
   ue2:
-    build:
-      context: ../../ueransim/
-      dockerfile: Dockerfile
-    image: openverso/ueransim:3.1.0
+    image: openverso/ueransim:3.1.6
     container_name: ue2
     command: 
       - ue
@@ -59,10 +47,7 @@ services:
       OP_TYPE: OPC
       OP: 'E8ED289DEBA952E4283B54E88E6183CA'
   ue3:
-    build:
-      context: ../../ueransim/
-      dockerfile: Dockerfile
-    image: openverso/ueransim:3.1.0
+    image: openverso/ueransim:3.1.6
     container_name: ue3
     command: 
       - ue
@@ -77,10 +62,7 @@ services:
       OP_TYPE: OPC
       OP: 'E8ED289DEBA952E4283B54E88E6183CA'
   ue4:
-    build:
-      context: ../../ueransim/
-      dockerfile: Dockerfile
-    image: openverso/ueransim:3.1.0
+    image: openverso/ueransim:3.1.6
     container_name: ue4
     command: 
       - ue

@@ -30,26 +30,31 @@ sessions:
     slice:
       sst: ${SST}
       sd: ${SD}
+    emergency: false
 
-requestedNssai:
-  - sst:
-      value: ${SST}
-    sd:
-      value: ${SD}
-
-# List of requested S-NSSAIs by this UE
-slices:
+# Configured NSSAI for this UE by HPLMN
+configured-nssai:
   - sst: ${SST}
     sd: ${SD}
 
-# Supported encryption and integrity algorithms by this UE
+# Default Configured NSSAI for this UE
+default-nssai:
+  - sst: ${SST}
+    sd: ${SD}
+
+# Supported encryption algorithms by this UE
 integrity:
-  IA3: false
-  IA2: true
   IA1: true
-  IA0: true
+  IA2: true
+  IA3: true
+
+# Supported integrity algorithms by this UE
 ciphering:
-  EA0: true
   EA1: true
   EA2: true
-  EA3: false
+  EA3: true
+
+# Integrity protection maximum data rate for user plane
+integrityMaxRate:
+  uplink: 'full'
+  downlink: 'full'

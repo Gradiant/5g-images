@@ -1,10 +1,7 @@
 version: '3'
 services: 
   gnb1:
-    build:
-      context: ../../ueransim/
-      dockerfile: Dockerfile
-    image: openverso/ueransim:3.1.0
+    image: openverso/ueransim:3.1.6
     container_name: gnb1
     command: 
       - gnb
@@ -12,10 +9,7 @@ services:
       AMF_HOSTNAME: amf
       GNB_HOSTNAME: gnb1
   ue1:
-    build:
-      context: ../../ueransim/
-      dockerfile: Dockerfile
-    image: openverso/ueransim:3.1.0
+    image: openverso/ueransim:3.1.6
     container_name: ue1
     command: 
       - ue

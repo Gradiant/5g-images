@@ -1,0 +1,16 @@
+version: '3'
+services: 
+  enodeb:
+    image: openverso/srs-lte:20_04_1
+    command: 
+      - enb
+    privileged: true
+    volumes:
+      - ./enb.conf:/etc/srslte/enb.conf
+      - /dev/bus/usb:/dev/bus/usb
+      - ./uhd_images:/usr/share/uhd/images
+    cap_add:
+      - all
+    environment:
+      MME_HOSTNAME: mme
+      ENB_HOSTNAME: enodeb

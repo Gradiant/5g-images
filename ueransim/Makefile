@@ -2,10 +2,10 @@
 
 REGISTRY=docker.io
 IMAGE=openverso/ueransim
-TAG=v3.1.0
+TAG=3.1.6
 
 build:
-	docker build -t ${IMAGE}:${TAG} --build-arg version=${TAG} . 
+	docker build -t ${IMAGE}:${TAG} --build-arg version=v${TAG} . 
 
 push:
 	echo "Pushing the images ${IMAGE} to ${REGISTRY}"; \
