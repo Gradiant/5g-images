@@ -1,0 +1,246 @@
+Attaching to srslte_ue_1
+[36mue_1      |[0m + '[' 1 -lt 1 ']'
+[36mue_1      |[0m + [[ -z '' ]]
+[36mue_1      |[0m ++ ip addr show eth0
+[36mue_1      |[0m ++ grep -Po 'inet \K[\d.]+'
+[36mue_1      |[0m + export GTP_BIND_ADDR=172.30.0.4
+[36mue_1      |[0m + GTP_BIND_ADDR=172.30.0.4
+[36mue_1      |[0m + [[ -z '' ]]
+[36mue_1      |[0m ++ ip addr show eth0
+[36mue_1      |[0m ++ grep -Po 'inet \K[\d.]+'
+[36mue_1      |[0m + export S1C_BIND_ADDR=172.30.0.4
+[36mue_1      |[0m + S1C_BIND_ADDR=172.30.0.4
+[36mue_1      |[0m + [[ -z '' ]]
+[36mue_1      |[0m ++ ip addr show eth0
+[36mue_1      |[0m ++ grep -Po 'inet \K[\d.]+'
+[36mue_1      |[0m + export MME_BIND_ADDR=172.30.0.4
+[36mue_1      |[0m + MME_BIND_ADDR=172.30.0.4
+[36mue_1      |[0m + [[ ! -z '' ]]
+[36mue_1      |[0m + [[ ! -z enodeb ]]
+[36mue_1      |[0m ++ host -4 enodeb
+[36mue_1      |[0m ++ awk '/has.*address/{print $NF; exit}'
+[36mue_1      |[0m + export ENB_ADDRESS=172.30.0.3
+[36mue_1      |[0m + ENB_ADDRESS=172.30.0.3
+[36mue_1      |[0m + [[ ! -z ue ]]
+[36mue_1      |[0m ++ host -4 ue
+[36mue_1      |[0m ++ awk '/has.*address/{print $NF; exit}'
+[36mue_1      |[0m Launching srsue
+[36mue_1      |[0m + export UE_ADDRESS=172.30.0.4
+[36mue_1      |[0m + UE_ADDRESS=172.30.0.4
+[36mue_1      |[0m + command=ue
+[36mue_1      |[0m + shift
+[36mue_1      |[0m + case "$command" in
+[36mue_1      |[0m + echo 'Launching srsue'
+[36mue_1      |[0m + envsubst
+[36mue_1      |[0m + /usr/bin/srsue /ue.conf
+[36mue_1      |[0m Reading configuration file /ue.conf...
+[36mue_1      |[0m 
+[36mue_1      |[0m Built in Release mode using commit c892ae56b on branch HEAD.
+[36mue_1      |[0m 
+[36mue_1      |[0m 06:46:03.332435 [UE  ] [I] Built in Release mode using commit c892ae56b on branch HEAD.
+[36mue_1      |[0m 06:46:03.404087 [RF  ] [I] Configuring physical DL channel 0 with band-pass filter (0.0, 0.0)
+[36mue_1      |[0m 06:46:03.404097 [RF  ] [I] Configuring physical UL channel 0 with band-pass filter (0.0, 0.0)
+[36mue_1      |[0m Opening 1 channels in RF device=zmq with args=tx_port=tcp://*:2001,rx_port=tcp://172.30.0.3:2000,id=ue,base_srate=23.04e6
+[36mue_1      |[0m CHx base_srate=23.04e6
+[36mue_1      |[0m CHx id=ue
+[36mue_1      |[0m Current sample rate is 1.92 MHz with a base rate of 23.04 MHz (x12 decimation)
+[36mue_1      |[0m CH0 rx_port=tcp://172.30.0.3:2000
+[36mue_1      |[0m CH0 tx_port=tcp://*:2001
+[36mue_1      |[0m 06:46:03.623343 [MAC ] [I] [    0] Resetting MAC
+[36mue_1      |[0m 06:46:03.628386 [MAC ] [I] [    0] Logical Channel Setup: LCID=0, LCG=0, priority=0, PBR=-1, BSD=50ms, bucket_size=0
+[36mue_1      |[0m 06:46:03.628395 [MAC ] [I] [    0] Logical Channel Setup: LCID=1, LCG=0, priority=1, PBR=-1, BSD=50ms, bucket_size=0
+[36mue_1      |[0m 06:46:03.628405 [MAC ] [I] [    0] BSR:   Configured timer reTX 2560 ms
+[36mue_1      |[0m 06:46:03.628412 [RLC ] [I] Added radio bearer SRB0 in Transparent Mode
+[36mue_1      |[0m 06:46:03.628414 [RLC ] [I] Configured radio bearer SRB0 in Transparent Mode
+[36mue_1      |[0m 06:46:03.628417 [NAS ] [I] New state DEREGISTERED
+[36mue_1      |[0m 06:46:03.628432 [USIM] [I] Read Home PLMN Id=00101
+[36mue_1      |[0m 06:46:03.628495 [RRC ] [I] using srand seed of 628494
+[36mue_1      |[0m Waiting PHY to initialize ... done!
+[36mue_1      |[0m 06:46:21.712335 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:46:21.712357 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:21.712982 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m Attaching UE...
+[36mue_1      |[0m 06:46:21.716187 [NAS ] [I] Attach Request with cause mo-Signalling.
+[36mue_1      |[0m 06:46:21.716199 [NAS ] [I] No PLMN selected. Starting PLMN Search...
+[36mue_1      |[0m 06:46:21.716208 [RRC ] [I] Proc "PLMN Search" - Starting PLMN search
+[36mue_1      |[0m 06:46:21.716215 [RRC ] [I] Proc "Cell Search" - Starting...
+[36mue_1      |[0m 06:46:21.716235 [NAS ] [I] Proc "PLMN Search" - Starting...
+[36mue_1      |[0m Closing stdin thread.
+[36mue_1      |[0m 06:46:21.717203 [PHY0] [I] [    0] Cell Search: Start EARFCN index=0/1
+[36mue_1      |[0m 06:46:21.723896 [PHY0] [I] [    0] INTRA: Disabled neighbour cell search for EARFCN 0
+[36mue_1      |[0m Current sample rate is 1.92 MHz with a base rate of 23.04 MHz (x12 decimation)
+[36mue_1      |[0m Current sample rate is 1.92 MHz with a base rate of 23.04 MHz (x12 decimation)
+[36mue_1      |[0m 06:46:21.723916 [PHY0] [I] [    0] SYNC:  Setting Cell Search sampling rate
+[36mue_1      |[0m 06:46:21.723920 [PHY0] [I] [    0] Cell Search: changing frequency to EARFCN=3400
+[36mue_1      |[0m 06:46:21.723928 [PHY0] [I] [    0] SYNC:  Set DL EARFCN=3400, f_dl=2685.0 MHz, f_ul=2565.0 MHz
+[36mue_1      |[0m 06:46:21.723936 [RF  ] [I] Mapping RF channel 0 to logical carrier 0 on f_rx=2685.0 MHz
+[36mue_1      |[0m 06:46:21.723940 [RF  ] [I] Mapping RF channel 0 to logical carrier 0 on f_tx=2565.0 MHz
+[36mue_1      |[0m 06:46:21.723957 [PHY0] [I] [    0] Cell Search: Setting Cell search state
+[36mue_1      |[0m 06:46:22.712833 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:46:22.712855 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:22.712898 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:23.712413 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:46:23.712434 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:23.712477 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:24.712417 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:46:24.712441 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:24.712484 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:25.712834 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:46:25.712855 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:25.712888 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:26.712404 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:46:26.712424 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:26.712455 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:27.712626 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:46:27.712645 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:27.712674 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:28.712398 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:46:28.712419 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:28.712451 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:29.712403 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:46:29.712425 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:29.712456 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:30.712830 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:46:30.712851 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:30.712894 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:31.712828 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:46:31.712849 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:31.712881 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:32.712398 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:46:32.712414 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:32.712494 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:33.712857 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:46:33.712878 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:33.712920 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:34.712343 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:46:34.712364 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:34.712390 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:35.712401 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:46:35.712422 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:35.712454 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:36.712414 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:46:36.712447 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:36.712478 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:37.712862 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:46:37.712884 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:37.712916 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:38.712411 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:46:38.712432 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:38.712474 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:39.712985 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:46:39.713006 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:39.713037 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:40.712834 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:46:40.712855 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:40.712887 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:41.712396 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:46:41.712418 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:41.712448 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:42.712827 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:46:42.712849 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:42.712880 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:43.712410 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:46:43.712432 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:43.712463 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:44.712867 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:46:44.712889 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:44.712921 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:45.712862 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:46:45.712883 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:45.712915 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:46.712368 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:46:46.712389 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:46.712419 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:47.712788 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:46:47.712810 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:47.712832 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:48.712320 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:46:48.712342 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:48.712424 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:49.712415 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:46:49.712438 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:49.712477 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:50.712429 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:46:50.712450 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:50.712554 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:51.712390 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:46:51.712411 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:51.712440 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:52.712409 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:46:52.712431 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:52.712463 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:53.712386 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:46:53.712408 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:53.712448 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:54.712295 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:46:54.712310 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:54.712323 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:55.712412 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:46:55.712433 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:55.712464 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:56.712950 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:46:56.712971 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:56.713013 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:57.712822 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:46:57.712843 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:57.712875 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:58.712907 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:46:58.712929 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:58.712969 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:59.712402 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:46:59.712424 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:46:59.712455 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:47:00.712844 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:47:00.712866 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:47:00.712897 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:47:01.712399 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:47:01.712420 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:47:01.712461 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:47:02.712398 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:47:02.712418 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:47:02.712459 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:47:03.712406 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:47:03.712429 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:47:03.712505 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:47:04.712851 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:47:04.712873 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:47:04.712914 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:47:05.712321 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:47:05.712346 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:47:05.712388 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:47:06.712873 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:47:06.712894 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:47:06.712926 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:47:07.712829 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:47:07.712851 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:47:07.712882 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:47:08.712623 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:47:08.712639 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:47:08.712691 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:47:09.712395 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:47:09.712416 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:47:09.712480 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:47:10.712767 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:47:10.712791 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:47:10.712822 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:47:11.712375 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:47:11.712396 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:47:11.712434 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:47:12.712856 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:47:12.712878 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:47:12.712920 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:47:13.712402 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:47:13.712424 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:47:13.712464 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:47:14.712413 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:47:14.712434 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:47:14.712475 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:47:15.712426 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:47:15.712447 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:47:15.712478 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:47:16.712458 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:47:16.712479 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:47:16.712581 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:47:17.712416 [MAC ] [I] [    0] DL retx: 0.00 %, perpkt: 0.00, UL retx: 0.00 % perpkt: 0.00
+[36mue_1      |[0m 06:47:17.712438 [RLC ] [I] LCID=0, RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.
+[36mue_1      |[0m 06:47:17.712479 [GW  ] [I] RX throughput: 0.000000 Mbps. TX throughput: 0.000000 Mbps.

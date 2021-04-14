@@ -25,6 +25,8 @@ services:
     restart: on-failure
     ports:
       - 36412:36412
+    volumes:
+      - ./open5gs-config/mme.yaml:/opt/open5gs/etc/open5gs/mme.yaml
   sgwc:
     image: openverso/open5gs:2.2.3
     command: open5gs-sgwcd
@@ -36,8 +38,6 @@ services:
   upf:
     image: openverso/open5gs:2.2.3
     command: ["open5gs-upfd"]
-    volumes:
-    - $PWD/upf.yaml:/opt/open5gs/etc/open5gs/upf.yaml
     cap_add:
       - all
     privileged: true

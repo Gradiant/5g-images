@@ -2,13 +2,13 @@
 
 all: build push
 
-REGISTRY ?= harbor.cloudrenzo.gradiant.org/openverso
-IMAGE=srs-lte
-TAG=20_04_1
+REGISTRY=docker.io
+IMAGE=openverso/srs-lte
+TAG=20_10_1
 
 
 build:
-	docker build -t ${IMAGE}:${TAG} .
+	docker build --build-arg version=${TAG} -t ${IMAGE}:${TAG} .
 
 push:
 	echo "Insert credentials to registry: "; \

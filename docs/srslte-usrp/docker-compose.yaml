@@ -1,0 +1,35 @@
+version: '3'
+services:
+  epc:
+    image: openverso/srs-lte:20_10_1
+    command: 
+      - epc
+    #restart: on-failure
+    ports:
+      - 36412:36412
+    environment:
+      TAC: "0001"
+      MCC: "901"
+      MNC: "70"
+    privileged: true
+    cap_add:
+      - all
+    volumes:
+      - ./srs-config/:/etc/srslte/
+  
+  enodeb:
+    image: openverso/srs-lte:20_10_1
+    command: 
+      - enb
+    privileged: true
+    volumes:
+      - ./srs-config/:/etc/srslte/
+      - /dev/bus/usb:/dev/bus/usb
+      - ./uhd_images:/usr/share/uhd/images
+    cap_add:
+      - all
+    environment:
+      MME_HOSTNAME: epc
+      ENB_HOSTNAME: enodeb
+      MCC: "901"
+      MNC: "70"

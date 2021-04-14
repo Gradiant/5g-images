@@ -1,0 +1,35 @@
+version: '3'
+services: 
+  epc:
+    image: openverso/srs-lte:20_10_1
+    command: 
+      - epc
+    privileged: true
+    cap_add:
+      - all
+    volumes:
+      - ./user_db.csv:/etc/srslte/user_db.csv
+  enodeb:
+    image: openverso/srs-lte:20_10_1
+    command: 
+      - enb
+    privileged: true
+    cap_add:
+      - all
+    environment:
+      MME_HOSTNAME: epc
+      ENB_HOSTNAME: enodeb
+      UE_HOSTNAME: ue
+  ue:
+    image: openverso/srs-lte:20_10_1
+    command: 
+      - ue
+    privileged: true
+    cap_add:
+      - all
+    environment:
+      ENB_HOSTNAME: enodeb
+      UE_HOSTNAME: ue
+      MSISDN: "0000000001"
+      KEY: "465B5CE8B199B49FAA5F0A2EE238A6BC"
+      OPC: "E8ED289DEBA952E4283B54E88E6183CA"

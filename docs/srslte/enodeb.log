@@ -1,0 +1,88 @@
+Attaching to srslte_enodeb_1
+[36menodeb_1  |[0m + '[' 1 -lt 1 ']'
+[36menodeb_1  |[0m + [[ -z '' ]]
+[36menodeb_1  |[0m ++ ip addr show eth0
+[36menodeb_1  |[0m ++ grep -Po 'inet \K[\d.]+'
+[36menodeb_1  |[0m + export GTP_BIND_ADDR=172.30.0.3
+[36menodeb_1  |[0m + GTP_BIND_ADDR=172.30.0.3
+[36menodeb_1  |[0m + [[ -z '' ]]
+[36menodeb_1  |[0m ++ ip addr show eth0
+[36menodeb_1  |[0m ++ grep -Po 'inet \K[\d.]+'
+[36menodeb_1  |[0m + export S1C_BIND_ADDR=172.30.0.3
+[36menodeb_1  |[0m + S1C_BIND_ADDR=172.30.0.3
+[36menodeb_1  |[0m + [[ -z '' ]]
+[36menodeb_1  |[0m ++ ip addr show eth0
+[36menodeb_1  |[0m ++ grep -Po 'inet \K[\d.]+'
+[36menodeb_1  |[0m + export MME_BIND_ADDR=172.30.0.3
+[36menodeb_1  |[0m + MME_BIND_ADDR=172.30.0.3
+[36menodeb_1  |[0m + [[ ! -z epc ]]
+[36menodeb_1  |[0m ++ host -4 epc
+[36menodeb_1  |[0m ++ awk '/has.*address/{print $NF; exit}'
+[36menodeb_1  |[0m + export MME_ADDR=172.30.0.2
+[36menodeb_1  |[0m + MME_ADDR=172.30.0.2
+[36menodeb_1  |[0m + [[ ! -z enodeb ]]
+[36menodeb_1  |[0m ++ host -4 enodeb
+[36menodeb_1  |[0m ++ awk '/has.*address/{print $NF; exit}'
+[36menodeb_1  |[0m + export ENB_ADDRESS=172.30.0.3
+[36menodeb_1  |[0m + ENB_ADDRESS=172.30.0.3
+[36menodeb_1  |[0m + [[ ! -z ue ]]
+[36menodeb_1  |[0m ++ host -4 ue
+[36menodeb_1  |[0m ++ awk '/has.*address/{print $NF; exit}'
+[36menodeb_1  |[0m + export UE_ADDRESS=
+[36menodeb_1  |[0m + UE_ADDRESS=
+[36menodeb_1  |[0m + command=enb
+[36menodeb_1  |[0m + shift
+[36menodeb_1  |[0m + case "$command" in
+[36menodeb_1  |[0m + echo 'Launching srsenb'
+[36menodeb_1  |[0m Launching srsenb
+[36menodeb_1  |[0m + envsubst
+[36menodeb_1  |[0m + envsubst
+[36menodeb_1  |[0m + /usr/bin/srsenb enb.conf
+[36menodeb_1  |[0m ---  Software Radio Systems LTE eNodeB  ---
+[36menodeb_1  |[0m 
+[36menodeb_1  |[0m Reading configuration file enb.conf...
+[36menodeb_1  |[0m 
+[36menodeb_1  |[0m Built in Release mode using commit c892ae56b on branch HEAD.
+[36menodeb_1  |[0m 
+[36menodeb_1  |[0m 06:45:59.446644 [ENB ] [I] Built in Release mode using commit c892ae56b on branch HEAD.
+[36menodeb_1  |[0m 06:45:59.489453 [RF  ] [I] Configuring physical DL channel 0 with band-pass filter (0.0, 0.0)
+[36menodeb_1  |[0m 06:45:59.489461 [RF  ] [I] Configuring physical UL channel 0 with band-pass filter (0.0, 0.0)
+[36menodeb_1  |[0m Opening 1 channels in RF device=zmq with args=fail_on_disconnect=true,tx_port=tcp://*:2000,rx_port=tcp://:2001,id=enb,base_srate=23.04e6
+[36menodeb_1  |[0m CHx base_srate=23.04e6
+[36menodeb_1  |[0m CHx id=enb
+[36menodeb_1  |[0m Current sample rate is 1.92 MHz with a base rate of 23.04 MHz (x12 decimation)
+[36menodeb_1  |[0m CH0 rx_port=tcp://:2001
+[36menodeb_1  |[0m CH0 tx_port=tcp://*:2000
+[36menodeb_1  |[0m CH0 fail_on_disconnect=true
+[36menodeb_1  |[0m 06:46:01.729344 [PHY0] [I] [    0] Component Carrier Worker 0 configured cell 50 PRB
+[36menodeb_1  |[0m 06:46:01.729394 [PHY0] [I] [    0] Worker 0 configured cell 50 PRB
+[36menodeb_1  |[0m 06:46:01.913627 [PHY1] [I] [    0] Component Carrier Worker 0 configured cell 50 PRB
+[36menodeb_1  |[0m 06:46:01.913695 [PHY1] [I] [    0] Worker 0 configured cell 50 PRB
+[36menodeb_1  |[0m 06:46:02.110139 [PHY2] [I] [    0] Component Carrier Worker 0 configured cell 50 PRB
+[36menodeb_1  |[0m 06:46:02.110189 [PHY2] [I] [    0] Worker 0 configured cell 50 PRB
+[36menodeb_1  |[0m Current sample rate is 11.52 MHz with a base rate of 23.04 MHz (x2 decimation)
+[36menodeb_1  |[0m Current sample rate is 11.52 MHz with a base rate of 23.04 MHz (x2 decimation)
+[36menodeb_1  |[0m Setting frequency: DL=2685.0 Mhz, UL=2565.0 MHz for cc_idx=0
+[36menodeb_1  |[0m 06:46:03.641973 [RF  ] [I] Mapping RF channel 0 to logical carrier 0 on f_tx=2685.0 MHz
+[36menodeb_1  |[0m 06:46:03.641988 [RF  ] [I] Mapping RF channel 0 to logical carrier 0 on f_rx=2565.0 MHz
+[36menodeb_1  |[0m 06:46:03.641992 [PHY0] [I] [    0] Starting RX/TX thread nof_prb=50, sf_len=11520
+[36menodeb_1  |[0m 06:46:03.651354 [MAC ] [I] [    0] Resetting MAC
+[36menodeb_1  |[0m 06:46:03.651431 [RRC ] [I] CC0 SIB payload - Tx systemInformationBlockType1 (15 B)
+[36menodeb_1  |[0m 06:46:03.651441 [RRC ] [I] CC0 SIB payload - Tx systemInformation (33 B)
+[36menodeb_1  |[0m 06:46:03.651446 [RRC ] [I] Allocating 2 PRBs for PUCCH
+[36menodeb_1  |[0m 06:46:03.651479 [S1AP] [I] Proc "MME Connection" - Starting new MME connection.
+[36menodeb_1  |[0m 06:46:03.651481 [S1AP] [I] Connecting to MME 172.30.0.2:36412
+[36menodeb_1  |[0m 06:46:03.651802 [S1AP] [I] SCTP socket established with MME
+[36menodeb_1  |[0m 06:46:03.651823 [S1AP] [I] Sending s1SetupRequest to MME
+[36menodeb_1  |[0m              0000: 00 11 00 2d 00 00 04 00 3b 00 08 00 00 f1 10 00 
+[36menodeb_1  |[0m              0010: 00 19 b0 00 3c 40 0a 03 80 73 72 73 65 6e 62 30 
+[36menodeb_1  |[0m 06:46:03.651885 [S1AP] [I] Proc "MME Connection" - S1SetupRequest sent. Waiting for response...
+[36menodeb_1  |[0m 
+[36menodeb_1  |[0m ==== eNodeB started ===
+[36menodeb_1  |[0m Type <t> to view trace
+[36menodeb_1  |[0m 06:46:03.656656 [S1AP] [I] Received S1AP PDU
+[36menodeb_1  |[0m              0000: 20 11 00 25 00 00 03 00 3d 40 0a 03 80 73 72 73 
+[36menodeb_1  |[0m              0010: 6d 6d 65 30 31 00 69 00 0b 00 00 00 f1 10 00 00 
+[36menodeb_1  |[0m 06:46:03.656740 [S1AP] [I] Received S1SetupResponse
+[36menodeb_1  |[0m 06:46:03.656749 [S1AP] [I] Proc "MME Connection" - S1Setup procedure completed successfully
+[36menodeb_1  |[0m Closing stdin thread.
