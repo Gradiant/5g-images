@@ -94,6 +94,7 @@ LABEL org.opencontainers.image.authors="Carlos Giraldo <cgiraldo@gradiant.org>" 
       org.opencontainers.image.version="$version"
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
+		gettext-base \
 		libatlas3-base \
 		libboost-chrono1.71.0 \
 		libboost-date-time1.71.0 \
@@ -111,13 +112,15 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
 		libyaml-0-2 \
 		lksctp-tools \
 		zlib1g \
-		iproute2 iputils-ping procps bind9-utils net-tools && \
+		iproute2 dnsutils iputils-ping procps net-tools && \
     rm -rf /var/lib/apt/lists/*
 
+     
 ENV APP_ROOT=/opt/oai
 COPY --from=builder /openairinterface5g/cmake_targets/lte_build_oai/build/lte-softmodem ${APP_ROOT}/bin/
-COPY configs ${APP_ROOT}/etc/
 COPY --from=builder /openairinterface5g/cmake_targets/lte_build_oai/build/*.so* /usr/local/lib/
+COPY configs ${APP_ROOT}/etc/
+COPY entrypoint.sh /
 # update /usr/local/lib libraries 
 RUN ldconfig
 
@@ -140,4 +143,12 @@ EXPOSE 50000/udp
 # IF5 / ECPRI (data) 
 EXPOSE 50001/udp 
 
-CMD ["/opt/oai/bin/lte-softmodem", "-O", "/opt/oai/etc/enb.conf"]
+ENV ENB_TEMPLATE_PATH=/opt/oai/etc/enb.conf \
+    ENB_BIND_INTERFACE=eth0 \
+    MME_HOSTNAME=mme \
+    MCC=001 \
+    MNC=01 \
+    TAC=1
+
+ENTRYPOINT ["/entrypoint.sh"]
+#CMD ["/opt/oai/bin/lte-softmodem", "-O", "/opt/oai/etc/enb.conf"]
