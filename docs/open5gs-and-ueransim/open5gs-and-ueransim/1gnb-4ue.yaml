@@ -1,0 +1,78 @@
+version: '3'
+services: 
+  gnb1:
+    image: openverso/ueransim:3.1.6
+    container_name: gnb1
+    command: 
+      - gnb
+    environment:
+      AMF_HOSTNAME: amf
+      GNB_HOSTNAME: gnb1
+  ue1:
+    image: openverso/ueransim:3.1.6
+    container_name: ue1
+    command: 
+      - ue
+    cap_add:
+      - all
+    privileged: true
+    environment:
+      GNB_HOSTNAME: gnb1
+      APN: internet
+      MSISDN: '0000000001'
+      KEY: '465B5CE8B199B49FAA5F0A2EE238A6BC'
+      OP_TYPE: OPC
+      OP: 'E8ED289DEBA952E4283B54E88E6183CA'
+      SST: 1 
+      SD: 000001
+  ue2:
+    image: openverso/ueransim:3.1.6
+    container_name: ue2
+    command: 
+      - ue
+    cap_add:
+      - all
+    privileged: true
+    environment:
+      GNB_HOSTNAME: gnb1
+      APN: movistar.es
+      MSISDN: '0000000002'
+      KEY: '465B5CE8B199B49FAA5F0A2EE238A6BC'
+      OP_TYPE: OPC
+      OP: 'E8ED289DEBA952E4283B54E88E6183CA'
+      SST: 1 
+      SD: 000002
+  ue3:
+    image: openverso/ueransim:3.1.6
+    container_name: ue3
+    command: 
+      - ue
+    cap_add:
+      - all
+    privileged: true
+    environment:
+      GNB_HOSTNAME: gnb1
+      APN: internet
+      MSISDN: '0000000003'
+      KEY: '465B5CE8B199B49FAA5F0A2EE238A6BC'
+      OP_TYPE: OPC
+      OP: 'E8ED289DEBA952E4283B54E88E6183CA'
+      SST: 1 
+      SD: 000001
+  ue4:
+    image: openverso/ueransim:3.1.6
+    container_name: ue4
+    command: 
+      - ue
+    cap_add:
+      - all
+    privileged: true
+    environment:
+      GNB_HOSTNAME: gnb1
+      APN: movistar.es
+      MSISDN: '0000000004'
+      KEY: '465B5CE8B199B49FAA5F0A2EE238A6BC'
+      OP_TYPE: OPC
+      OP: 'E8ED289DEBA952E4283B54E88E6183CA'
+      SST: 1 
+      SD: 000002

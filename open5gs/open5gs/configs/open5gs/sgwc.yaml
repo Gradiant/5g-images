@@ -1,0 +1,14 @@
+### For reference, see `/opt/open5gs/etc/orig/open5gs/`
+sgwc:
+    gtpc:
+    pfcp:
+
+sgwu:
+    pfcp:
+      - name: sgwu
+
+parameter:
+
+max:
+
+pool:
