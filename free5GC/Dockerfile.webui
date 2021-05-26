@@ -42,43 +42,32 @@ RUN apt-get update && \
 ENV GOPATH /go
 ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
 
+RUN apt remove cmdtest && \
+    apt remove yarn && \
+    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
+    apt-get update && \
+    apt-get install -y nodejs yarn
+
 RUN mkdir -p /tmp && cd /tmp && \
     git clone --recursive -b v3.0.5 -j `nproc` https://github.com/free5gc/free5gc.git && \
-    cd free5gc && \
-    make
+    cd free5gc/webconsole && git checkout v1.0.1 && \
+    cd ../ && make webconsole
+
 
 RUN echo $(ls /var/lib/apt/lists/)
 
 FROM debian:buster-slim
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
-    libyaml-0-2 \
-    libmnl0 \
-    libmongoc-1.0-0 \
-    libsctp1 \
-    libidn11 \
-    libcurl4 \
-    libmicrohttpd12 \
-    libnghttp2-14 \
-    gettext-base \
-    iproute2 iputils-ping procps net-tools iptables && \
-    rm -rf /var/lib/apt/lists/*
-
 ENV APP_ROOT=/opt/free5gc
-COPY --from=builder /tmp/free5gc/bin ${APP_ROOT}/bin/
-COPY config/ ${APP_ROOT}/config/
-COPY --from=builder /tmp/free5gc/NFs/upf/build/bin ${APP_ROOT}/bin/
-COPY --from=builder /tmp/free5gc/NFs/upf/build/updk/src/third_party/libgtp5gnl/lib/libgtp5gnl.so.0 /usr/local/lib
-COPY --from=builder /tmp/free5gc/NFs/upf/build/utlt_logger/liblogger.so /usr/local/lib
 
-ENV PATH=${APP_ROOT}/bin:${PATH} HOME=${APP_ROOT}
-WORKDIR ${APP_ROOT}
+COPY config/ ${APP_ROOT}/config/
+COPY --from=builder /tmp/free5gc/webconsole/ ${APP_ROOT}
 
 RUN ldconfig
-COPY entrypoint.sh /entrypoint.sh
-
-
+ENV PATH=${APP_ROOT}/bin:${PATH} HOME=${APP_ROOT}
+WORKDIR ${APP_ROOT}
 ENV DB_URI=mongodb://mongo/free5gc
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["webconsole"]
 CMD ["/bin/sh"]

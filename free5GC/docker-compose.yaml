@@ -1,5 +1,21 @@
 version: '2.4'
 services: 
+  mongo:
+    image: mongo
+    environment:
+      MONGO_INITDB_DATABASE: open5gs
+  webui:
+    build:
+      context: .
+      dockerfile: Dockerfile.webui
+      args:
+        version: 3.0.5
+    image: openverso/free5gs-webui:3.0.5
+    restart: on-failure
+    environment:
+      DB_URI: mongodb://db:27017
+    ports:
+      - 5000:5000
   nrf:
     build:
       context: .
