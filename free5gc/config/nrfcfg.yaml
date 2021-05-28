@@ -4,7 +4,7 @@ info:
 
 configuration:
   MongoDBName: free5gc # database name in MongoDB
-  MongoDBUrl: mongodb://db:27017 # a valid URL of the mongodb
+  MongoDBUrl: mongodb://mongo # a valid URL of the mongodb
   sbi: # Service-based interface information
     scheme: http # the protocol for sbi (http or https)
     registerIPv4: nrf # IP used to serve NFs or register to another NRF

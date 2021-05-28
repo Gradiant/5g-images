@@ -23,7 +23,7 @@ configuration:
     - serviceName: npcf-ue-policy-control   # Npcf_UEPolicyControl service
   mongodb:       # the mongodb connected by this PCF
     name: free5gc                  # name of the mongodb
-    url: mongodb://db:27017 # a valid URL of the mongodb
+    url: mongodb://mongo # a valid URL of the mongodb
 
 # the kind of log output
   # debugLevel: how detailed to output, value: trace, debug, info, warn, error, fatal, panic

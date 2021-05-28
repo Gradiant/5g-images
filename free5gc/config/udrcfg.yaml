@@ -10,7 +10,7 @@ configuration:
     port: 8000 # port used to bind the service
   mongodb:
     name: free5gc # Database name in MongoDB
-    url: mongodb://db:27017 # URL of MongoDB
+    url: mongodb://mongo # URL of MongoDB
   nrfUri: http://nrf:8000 # a valid URI of NRF
 
 # the kind of log output

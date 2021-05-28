@@ -4,62 +4,59 @@ services:
     image: mongo
     environment:
       MONGO_INITDB_DATABASE: open5gs
-  webui:
-    build:
-      context: .
-      dockerfile: Dockerfile.webui
-      args:
-        version: 3.0.5
-    image: openverso/free5gs-webui:3.0.5
+  webconsole:
+    image: openverso/free5gc-webconsole:1.0.1
     restart: on-failure
-    environment:
-      DB_URI: mongodb://db:27017
     ports:
       - 5000:5000
+    volumes:
+      - ./config/webuicfg.yaml:/etc/free5gc/webuicfg.yaml
   nrf:
     build:
       context: .
       args:
         version: 3.0.5
-    image: openverso/free5gs:3.0.5
-    ports:
-      - 8000:8000
-    command: 
-      - ./bin/nrf -nrfcfg config/nrfcfg.yaml
-    restart : on-failure
-  amf:
-    build:
-      context: .
-      args:
-        version: 3.0.5
-    image: openverso/free5gs:3.0.5
-    command: 
-      - ./bin/amf -amfcfg config/amfcfg.yaml
-    restart : on-failure
-  smf:
-    build:
-      context: .
-      args:
-        version: 3.0.5
-    image: openverso/free5gs:3.0.5
-    command: 
-      - ./bin/smf -smfcfg config/smfcfg.yaml
+    image: openverso/free5gc:3.0.5
+    volumes:
+      - ./config/nrfcfg.yaml:/etc/free5gc/nrfcfg.yaml
+    command: ["nrf","-nrfcfg","/etc/free5gc/nrfcfg.yaml"]
     restart : on-failure
   udr:
     build:
       context: .
       args:
         version: 3.0.5
-    image: openverso/free5gs:3.0.5
-    command: 
-      - ./bin/udr -udrcfg config/udrcfg.yaml
+    image: openverso/free5gc:3.0.5
+    command: ["udr","-udrcfg","/etc/free5gc/udrcfg.yaml"]
     restart : on-failure
+
+  amf:
+    build:
+      context: .
+      args:
+        version: 3.0.5
+    image: openverso/free5gc:3.0.5
+    volumes:
+      - ./config/amfcfg.yaml:/etc/free5gc/amfcfg.yaml
+    command: ["amf","-nrfcfg","/etc/free5gc/amfcfg.yaml"]
+    restart : on-failure
+
+  smf:
+    build:
+      context: .
+      args:
+        version: 3.0.5
+    image: openverso/free5gc:3.0.5
+    command: 
+      - ./bin/smf -smfcfg config/smfcfg.yaml
+    restart : on-failure
+
   pcf:
     build:
       context: .
       args:
         version: 3.0.5
-    image: openverso/free5gs:3.0.5
+    image: openverso/free5gc:3.0.5
     command: 
       - ./bin/pcf -pcfcfg config/pcfcfg.yaml
     restart : on-failure
@@ -68,7 +65,7 @@ services:
       context: .
       args:
         version: 3.0.5
-    image: openverso/free5gs:3.0.5
+    image: openverso/free5gc:3.0.5
     command: 
       - ./bin/udm -udmcfg config/udmcfg.yaml
     restart : on-failure
@@ -77,7 +74,7 @@ services:
       context: .
       args:
         version: 3.0.5
-    image: openverso/free5gs:3.0.5
+    image: openverso/free5gc:3.0.5
     command: 
       - ./bin/nssf -nssfcfg config/nssfcfg.yaml
     restart : on-failure
@@ -86,7 +83,7 @@ services:
       context: .
       args:
         version: 3.0.5
-    image: openverso/free5gs:3.0.5
+    image: openverso/free5gc:3.0.5
     command: 
       - ./bin/ausf -ausfcfg config/ausfcfg.yaml
     restart : on-failure
@@ -97,7 +94,7 @@ services:
         version: 3.0.5
     cap_add:
       - NET_ADMIN
-    image: openverso/free5gs:3.0.5
+    image: openverso/free5gc:3.0.5
     command: 
       - ./bin/free5gc-upfd -f config/upfcfgb.yaml
     volumes:
