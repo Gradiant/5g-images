@@ -1,0 +1,30 @@
+version: '3'
+services: 
+  gnb1:
+    image: openverso/ueransim:3.1.6
+    container_name: gnb1
+    command: 
+      - gnb
+    environment:
+      AMF_HOSTNAME: amf
+      GNB_HOSTNAME: gnb1
+      MCC: '208'
+      MNC: '93'
+  ue1:
+    image: openverso/ueransim:3.1.6
+    container_name: ue1
+    command: 
+      - ue
+    cap_add:
+      - all
+    privileged: true
+    environment:
+      GNB_HOSTNAME: gnb1
+      APN: internet
+      MSISDN: '0000000003'
+      KEY: '8baf473f2f8fd09487cccbd7097c6862'
+      OP_TYPE: OPC
+      OP: '8e27b6af0e692e750f32667a3b14605d'
+      MCC: '208'
+      MNC: '93'
+    

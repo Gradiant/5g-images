@@ -1,0 +1,8 @@
+info:
+  version: 1.0.1
+  description: WebUI initial local configuration
+
+configuration:
+  mongodb: # the mongodb connected by this webconsole
+    name: open5gs # name of the mongodb
+    url: mongodb://mongo/free5gc # a valid URL of the mongodb
