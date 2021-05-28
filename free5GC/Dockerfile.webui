@@ -1,6 +1,6 @@
-FROM debian:buster-slim as builder
+FROM golang:1.14 as builder
 
-ARG version=2.0.18
+ARG version=1.0.1
 ENV VERSION=$version
 
 LABEL org.opencontainers.image.authors="Carlos Giraldo <cgiraldo@gradiant.org>" \
@@ -8,66 +8,43 @@ LABEL org.opencontainers.image.authors="Carlos Giraldo <cgiraldo@gradiant.org>" 
       org.opencontainers.image.licenses="Apache-2.0" \
       org.opencontainers.image.version="$version"
 
-RUN apt-get update && \
-    apt-get upgrade -y && \
-    DEBIAN_FRONTEND=noninteractive \
-    apt-get install -y --no-install-recommends \
-        apt-utils \
-        git \
-        curl \
-        wget \
-        systemd \
-        ca-certificates \
-        gnupg2 \
-        gcc \
-        build-essential \
-        cmake \
-        autoconf \
-        automake \
-        libtool \
-        pkg-config \
-        libmnl-dev \
-        libyaml-dev \
-        apt-transport-https \
-        make && \
-    apt-get clean
+WORKDIR /root/
 
-RUN apt-get update && \
-    apt-get -y upgrade && \
-    wget https://dl.google.com/go/go1.14.4.linux-amd64.tar.gz -O /tmp/go.tar.gz && \
-    tar -C /usr/local -zxvf /tmp/go.tar.gz && \
-    rm /tmp/go.tar.gz && \
-    bash -c "mkdir -p /go/{src,bin}"
 
-ENV GOPATH /go
-ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
-
-RUN apt remove cmdtest && \
-    apt remove yarn && \
+RUN apt-get update && apt remove cmdtest && \
+    apt-get remove yarn && \
     curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
     echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
     apt-get update && \
-    apt-get install -y nodejs yarn
-
-RUN mkdir -p /tmp && cd /tmp && \
-    git clone --recursive -b v3.0.5 -j `nproc` https://github.com/free5gc/free5gc.git && \
-    cd free5gc/webconsole && git checkout v1.0.1 && \
-    cd ../ && make webconsole
+    apt-get install -y nodejs yarn && \
+    wget https://github.com/free5gc/webconsole/archive/refs/tags/v$VERSION.tar.gz -O - | tar -xz -C /tmp
 
 
-RUN echo $(ls /var/lib/apt/lists/)
+# (In directory: ~/free5gc/webconsole)
+RUN cd /tmp/webconsole-$VERSION/frontend && \
+    yarn install && \
+    yarn build && \
+    rm -rf ../public && \
+    cp -R build ../public
 
-FROM debian:buster-slim
+RUN cd /tmp/webconsole-$VERSION && \
+    go build
 
-ENV APP_ROOT=/opt/free5gc
+FROM golang:1.14
 
-COPY config/ ${APP_ROOT}/config/
-COPY --from=builder /tmp/free5gc/webconsole/ ${APP_ROOT}
+ARG version=1.0.1
+ENV VERSION=$version
 
-RUN ldconfig
-ENV PATH=${APP_ROOT}/bin:${PATH} HOME=${APP_ROOT}
-WORKDIR ${APP_ROOT}
-ENV DB_URI=mongodb://mongo/free5gc
+LABEL org.opencontainers.image.authors="Carlos Giraldo <cgiraldo@gradiant.org>" \
+      org.opencontainers.image.vendor="Gradiant" \
+      org.opencontainers.image.licenses="Apache-2.0" \
+      org.opencontainers.image.version="$version"
 
-ENTRYPOINT ["webconsole"]
-CMD ["/bin/sh"]
+WORKDIR /opt/free5gc/
+
+COPY --from=builder /tmp/webconsole-$VERSION/public /opt/free5gc/public
+COPY --from=builder /tmp/webconsole-$VERSION/webconsole /opt/free5gc/webconsole
+COPY config/webuicfg.yaml /etc/webuicfg.yaml
+
+ENTRYPOINT [ "/opt/free5gc/webconsole" ]
+CMD ["-webuicfg","/etc/webuicfg.yaml"]
