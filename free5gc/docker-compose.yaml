@@ -38,7 +38,7 @@ services:
     image: openverso/free5gc:3.0.5
     volumes:
       - ./config/amfcfg.yaml:/etc/free5gc/amfcfg.yaml
-    command: ["amf","-nrfcfg","/etc/free5gc/amfcfg.yaml"]
+    command: ["amf","-amfcfg","/etc/free5gc/amfcfg.yaml"]
     restart : on-failure
 
   smf:
@@ -47,8 +47,13 @@ services:
       args:
         version: 3.0.5
     image: openverso/free5gc:3.0.5
+    volumes:
+      - ./config/smfcfg.yaml:/etc/free5gc/smfcfg.yaml
+      - ./config/uerouting.yaml:/etc/free5gc/uerouting.yaml
     command: 
-      - ./bin/smf -smfcfg config/smfcfg.yaml
+      - "smf"
+      - "--smfcfg=/etc/free5gc/smfcfg.yaml"
+      - "--uerouting=/etc/free5gc/uerouting.yaml"
     restart : on-failure
 
   pcf:
@@ -57,8 +62,9 @@ services:
       args:
         version: 3.0.5
     image: openverso/free5gc:3.0.5
-    command: 
-      - ./bin/pcf -pcfcfg config/pcfcfg.yaml
+    volumes:
+      - ./config/pcfcfg.yaml:/etc/free5gc/pcfcfg.yaml
+    command: ["pcf","-pcfcfg","/etc/free5gc/pcfcfg.yaml"]
     restart : on-failure
   udm:
     build:
@@ -66,8 +72,9 @@ services:
       args:
         version: 3.0.5
     image: openverso/free5gc:3.0.5
-    command: 
-      - ./bin/udm -udmcfg config/udmcfg.yaml
+    volumes:
+      - ./config/udmcfg.yaml:/etc/free5gc/udmcfg.yaml
+    command: ["udm","-udmcfg","/etc/free5gc/udmcfg.yaml"]
     restart : on-failure
   nssf:
     build:
@@ -75,8 +82,9 @@ services:
       args:
         version: 3.0.5
     image: openverso/free5gc:3.0.5
-    command: 
-      - ./bin/nssf -nssfcfg config/nssfcfg.yaml
+    volumes:
+      - ./config/nssfcfg.yaml:/etc/free5gc/nssfcfg.yaml
+    command: ["nssf","-nssfcfg","/etc/free5gc/nssfcfg.yaml"]
     restart : on-failure
   ausf:
     build:
@@ -84,8 +92,9 @@ services:
       args:
         version: 3.0.5
     image: openverso/free5gc:3.0.5
-    command: 
-      - ./bin/ausf -ausfcfg config/ausfcfg.yaml
+    volumes:
+      - ./config/ausfcfg.yaml:/etc/free5gc/ausfcfg.yaml
+    command: ["ausf","-ausfcfg","/etc/free5gc/ausfcfg.yaml"]
     restart : on-failure
   upf:
     build:
@@ -95,10 +104,9 @@ services:
     cap_add:
       - NET_ADMIN
     image: openverso/free5gc:3.0.5
-    command: 
-      - ./bin/free5gc-upfd -f config/upfcfgb.yaml
     volumes:
-      - ./config/upfcfgb.yaml:/free5gc/config/upfcfg.yaml
+      - ./config/upfcfg.yaml:/etc/free5gc/upfcfg.yaml
+    command: ["upf","-f","/etc/free5gc/upfcfg.yaml"]
     restart : on-failure
   
   
