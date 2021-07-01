@@ -1,38 +1,15 @@
-#!/bin/sh
+#!/bin/bash
 
-echo "Starting VNC SERVER"
-
-
-if [ "$VNC_PORT" -lt 5900 ]; then
-  echo "ERROR - VNC port must be 5900 or greater!"
-  exit 1
-fi
-
-export VNC_DISPLAY=:$(($VNC_PORT - 5900))
-
-echo "VNC port: $VNC_PORT"
-echo "VNC IP: `hostname -i`"
-echo "VNC Display: $VNC_DISPLAY"
-if [ ! -e /root/.vnc ]; then
-  mkdir /root/.vnc
-fi
-
-# Set VNC password
-echo "$VNC_PASSWORD" | tigervncpasswd -f > /root/.vnc/passwd
-chmod 600 /root/.vnc/passwd
-
-# Cleanup previous VNC session data
-tigervncserver -kill "$VNC_DISPLAY"
-
-# Set VNC security
-tigervncserver -SecurityTypes VncAuth,TLSVnc "$VNC_DISPLAY"
-export DISPLAY="$VNC_DISPLAY"
-
+/usr/bin/Xvfb :1 -screen 0 ${VNC_SCREEN} +extension RANDR &
+/usr/bin/x11vnc -display :1 ${X11VNC_AUTH} -wait 5 -forever -xrandr &
+export DISPLAY=:1
 echo "Launching scrcpy, press CTRL-C to exit"
-scrcpy
+scrcpy --window-width ${SCREEN_WIDTH} --window-x 0 --window-y 0
 while [ $? -ne 130 ]
 do
   echo "scrcpy exited. Relaunching scrcpy, press CTRL-C to exit"
   sleep 5
-  scrcpy
+  scrcpy --window-width ${SCREEN_WIDTH} --window-x 0 --window-y 0
 done
+
+exit 0

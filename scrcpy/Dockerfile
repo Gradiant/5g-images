@@ -1,32 +1,38 @@
-from debian:testing-slim
+FROM ubuntu:20.04
+
+LABEL org.opencontainers.image.authors="Carlos Giraldo <cgiraldo@gradiant.org>" \
+      org.opencontainers.image.vendor="Gradiant" \
+      org.opencontainers.image.licenses="Apache-2.0"
 
 
-ENV VNC_PASSWORD=changeme \
-    VNC_PORT=5900 
+ENV VNC_SCREEN_SIZE 512x960
+ENV VNC_PASSWORD ""
 
 RUN apt-get update && \
     apt-get install -y \
-      ca-certificates \
-      tigervnc-standalone-server \
+      x11vnc \
       fluxbox \
-      libgbm1 \
-      libasound2 \
+      xvfb \
       scrcpy && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-#RUN echo 'deb [arch=amd64, trusted=yes] https://nuts.vysor.io/apt ./' > /etc/apt/sources.list.d/vysor.list && \
-#    apt-get update && \    
-#    apt-get install -y \
-#     vysor && \
-#    apt-get clean && \
-#    rm -rf /var/lib/apt/lists/*
-    
-COPY start.sh /
-RUN mkdir -p /root/.android
-# We start adb server to create a fixed adbkey
-RUN adb start-server
+RUN mkdir -p /root/.fluxbox && \
+	  echo ' \n\
+		session.screen0.toolbar.visible:        false\n\
+		session.screen0.fullMaximization:       true\n\
+		session.screen0.maxDisableResize:       true\n\
+		session.screen0.maxDisableMove: true\n\
+		session.screen0.defaultDeco:    NONE\n\
+	' >> /root/.fluxbox/init && \
+    mkdir -p /root/.android && adb start-server
+
+
+EXPOSE 5900
+
+COPY entrypoint.sh start.sh /
+
+ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]
 
 CMD ["/start.sh"]
-
 
