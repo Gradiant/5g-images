@@ -1,4 +1,3 @@
-snn: '5G:mnc${MNC}.mcc${MCC}.${NETWORK}'
 # IMSI number of the UE. IMSI = [MCC|MNC|MSISDN] (In total 15 or 16 digits)
 supi: 'imsi-${MCC}${MNC}${MSISDN}'
 # Mobile Country Code value
@@ -23,6 +22,20 @@ imeiSv: '4370816125816151'
 gnbSearchList:
   - ${GNB_ADDR}
 
+  # UAC Access Identities Configuration
+uacAic:
+  mps: false
+  mcs: false
+
+# UAC Access Control Class
+uacAcc:
+  normalClass: 0
+  class11: false
+  class12: false
+  class13: false
+  class14: false
+  class15: false
+  
 # Initial PDU sessions to be established
 sessions:
   - type: 'IPv4'

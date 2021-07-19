@@ -2,7 +2,7 @@
 
 REGISTRY=docker.io
 IMAGE=openverso/ueransim
-TAG=3.1.6
+TAG=3.2.2
 
 build:
 	docker build -t ${IMAGE}:${TAG} --build-arg version=v${TAG} . 
