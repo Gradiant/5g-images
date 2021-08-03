@@ -43,7 +43,7 @@ gnb)
     BINARY="${BINARY-/opt/oai/bin/nr-softmodem.Rel15}"
     CONFIG_TEMPLATE="${CONFIG_TEMPLATE:-/opt/oai/etc/gnb.sa.band78.fr1.106PRB.usrpb210.conf.tpl}"
     # Resolve IP ADDRESS if hostname is provided
-    if [ "$MODE_SA" == "true" ] ; then
+    if [ "$MODE" == "SA" ] ; then
       ARGS="$ARGS --sa"
     fi
     if [[ ! -z "$AMF_HOSTNAME" ]] ; then 

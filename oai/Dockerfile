@@ -101,7 +101,6 @@ ENV TEMPLATE_PATH=/opt/oai/etc/gnb.sa.band78.fr1.106PRB.usrpb210.conf.tpl \
     DATA_BIND_INTERFACE=eth0 \
     MODE=SA \
     AMF_HOSTNAME=amf \
-	MODE_SA=true \
     MCC=001 \
     MNC=01 \
     TAC=1
