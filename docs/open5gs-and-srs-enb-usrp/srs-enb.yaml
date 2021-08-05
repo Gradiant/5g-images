@@ -6,9 +6,9 @@ services:
       - enb
     privileged: true
     volumes:
-      - ./srs-config/:/etc/srslte/
+      - ./config/srs/:/etc/srslte/
       - /dev/bus/usb:/dev/bus/usb
-      - ./uhd_images:/usr/share/uhd/images
+      - ../../uhd_images:/usr/share/uhd/images
     cap_add:
       - all
     environment:

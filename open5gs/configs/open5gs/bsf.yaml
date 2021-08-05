@@ -1,0 +1,11 @@
+bsf:
+  sbi:
+    port: 7777
+nrf:
+  sbi:
+    - name: nrf
+      port: 7777
+parameter:
+max:
+pool:
+time:

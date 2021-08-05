@@ -2,7 +2,14 @@
 
 REGISTRY=docker.io
 IMAGE=openverso/oai
-TAG=2021.w30
+TAG=2021.w31
+
+gnb:
+	docker build -t ${IMAGE}-gnb:${TAG} . --build-arg version=${TAG} -f Dockerfile.gNB.ubuntu18 --push
+
+
+enb:
+	docker build -t ${IMAGE}-enb:${TAG} . --build-arg version=${TAG} -f Dockerfile.eNB.ubuntu18 --push
 
 build:
 	docker build -t ${IMAGE}:${TAG} . 
