@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -euo pipefail
+set -eo pipefail
 
 PREFIX=/opt/oai-enb
 
@@ -60,6 +60,7 @@ for c in ${CONFIG_FILES}; do
     EXPRESSIONS=""
     for v in ${VARS}; do
         NEW_VAR=`echo $v | sed -e "s#@##g"`
+        echo $NEW_VAR
         if [[ "${!NEW_VAR}x" == "x" ]]; then
             echo "Error: Environment variable '${NEW_VAR}' is not set." \
                 "Config file '$(basename $c)' requires all of $VARS."

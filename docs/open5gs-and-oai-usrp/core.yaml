@@ -21,7 +21,14 @@ services:
     command: 
       - open5gs-bsfd
     restart : on-failure
-    
+  
+  hss:
+    image: openverso/open5gs:2.3.2
+    command: open5gs-hssd
+    environment:
+      DB_URI: mongodb://mongo/open5gs
+    restart: on-failure
+
   nrf:
     image: openverso/open5gs:2.3.2
     command: open5gs-nrfd
@@ -46,7 +53,18 @@ services:
     environment:
       DB_URI: mongodb://mongo/open5gs
     restart: on-failure
-    
+  mme:
+    image: openverso/open5gs:2.3.2
+    command: open5gs-mmed
+    restart: on-failure
+  sgwc:
+    image: openverso/open5gs:2.3.2
+    command: open5gs-sgwcd
+    restart : on-failure
+  sgwu:
+    image: openverso/open5gs:2.3.2
+    command: open5gs-sgwud
+    restart : on-failure
   smf:
     image: openverso/open5gs:2.3.2
     command: open5gs-smfd    

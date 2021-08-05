@@ -1,10 +1,10 @@
 bsf:
   sbi:
-    port: 7777
+    - dev: eth0
+      advertise: bsf
 nrf:
   sbi:
     - name: nrf
-      port: 7777
 parameter:
 max:
 pool:

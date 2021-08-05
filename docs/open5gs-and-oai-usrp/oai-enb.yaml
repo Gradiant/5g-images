@@ -1,11 +1,11 @@
 version: '3'
 services: 
   enodeb:
-    image: official-oai-enb:2021.w31
+    image: openverso/oai-enb:2021.w31
     privileged: true
     volumes:
     - /dev/bus/usb:/dev/bus/usb
     env_file:
-    - enb.env
+    - config/enb/enb.env
     cap_add:
       - all

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -euo pipefail
+set -eo pipefail
 
 IFACES=${IFACES:-"ENB_S1C ENB_S1U ENB_X2"}
 HOSTNAMES=${HOSTNAMES:-"MME_S1C "}
