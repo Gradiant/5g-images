@@ -1,17 +1,16 @@
 ### For reference, see `/opt/open5gs/etc/orig/open5gs/`
 nssf:
-  sbi: 
-    port: 7777
+  sbi:
+    - dev: eth0
+      advertise: nssf
   nsi:
     - name: nrf 
-      port: 7777
       s_nssai:
         sst: 1
 
 nrf:
   sbi:
     - name: nrf
-      port: 7777
 
 parameter:
 max:

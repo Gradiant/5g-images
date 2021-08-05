@@ -1,0 +1,11 @@
+bsf:
+  sbi:
+    - dev: eth0
+      advertise: bsf
+nrf:
+  sbi:
+    - name: nrf
+parameter:
+max:
+pool:
+time:
