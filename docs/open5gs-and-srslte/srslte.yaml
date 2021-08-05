@@ -4,7 +4,7 @@ services:
     build:
       context: ../../srs-lte/
       dockerfile: Dockerfile
-    image: openverso/srs-lte:20_04_1
+    image: openverso/srs-lte:20_10_1
     command: 
       - enb
     privileged: true
@@ -14,12 +14,14 @@ services:
       MME_HOSTNAME: mme
       ENB_HOSTNAME: enodeb
       UE_HOSTNAME: ue
+      MCC: "901"
+      MNC: "70"
 
   ue:
     build:
       context: ../../srs-lte/
       dockerfile: Dockerfile
-    image: openverso/srs-lte:20_04_1
+    image: openverso/srs-lte:20_10_1
     command: 
       - ue
     privileged: true
@@ -28,8 +30,8 @@ services:
     environment:
       ENB_HOSTNAME: enodeb
       UE_HOSTNAME: ue
-      MCC: "001"
-      MNC: "01"
+      MCC: "901"
+      MNC: "70"
       MSISDN: "0000000001"
       KEY: "465B5CE8B199B49FAA5F0A2EE238A6BC"
       OPC: "E8ED289DEBA952E4283B54E88E6183CA"

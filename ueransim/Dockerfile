@@ -1,6 +1,6 @@
 FROM debian:latest as builder
 
-ARG version=v3.1.0
+ARG version=3.1.0
 
 ENV VERSION=$version
 
@@ -22,7 +22,7 @@ RUN file="$(cmake --version)" && echo $file
 
 
 RUN cd /tmp && git clone https://github.com/aligungr/UERANSIM.git && \
-    cd UERANSIM && git checkout tags/$VERSION 
+    cd UERANSIM && git checkout tags/v$VERSION 
 RUN cd /tmp/UERANSIM && echo "cmake --version" && make
 
 FROM debian:stable-slim

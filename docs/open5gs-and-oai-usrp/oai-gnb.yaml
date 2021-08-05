@@ -1,0 +1,12 @@
+version: '3'
+services: 
+  enodeb:
+    image: openverso/oai-gnb:2021.w31
+    privileged: true
+    volumes:
+    - /dev/bus/usb:/dev/bus/usb
+    - ./config/gnb/gnb.sa.band78.fr1.106PRB.usrpb210.conf:/gnb.sa.band78.fr1.106PRB.usrpb210.conf
+    env_file:
+    - gnb.env
+    cap_add:
+      - all

@@ -1,11 +1,11 @@
 ### For reference, see `/opt/open5gs/etc/orig/open5gs/`
 pcf:
   sbi:
-    port: 7777
+    - dev: eth0
+      advertise: pcf
 nrf:
   sbi:
     - name: nrf
-      port: 7777
 parameter:
 max:
 pool:

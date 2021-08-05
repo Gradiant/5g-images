@@ -2,11 +2,11 @@
 ### For reference, see `/opt/open5gs/etc/orig/open5gs/`
 udm:
   sbi:
-    port: 7777
+    - dev: eth0
+      advertise: udm
 nrf:
   sbi:
     - name: nrf
-      port: 7777
 parameter:
 pool:
 time:
