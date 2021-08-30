@@ -21,7 +21,7 @@ ue)  echo "Launching ue: nr-ue -c ue.yaml"
     nr-ue -c ue.yaml $@
     ;;
 gnb)  echo "Launching gnb: nr-gnb -c gnb.yaml"
-    if [[ ! -z "${UE_HOSTNAME}" ]] ; then
+    if [[ ! -z "${GNB_HOSTNAME}" ]] ; then
         export GNB_ADDR="$(host -4 $GNB_HOSTNAME |awk '/has.*address/{print $NF; exit}')"
     fi
     if [[ ! -z "${AMF_HOSTNAME}" ]] ; then
