@@ -1,6 +1,6 @@
-FROM alpine:latest as builder
+FROM alpine:3.13 as builder
 
-ARG version=v3.1.0
+ARG version=3.1.0
 
 ENV VERSION=$version
 
@@ -14,19 +14,14 @@ RUN apk add --no-cache \
     linux-headers
 
 RUN cd /tmp && git clone https://github.com/aligungr/UERANSIM.git && \
-    cd UERANSIM && git checkout tags/$VERSION 
+    cd UERANSIM && git checkout tags/v$VERSION 
 
-# Fix errors:  error: 'nullptr_t' was not declared in this scope; did you mean 'std::nullptr_t'?
-RUN  cd /tmp/UERANSIM &&\
-     sed -i 's/nullptr_t/std::nullptr_t/g' src/utils/*
-    
     
 RUN cd /tmp/UERANSIM && echo "cmake --version" && make
 
-FROM alpine:latest
+FROM alpine:3.13
 
 COPY --from=builder /tmp/UERANSIM/build/* /usr/local/bin/
-
 
 COPY /etc/ueransim /etc/ueransim
 COPY entrypoint.sh /entrypoint.sh

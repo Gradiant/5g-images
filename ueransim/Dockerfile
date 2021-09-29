@@ -13,13 +13,10 @@ RUN apt-get update && \
     libssl-dev \
     libsctp-dev 
     
-# requires cmake >=3.17
-RUN wget https://github.com/Kitware/CMake/releases/download/v3.17.3/cmake-3.17.3.tar.gz && \
-    tar -zxvf cmake-3.17.3.tar.gz && \ 
-    cd cmake-3.17.3 && \
-    ./bootstrap && \
-    make && \
-    make install
+# requires cmake >=3.17 install corresponding binary
+RUN wget https://github.com/Kitware/CMake/releases/download/v3.21.1/cmake-3.21.1-linux-`uname -m`.sh && \
+   chmod +x cmake-3.21.1-linux-`uname -m`.sh && ./cmake-3.21.1-linux-`uname -m`.sh --skip-license
+
 
 RUN file="$(cmake --version)" && echo $file
 
