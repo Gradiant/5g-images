@@ -9,6 +9,7 @@ This docker image must be run with a command (docker run -ti openverso/oai CMD)
 example of commands:
   - /opt/oai/bin/lte-softmodem.Rel15 -O /oai.conf
   - /opt/oai/bin/nr-softmodem.Rel15 -O /oai.conf
+  - /opt/oai/bin/nr-uesoftmodem.Rel15 -O /oai.conf
   - /bin/bash
 
 The entrypoint generates a /oai.conf file from a template replacing '@VAR@' placeholders with environment variable values.
@@ -24,6 +25,7 @@ This image provides predefined config templates. To choose a template, set CONFI
   - enb_tdd_if4p5_rcc
   - enb_fdd_rru
   - enb_tdd_rru
+  - nr_ue
 You can also mount your own template and provide the path with CONFIG_TEMPLATE_PATH environment variable.
 
 The entrypoint does also some magic to deal with hostnames, interface names and IPs:
@@ -43,10 +45,10 @@ docker run --rm -ti --privileged \
   -v $PWD/examples/enb.fdd.conf:/opt/oai/etc/enb.fdd.conf \
   --env-file $PWD/examples/enb-fdd.env \
   --privileged \
-  openverso/oai:2021.w32 opt/oai/bin/lte-softmodem.Rel15 -O /oai.conf
+  openverso/oai:2021.w36 opt/oai/bin/lte-softmodem.Rel15 -O /oai.conf
 ```
 
-### Example 1: gnodeb standalone
+### Example 2: gnodeb standalone
 
 ```
 docker run --rm -ti --privileged \
@@ -54,5 +56,17 @@ docker run --rm -ti --privileged \
   -v $PWD/examples/gnb.sa.tdd.conf:/opt/oai/etc/gnb.sa.tdd.conf \
   --env-file $PWD/examples/gnb-sa.env \
   --privileged \
-  openverso/oai:2021.w32 opt/oai/bin/nr-softmodem.Rel15 -E --sa -O /oai.conf
+  openverso/oai:2021.w36 opt/oai/bin/nr-softmodem.Rel15 -E --sa -O /oai.conf
+```
+
+
+### Example 3: nr-UE
+
+```
+docker run --rm -ti --privileged \
+  -v /dev/bus/usb/:/dev/bus/usb/ \
+  -v $PWD/examples/nr-ue-sim.conf:/opt/oai/etc/nr-ue-sim.conf \
+  --env-file $PWD/examples/nr_ue.env \
+  --privileged \
+  openverso/oai:2021.w36 /opt/oai/bin/nr-uesoftmodem.Rel15 -E --sa -O /oai.conf
 ```
