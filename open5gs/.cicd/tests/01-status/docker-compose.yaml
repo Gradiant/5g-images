@@ -1,0 +1,115 @@
+version: '3.5'
+services: 
+  mongo:
+    image: mongo
+    environment:
+      MONGO_INITDB_DATABASE: open5gs
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo mongo:27017/test --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+  webui:
+    image: ${WEBUI_IMAGE}:${VERSION}
+    environment:
+      DB_URI: mongodb://mongo/open5gs
+    depends_on:
+      mongo:
+        condition: service_healthy
+  nrf:
+    image: ${IMAGE}:${VERSION}
+    command: open5gs-nrfd   
+    healthcheck:
+      test: "curl --http2-prior-knowledge http://nrf/nnrf-nfm/v1/nf-instances"
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+  nssf:
+    image: ${IMAGE}:${VERSION}
+    command: open5gs-nssfd   
+    depends_on:
+      nrf:
+        condition: service_healthy
+  amf:
+    image: ${IMAGE}:${VERSION}
+    command: open5gs-amfd
+    depends_on:
+      nrf:
+        condition: service_healthy
+  bsf:
+    image: ${IMAGE}:${VERSION}
+    command: open5gs-bsfd
+    depends_on:
+      nrf:
+        condition: service_healthy
+  smf:
+    image: ${IMAGE}:${VERSION}
+    command: open5gs-smfd
+    restart: on-failure
+  mme:
+    image: ${IMAGE}:${VERSION}
+    command: open5gs-mmed
+    restart: on-failure
+  sgwc:
+    image: ${IMAGE}:${VERSION}
+    command: open5gs-sgwcd
+    restart: on-failure
+  sgwu:
+    image: ${IMAGE}:${VERSION}
+    command: open5gs-sgwud
+    restart: on-failure
+  upf:
+    image: ${IMAGE}:${VERSION}
+    command: open5gs-upfd
+    cap_add:
+      - all
+    privileged: true
+    ports:
+      - 2152:2152
+    restart: on-failure
+  pcrf:
+    image: ${IMAGE}:${VERSION}
+    command: open5gs-pcrfd
+    environment:
+      DB_URI: mongodb://mongo/open5gs 
+    restart: on-failure
+    depends_on:
+      mongo:
+        condition: service_healthy
+  hss:
+    image: ${IMAGE}:${VERSION}
+    command: open5gs-hssd
+    environment:
+      DB_URI: mongodb://mongo/open5gs
+    restart: on-failure
+    depends_on:
+      mongo:
+        condition: service_healthy
+  udr:
+    image: ${IMAGE}:${VERSION}
+    command: open5gs-udrd
+    depends_on:
+      nrf:
+        condition: service_healthy
+  udm:
+    image: ${IMAGE}:${VERSION}
+    command: open5gs-udmd
+    depends_on:
+      nrf:
+        condition: service_healthy
+  ausf:
+    image: ${IMAGE}:${VERSION}
+    command: open5gs-ausfd
+    depends_on:
+      nrf:
+        condition: service_healthy
+  pcf:
+    image: ${IMAGE}:${VERSION}
+    command: open5gs-pcfd
+    environment:
+      DB_URI: mongodb://mongo/open5gs
+    depends_on:
+      mongo:
+        condition: service_healthy

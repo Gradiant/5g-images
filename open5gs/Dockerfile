@@ -1,4 +1,4 @@
-FROM debian:buster-slim as builder
+FROM debian:stable as builder
 
 ARG version=2.0.18
 ENV VERSION=$version
@@ -56,7 +56,7 @@ RUN	mkdir -p /opt/open5gs && cd /tmp && git clone https://github.com/open5gs/ope
 RUN apt-get update && apt-get install -y net-tools iputils-ping iproute2 dnsutils gettext-base iptables
 
 
-FROM debian:buster-slim
+FROM debian:stable-slim
 
 ARG version=2.0.18
 ENV VERSION=$version
@@ -67,6 +67,7 @@ LABEL org.opencontainers.image.authors="Carlos Giraldo <cgiraldo@gradiant.org>" 
       org.opencontainers.image.version="$version"
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
+    curl \
     libyaml-0-2 \
     libmongoc-1.0-0 \
     libsctp1 \
