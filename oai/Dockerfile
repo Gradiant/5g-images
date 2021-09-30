@@ -53,6 +53,12 @@ RUN /bin/sh oaienv && \
     ./build_oai --gNB --ninja -w USRP --verbose-ci
 RUN python3 ./docker/scripts/generateTemplate.py ./docker/scripts/gnb_parameters.yaml
 
+#run build_oai to build the target image
+RUN /bin/sh oaienv && \ 
+    cd cmake_targets && \
+    mkdir -p log && \
+    ./build_oai --nrUE --ninja -w USRP --verbose-ci
+RUN cp ci-scripts/conf_files/nr-ue-sim.conf docker/etc
 
 #start from scratch for target executable
 FROM ubuntu:bionic as oai
@@ -65,7 +71,10 @@ RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install --yes \
         software-properties-common \
         libsctp1 \
+        procps \
+        tzdata \
         libnettle6 \
+        liblapacke \
         libblas3 \
         libatlas3-base \
         libconfig9 \
@@ -110,5 +119,4 @@ WORKDIR /opt/oai
 COPY entrypoint.sh /
 
 ENTRYPOINT ["/entrypoint.sh"]
-
 

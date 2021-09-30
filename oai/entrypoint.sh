@@ -22,6 +22,7 @@ if [ "$#" -eq 0 ]; then
   echo "  - enb_tdd_if4p5_rcc"
   echo "  - enb_fdd_rru"
   echo "  - enb_tdd_rru"
+  echo "  - nr_ue"
   echo "/oai.conf is generated from the template replacing '@VAR@' placeholders with environment variable values."
   echo "You can also mount your own template and provide the path with CONFIG_TEMPLATE_PATH environment variable."
   echo ""
@@ -79,6 +80,8 @@ elif [ "$CONFIG_TEMPLATE" == "enb_fdd_rru" ]; then
     CONFIG_TEMPLATE_PATH="$PREFIX/etc/rru.fdd.conf";
 elif [ "$CONFIG_TEMPLATE" == "enb_tdd_rru" ]; then
     CONFIG_TEMPLATE_PATH="$PREFIX/etc/rru.tdd.conf";
+elif [ "$CONFIG_TEMPLATE" == "nr_ue" ]; then
+    CONFIG_TEMPLATE_PATH="$PREFIX/etc/nr-ue-sim.conf";
 fi
 
 if [[ ! -z "$CONFIG_TEMPLATE_PATH" ]]; then 
@@ -116,5 +119,4 @@ fi
 
 echo "$@"
 exec "$@"
-
 
