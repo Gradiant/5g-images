@@ -1,15 +1,10 @@
-FROM ubuntu:18.04 AS builder
+FROM ubuntu:bionic AS build
 
-LABEL org.opencontainers.image.authors="Carlos Giraldo <cgiraldo@gradiant.org>" \
-      org.opencontainers.image.vendor="Gradiant" \
-      org.opencontainers.image.licenses="Apache-2.0" 
-
-ARG version=develop
+ARG version=2021.w32
 
 ENV VERSION=$version
-RUN apt-get update
 
-
+ARG NEEDED_GIT_PROXY
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Europe
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
@@ -26,7 +21,10 @@ RUN apt-get update && \
        #unzip is needed for protobuf
        unzip
 
+# In some network environments, GIT proxy is required
+RUN /bin/bash -c "if [[ -v NEEDED_GIT_PROXY ]]; then git config --global http.proxy $NEEDED_GIT_PROXY; fi"
 
+RUN apt-get update && apt-get install git
 #create the WORKDIR
 WORKDIR /oai-ran
 RUN git clone https://gitlab.eurecom.fr/oai/openairinterface5g.git . 
@@ -38,21 +36,32 @@ RUN /bin/sh oaienv && \
     mkdir -p log && \
     ./build_oai -I -w USRP
 
-RUN /bin/sh oaienv && cd cmake_targets && ./build_oai --gNB -w USRP
-RUN cd cmake_targets && ./build_oai --eNB -w USRP
-RUN cd cmake_targets && ./build_oai --nrUE -w USRP
-RUN cd cmake_targets && ./build_oai --UE -w USRP
+#run build_oai to build the target image
+RUN /bin/sh oaienv && \ 
+    cd cmake_targets && \
+    mkdir -p log && \
+    ./build_oai --eNB --ninja -w USRP --verbose-ci
 
 
-#apt-get update && apt-get upgrade -y && apt-get install iputils-ping net-tools apt-utils -y && git checkout develop && git pull &&
+
+RUN apt-get install -y python3-pip && \
+    pip3 install --ignore-installed pyyaml && \
+    python3 ./docker/scripts/generateTemplate.py ./docker/scripts/enb_parameters.yaml
+#run build_oai to build the target image
+RUN /bin/sh oaienv && \ 
+    cd cmake_targets && \
+    ./build_oai --gNB --ninja -w USRP --verbose-ci
+RUN python3 ./docker/scripts/generateTemplate.py ./docker/scripts/gnb_parameters.yaml
+
 
 #start from scratch for target executable
-FROM ubuntu:bionic as oai-gnb
+FROM ubuntu:bionic as oai
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Europe
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get upgrade --yes && \
     DEBIAN_FRONTEND=noninteractive apt-get install --yes \
         software-properties-common \
         libsctp1 \
@@ -60,51 +69,46 @@ RUN apt-get update && \
         libblas3 \
         libatlas3-base \
         libconfig9 \
-		liblapacke \
-		libusb-1.0-0 \
         openssl \
         net-tools \
-        iproute2 \
+        dnsutils \
         iputils-ping \
-        libyaml-0-2 \
-        gettext-base iproute2 dnsutils iputils-ping procps net-tools && \ 
+        iproute2 \
+        iperf \
+        libyaml-0-2 && \
+    # Install UHD driver from ettus ppa 
+    # At time of writing, it is 3.14
     add-apt-repository ppa:ettusresearch/uhd --yes && \
+    apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install --yes \
-        libuhd3.15.0 && \
+        python \
+        libusb-1.0-0 \
+        libuhd003 \
+        uhd-host && \
     rm -rf /var/lib/apt/lists/*
-   
-ENV APP_ROOT=/opt/oai
-COPY --from=builder /oai-ran/targets/bin/* ${APP_ROOT}/bin/
 
-COPY --from=builder /oai-ran/targets/bin/*.so.* /usr/local/lib/
-COPY --from=builder /oai-ran/cmake_targets/ran_build/build/*.so /usr/local/lib/
-COPY --from=builder /usr/local/lib/libprotobuf-c.so.1 /usr/local/lib/
+COPY --from=build /oai-ran/targets/bin/* /opt/oai/bin/
+COPY --from=build /oai-ran/docker/scripts/*.sh /
+COPY --from=build /oai-ran/targets/bin/*.so.Rel15 /usr/local/lib/
+COPY --from=build /oai-ran/targets/bin/*.so /usr/local/lib/
+COPY --from=build /oai-ran/cmake_targets/ran_build/build/*.so /usr/local/lib/
 
+RUN /bin/bash -c "ln -sf /usr/local/lib/liboai_eth_transpro.so.Rel15 /usr/local/lib/liboai_transpro.so"
+RUN /bin/bash -c "ln -sf /usr/local/lib/liboai_usrpdevif.so.Rel15 /usr/local/lib/liboai_device.so"
+RUN /bin/bash -c "ln -sf /usr/local/lib/librfsimulator.so.Rel15 /usr/local/lib/librfsimulator.so"
 
-RUN rm /usr/local/lib/liboai_transpro.so && ln -s /usr/local/lib/liboai_eth_transpro.so.Rel15 /usr/local/lib/liboai_transpro.so && \
-    rm /usr/local/lib/liboai_device.so && ln -s /usr/local/lib/liboai_usrpdevif.so.Rel15 /usr/local/lib/liboai_device.so && \
-    rm /usr/local/lib/librfsimulator.so && ln -s /usr/local/lib/librfsimulator.so.Rel15 /usr/local/lib/librfsimulator.so && \
-    ldconfig
+COPY --from=build /usr/local/lib/libprotobuf-c.so.1 /usr/local/lib/
 
-COPY --from=builder /oai-ran/targets/PROJECTS/GENERIC-LTE-EPC/CONF/*.conf ${APP_ROOT}/etc/orig/generic-lte-epc/
-COPY --from=builder /oai-ran/targets/PROJECTS/GENERIC-NR-5GC/CONF/*.conf ${APP_ROOT}/etc/orig/generic-nr-5gc/
-COPY configs ${APP_ROOT}/etc/
+RUN ldconfig
+
+# Copy the relevant configuration files
+COPY --from=build /oai-ran/docker/etc /opt/oai/etc
+
+WORKDIR /opt/oai
+
+#This is a patch to support IP extraction from interface names and host names
 COPY entrypoint.sh /
 
-ENV PATH=${APP_ROOT}/bin:${PATH} HOME=${APP_ROOT}
-
-WORKDIR ${APP_ROOT}
-
-
-ENV TEMPLATE_PATH=/opt/oai/etc/gnb.sa.band78.fr1.106PRB.usrpb210.conf.tpl \
-    CTRL_BIND_INTERFACE=eth0 \
-    DATA_BIND_INTERFACE=eth0 \
-    MODE=SA \
-    AMF_HOSTNAME=amf \
-    MCC=001 \
-    MNC=01 \
-    TAC=1
-
-
-
 ENTRYPOINT ["/entrypoint.sh"]
+
+

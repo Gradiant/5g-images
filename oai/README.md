@@ -1,52 +1,58 @@
-# Open Air Interface enodeB Docker Image
+# Open Air Interface Docker Image
 
-oai-enb is a docker image to deploy a Open Air Interface enodeB as a container.
+oai is a docker image to run Open Air Interface as a container.
 
 ## Usage
 
-The image default CMD launches `lte-softmodem -O /opt/oai/etc/enb.conf`.
-It provides an enb.conf file tested with an ettus B210 USRP.
-You can use your own enb.conf file by mounting the file in the container path `/opt/oai/etc/enb.conf`.
+This docker image must be run with a command (docker run -ti openverso/oai CMD)
 
-If you use a uhd device you must also mount uhd images at `/usr/share/uhd/images` or use the `-uhdimages` image variant that includes the images.
+example of commands:
+  - /opt/oai/bin/lte-softmodem.Rel15 -O /oai.conf
+  - /opt/oai/bin/nr-softmodem.Rel15 -O /oai.conf
+  - /bin/bash
 
-To access a usb USRP you must mount device `/dev/bus/usb`. You will also need access to `/dev/net/tun`, and run container as privileged (we are working in removing this requirement). You can find details about docker run flags in the following examples.
+The entrypoint generates a /oai.conf file from a template replacing '@VAR@' placeholders with environment variable values.
+This image provides predefined config templates. To choose a template, set CONFIG_TEMPLATE variable to:
+  - gnb_nsa_tdd_mono
+  - gnb_sa_tdd_mono
+  - enb_fdd_cu
+  - enb_fdd_du
+  - enb_fdd_mono
+  - enb_tdd_mono
+  - enb_fdd_fapi_rcc
+  - enb_fdd_if4p5_rcc
+  - enb_tdd_if4p5_rcc
+  - enb_fdd_rru
+  - enb_tdd_rru
+You can also mount your own template and provide the path with CONFIG_TEMPLATE_PATH environment variable.
 
+The entrypoint does also some magic to deal with hostnames, interface names and IPs:
+- It gets the IPs of the interfaces *_IF_NAME environment variables and generates corresponding *_IP_ADDRESS environment variables.
+For example, if GNB_NG_IF_NAME=eth0, the IP of the eth0 is extracted and assigned to GNB_NG_IP_ADDRESS variable.
 
-### Example 1: with provided enb.conf
+- It resolves the IPs of the names *_HOSTNAME environment variables and generates corresponding *_IP_ADDRESS environment variables.
+For example, if MME_S1C_HOSTNAME=mme.openverso.org, the entrypoints resolves the IP and assigns it to MME_S1C_IP_ADDRESS variable.
 
-The image provides a config file tested with an ettus B210 USRP. Run it with:
+Set USE_B2XX, USE_X3XX or USE_N3XX to load the USRP binaries.
 
-```
-docker run --rm -ti --privileged \
-  --device /dev/net/tun:/dev/net/tun \
-  -v /dev/bus/usb/:/dev/bus/usb/ \
-  -v /usr/share/uhd/images:/usr/share/uhd/images \
-  openverso/oai-enb:1.2.2
-```
-
-### Example 2: -uhdimages variant
-
-If you don't have the uhd images in the host computer, you can use the -uhdimages variant.
-
-```
-docker run --rm -ti --privileged \
-  --device /dev/net/tun:/dev/net/tun \
-  -v /dev/bus/usb/:/dev/bus/usb/ \
-  openverso/oai-enb:1.2.2-uhdimages
-```
-
-### Example 3: using an external enb.conf and config flags
-
-You can mount your own enb.conf file and use it with the command `lte-softmodem`. 
-You can also provide flags to `lte-softmodem`, for example the noS1 flag:
+### Example 1: enodeb
 
 ```
 docker run --rm -ti --privileged \
-  --device /dev/net/tun:/dev/net/tun \
   -v /dev/bus/usb/:/dev/bus/usb/ \
-  -v $PWD/configs/enb.conf:/opt/oai/etc/enb.conf \
-  -v /usr/share/uhd/images:/usr/share/uhd/images \
-  openverso/oai-enb:1.2.2 lte-softmodem -O /opt/oai/etc/enb.conf --noS1
+  -v $PWD/examples/enb.fdd.conf:/opt/oai/etc/enb.fdd.conf \
+  --env-file $PWD/examples/enb-fdd.env \
+  --privileged \
+  openverso/oai:2021.w32 opt/oai/bin/lte-softmodem.Rel15 -O /oai.conf
+```
 
+### Example 1: gnodeb standalone
+
+```
+docker run --rm -ti --privileged \
+  -v /dev/bus/usb/:/dev/bus/usb/ \
+  -v $PWD/examples/gnb.sa.tdd.conf:/opt/oai/etc/gnb.sa.tdd.conf \
+  --env-file $PWD/examples/gnb-sa.env \
+  --privileged \
+  openverso/oai:2021.w32 opt/oai/bin/nr-softmodem.Rel15 -E --sa -O /oai.conf
 ```
