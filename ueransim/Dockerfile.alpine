@@ -1,6 +1,6 @@
 FROM alpine:3.13 as builder
 
-ARG version=3.1.0
+ARG version=3.2.4
 
 ENV VERSION=$version
 
