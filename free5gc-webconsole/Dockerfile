@@ -31,7 +31,7 @@ RUN cd /tmp/webconsole/frontend && \
 RUN cd /tmp/webconsole && \
     go build
 
-FROM debian:buster-slim
+FROM debian:stable-slim
 
 ARG version=1.0.1
 ENV VERSION=$version
