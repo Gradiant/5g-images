@@ -13,14 +13,14 @@ services:
       SST: '1'
       SD: '0xffffff'
 
-  ue:
+  ue2:
     image: openverso/ueransim:3.2.2
     command: ['ue','-n','3']
     cap_add:
       - all
     privileged: true
     environment:
-      GNB_HOSTNAME: gnb1
+      GNB_HOSTNAME: gnb2
       APN: internet
       MSISDN: '0000000011'
       MCC: '901'
