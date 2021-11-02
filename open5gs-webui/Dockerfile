@@ -31,5 +31,6 @@ COPY --from=dev --chown=$GROUP:$USER /opt/open5gs/webui/ /opt/open5gs-webui
 WORKDIR /opt/open5gs-webui
 RUN npm run-script build
 ENV NODE_ENV=production
+ENV HOSTNAME="0.0.0.0"
 ENTRYPOINT ["node", "server/index.js"]
 
