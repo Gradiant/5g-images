@@ -85,14 +85,14 @@ RUN apt-get update && \
         iproute2 \
         iperf \
         libyaml-0-2 && \
-    # Install UHD driver from ettus ppa 
-    # At time of writing, it is 3.14
+    # Install UHD driver from ettus ppa 3.14 and 4.1.0
     add-apt-repository ppa:ettusresearch/uhd --yes && \
     apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install --yes \
         python \
         libusb-1.0-0 \
         libuhd003 \
+        libuhd4.1.0 \
         uhd-host && \
     rm -rf /var/lib/apt/lists/*
 
