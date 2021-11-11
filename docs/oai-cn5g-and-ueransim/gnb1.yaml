@@ -1,0 +1,33 @@
+version: '3'
+services: 
+  gnb1:
+    image: openverso/ueransim:3.2.2
+    container_name: gnb1
+    command: 
+      - gnb
+    environment:
+      AMF_HOSTNAME: oai-amf
+      GNB_HOSTNAME: gnb1
+      MCC: '208'
+      MNC: '95'
+      TAC: '0xa000'
+      SST: '222'
+      SD: '123'
+
+  ue1:
+    image: openverso/ueransim:3.2.2
+    command: ['ue','-n','1']
+    cap_add:
+      - all
+    privileged: true
+    environment:
+      GNB_HOSTNAME: gnb1
+      APN: default
+      MSISDN: '0000000031'
+      MCC: '208'
+      MNC: '95'
+      KEY: '0C0A34601D4F07677303652C0462535B'
+      OP_TYPE: OPC
+      OP: '63bfa50ee6523365ff14c1f45f88737d'
+      SST: '222'
+      SD: '123'
