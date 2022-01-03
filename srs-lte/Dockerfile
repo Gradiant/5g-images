@@ -21,14 +21,14 @@ RUN apt-get update && \
     libuhd-dev \
     libzmq3-dev
 
-RUN	cd /opt && git clone https://github.com/srsLTE/srsLTE.git && \
-	cd srsLTE && git checkout release_$VERSION && \
+RUN	cd /opt && git clone https://github.com/srsran/srsRAN.git && \
+	cd srsRAN && git checkout release_$VERSION && \
     mkdir build && \
     cd build && \
-    cmake -DCMAKE_INSTALL_PREFIX=/opt/srsLTE/target ../ && \
+    cmake -DCMAKE_INSTALL_PREFIX=/opt/srsRAN/target ../ && \
     make
 
-RUN cd /opt/srsLTE/build && make install 
+RUN cd /opt/srsRAN/build && make install 
 
 
 
@@ -42,7 +42,7 @@ LABEL org.opencontainers.image.authors="Carlos Giraldo <cgiraldo@gradiant.org>" 
       org.opencontainers.image.licenses="Apache-2.0" \
       org.opencontainers.image.version="$version"
 
-COPY --from=builder /opt/srsLTE/target/ /usr/
+COPY --from=builder /opt/srsRAN/target/ /usr/
 
 
 # libraries
@@ -63,7 +63,7 @@ RUN apt-get update && \
     gettext-base iproute2 dnsutils curl iptables iputils-ping traceroute && \
     rm -rf /var/lib/apt/lists/*
      
-COPY etc/srslte /etc/srslte
+COPY etc/srsran /etc/srsran
 
 ENV ENB_ID=0x19B \
     MCC=001 \

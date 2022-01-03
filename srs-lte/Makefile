@@ -4,7 +4,7 @@ all: build push
 
 REGISTRY=docker.io
 IMAGE=openverso/srs-lte
-TAG=20_10_1
+TAG=21_10
 
 
 build:

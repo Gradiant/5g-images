@@ -57,16 +57,16 @@ case "$command" in
 
 epc)  echo "Launching srsepc"
     tun_create
-    envsubst < /etc/srslte/epc.conf > epc.conf
+    envsubst < /etc/srsran/epc.conf > epc.conf
     /usr/bin/srsepc /epc.conf $@
     ;;
 enb)  echo "Launching srsenb"
-    envsubst < /etc/srslte/enb.conf > enb.conf
-    envsubst < /etc/srslte/rr.conf > rr.conf
+    envsubst < /etc/srsran/enb.conf > enb.conf
+    envsubst < /etc/srsran/rr.conf > rr.conf
     /usr/bin/srsenb enb.conf $@
     ;;
 ue)   echo "Launching srsue"
-    envsubst < /etc/srslte/ue.conf > ue.conf
+    envsubst < /etc/srsran/ue.conf > ue.conf
     /usr/bin/srsue /ue.conf $@
     ;;
 *) echo "unknown component $1. should be epc, enb or ue."
