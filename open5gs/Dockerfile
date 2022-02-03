@@ -20,6 +20,7 @@ RUN apt-get update && \
         flex \
         bison \
         git \
+        libtalloc-dev \
         meson \
         libsctp-dev \
         libgnutls28-dev \
@@ -68,6 +69,7 @@ LABEL org.opencontainers.image.authors="Carlos Giraldo <cgiraldo@gradiant.org>" 
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
     curl \
+    libtalloc-dev \
     libyaml-0-2 \
     libmongoc-1.0-0 \
     libsctp1 \
