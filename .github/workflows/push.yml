@@ -14,10 +14,15 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - name: changed-files
+        uses: jitterbit/get-changed-files@v1
+
       - name: Get changed images
         id: list-changed
         run: |
-          changed=$(git diff --name-only $default_branch -- $images_dir | cut -f1-2 -d'/' | uniq)
+          changed=`echo "${{ steps.files.outputs.all }}" | sed 's/ /\n/g' | grep $images_dir | cut -f1-2 -d'/' | uniq`
+          echo "Changed files are:"
+          echo "$changed"
           echo "::set-output name=list_changed::$changed"
           if [[ -n "$changed" ]]; then
             echo "::set-output name=changed::true"
