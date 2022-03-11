@@ -9,7 +9,7 @@ env:
 
 jobs:
   push:
-    runs-on: ubuntu-latest
+    runs-on: [SI, standard]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
