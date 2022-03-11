@@ -14,7 +14,8 @@ jobs:
           fetch-depth: 0
       - id: files
         uses: Ana06/get-changed-files@v2.1.0
-        filter: images/*
+        with:
+          filter: images/*
 
       - name: Get changed images
         id: list-changed
