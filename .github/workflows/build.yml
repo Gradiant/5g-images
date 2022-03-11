@@ -13,7 +13,8 @@ jobs:
         with:
           fetch-depth: 0
       - id: files
-        uses: jitterbit/get-changed-files@v1
+        uses: Ana06/get-changed-files@v2.1.0
+        filter: images/*
 
       - name: Get changed images
         id: list-changed
