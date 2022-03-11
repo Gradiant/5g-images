@@ -1,0 +1,37 @@
+### For reference, see `/opt/open5gs/etc/orig/open5gs/`
+mme:
+    freeDiameter: mme.conf
+    s1ap:
+    gtpc:
+    gummei: 
+      plmn_id:
+        mcc: 901
+        mnc: 70
+      mme_gid: 2
+      mme_code: 1
+    tai:
+      plmn_id:
+        mcc: 901
+        mnc: 70
+      tac: 1
+    security:
+        integrity_order : [ EIA2, EIA1, EIA0 ]
+        ciphering_order : [ EEA0, EEA1, EEA2 ]
+    network_name:
+        full: Openverso
+    mme_name: open5gs-mme0
+
+sgwc:
+    gtpc:
+      - name: sgwc
+smf:
+    gtpc:
+      - name: smf
+
+parameter:
+
+max:
+  
+pool:
+  
+sctp:

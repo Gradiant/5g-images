@@ -1,0 +1,12 @@
+
+### For reference, see `/opt/open5gs/etc/orig/open5gs/`
+udm:
+  sbi:
+    - dev: eth0
+      advertise: udm
+nrf:
+  sbi:
+    - name: nrf
+parameter:
+pool:
+time:

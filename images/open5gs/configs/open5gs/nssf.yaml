@@ -1,0 +1,18 @@
+### For reference, see `/opt/open5gs/etc/orig/open5gs/`
+nssf:
+  sbi:
+    - dev: eth0
+      advertise: nssf
+  nsi:
+    - name: nrf 
+      s_nssai:
+        sst: 1
+
+nrf:
+  sbi:
+    - name: nrf
+
+parameter:
+max:
+pool:
+time:

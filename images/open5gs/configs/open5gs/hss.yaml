@@ -1,0 +1,5 @@
+### For reference, see `/opt/open5gs/etc/orig/open5gs/`
+parameter:
+
+hss:
+    freeDiameter: hss.conf
