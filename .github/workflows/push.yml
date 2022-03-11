@@ -5,6 +5,7 @@ on:
     branches: [ main ]
 env:
   default_branch: main
+  images_dir: images
 
 jobs:
   push:
