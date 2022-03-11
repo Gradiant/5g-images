@@ -12,15 +12,12 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - id: files
-        uses: Ana06/get-changed-files@v2.1.0
-        with:
-          filter: images/*
-
+        id: files
+        uses: tj-actions/changed-files@v17.3
       - name: Get changed images
         id: list-changed
         run: |
-          changed=`echo "${{ steps.files.outputs.all }}" | sed 's/ /\n/g' | grep $images_dir | cut -f1-2 -d'/' | uniq`
+          changed=`echo "${{ steps.files.outputs.all_changed_files }}" | sed 's/ /\n/g' | grep $images_dir | cut -f1-2 -d'/' | uniq`
           echo "Changed files are:"
           echo "$changed"
           echo "::set-output name=list_changed::$changed"
