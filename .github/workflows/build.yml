@@ -5,7 +5,7 @@ env:
   images_dir: images
 
 jobs:
-  push:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
