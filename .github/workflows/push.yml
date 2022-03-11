@@ -49,6 +49,9 @@ jobs:
             for image in $list_changed; do
               pushd $image
               make push
+              tag=$image-$(grep "TAG=" Makefile | cut -d'=' -f2)
+              git tag -a "${tag}" -m "Automated push of ${tag}"
+              git push origin "${tag}"
               popd
             done
         env:
