@@ -8,7 +8,6 @@ This project can be used to configure your own NR/LTE network. If gNB/eNB and US
 
 Open5GS implemented 5GC and EPC using C-language. And WebUI is provided for testing purposes and is implemented in Node.JS and React.
 
-
 ## Usage
 
 The idea is to deploy a container image for each of the core network services (i.e. hss, sgwc, amf, etc.). The image default CMD launches `/bin/bash`, so the recommendation is to change the command to `open5gs-hssd`, `open5gs-sgwcd`, `open5gs-amfd` or the corresponding daemon for the service you want to deploy. 
