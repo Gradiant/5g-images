@@ -1,22 +1,26 @@
-name: Build Images
+name: build images
 
 on: pull_request
 env:
-  default_branch: main
   images_dir: images
 
 jobs:
   push:
-    runs-on: [SI, standard]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - id: files
+        uses: jitterbit/get-changed-files@v1
+
       - name: Get changed images
         id: list-changed
         run: |
-          changed=$(git diff --name-only $default_branch -- $images_dir | cut -f1-2 -d'/' | uniq)
+          changed=`echo "${{ steps.files.outputs.all }}" | sed 's/ /\n/g' | grep $images_dir | cut -f1-2 -d'/' | uniq`
+          echo "Changed files are:"
+          echo "$changed"
           echo "::set-output name=list_changed::$changed"
           if [[ -n "$changed" ]]; then
             echo "::set-output name=changed::true"
@@ -30,11 +34,12 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v1
         if: steps.list-changed.outputs.changed == 'true'
-  
-      - name: push changed images
-        id: push
+
+      - name: building images
+        id: build
         run: |
             for image in $list_changed; do
+              echo "build image $image"
               pushd $image
               make build
               popd
@@ -42,4 +47,3 @@ jobs:
         env:
           list_changed: ${{steps.list-changed.outputs.list_changed}}
         if: steps.list-changed.outputs.changed == 'true'
-

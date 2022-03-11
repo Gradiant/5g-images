@@ -4,12 +4,11 @@ on:
   push:
     branches: [ main ]
 env:
-  default_branch: main
   images_dir: images
 
 jobs:
   push:
-    runs-on: [SI, standard]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
