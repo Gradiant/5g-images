@@ -4,6 +4,7 @@ LABEL org.opencontainers.image.authors="Carlos Giraldo <cgiraldo@gradiant.org>" 
       org.opencontainers.image.vendor="Gradiant" \
       org.opencontainers.image.licenses="Apache-2.0"
 
+ENV VERSION=1.12.1+ds-1
 
 ENV VNC_SCREEN_SIZE 512x960
 ENV VNC_PASSWORD ""
@@ -13,7 +14,7 @@ RUN apt-get update && \
       x11vnc \
       fluxbox \
       xvfb \
-      scrcpy && \
+      scrcpy=$VERSION && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
