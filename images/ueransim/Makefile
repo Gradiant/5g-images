@@ -1,5 +1,5 @@
 REGISTRY=docker.io
-IMAGE=openverso/open5gs
+IMAGE=openverso/ueransim
 TAG=3.2.6
 PLATFORMS=linux/amd64#,linux/arm64
 
