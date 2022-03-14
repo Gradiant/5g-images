@@ -41,10 +41,11 @@ jobs:
               echo "build image $image"
               pushd $image
               source image_info.sh
+              IMAGE_NAME=${image#"images/"}
               if [ -z "$PLATFORMS" ]; then
-                docker build -t $image:$IMAGE_TAG --build-arg version=$IMAGE_TAG .
+                docker build -t $IMAGE_NAME:$IMAGE_TAG --build-arg version=$IMAGE_TAG .
               else
-                docker buildx build -t $image:$IMAGE_TAG --build-arg version=$IMAGE_TAG --platform ${PLATFORMS} .
+                docker buildx build -t $IMAGE_NAME:$IMAGE_TAG --build-arg version=$IMAGE_TAG --platform ${PLATFORMS} .
               fi
               popd
             done
