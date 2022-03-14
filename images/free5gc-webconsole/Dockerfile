@@ -15,7 +15,7 @@ RUN apt-get update && apt remove cmdtest && \
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - 
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
     apt-get update && \
-    apt-get install -y nodejs yarn 
+    apt-get install -y nodejs yarn python
    
 RUN wget https://github.com/free5gc/webconsole/archive/refs/tags/v$VERSION.tar.gz -O - | tar -xz -C /tmp
 RUN mv /tmp/webconsole-$version /tmp/webconsole
