@@ -2,7 +2,7 @@
 
 REGISTRY=docker.io
 IMAGE=openverso/oai
-TAG=2021.w48
+TAG=2022.w09b
 PLATFORMS=linux/amd64#,linux/arm64
 
 build:
