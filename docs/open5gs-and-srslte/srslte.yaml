@@ -1,10 +1,7 @@
 version: '3'
 services: 
   enodeb:
-    build:
-      context: ../../srs-lte/
-      dockerfile: Dockerfile
-    image: openverso/srs-lte:20_10_1
+    image: openverso/srsran:21_10
     command: 
       - enb
     privileged: true
@@ -18,10 +15,7 @@ services:
       MNC: "70"
 
   ue:
-    build:
-      context: ../../srs-lte/
-      dockerfile: Dockerfile
-    image: openverso/srs-lte:20_10_1
+    image: openverso/srsran:21_10
     command: 
       - ue
     privileged: true

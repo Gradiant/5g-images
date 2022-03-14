@@ -1,5 +1,7 @@
 #!/bin/bash
 
+REGISTRY=docker.io/openverso
+
 if [ -z "$IMAGE_LIST" ]; then
     LIST_CHANGED=`git diff --name-only main -- images | cut -f1-2 -d'/' | uniq`
 else
@@ -11,9 +13,9 @@ for image in $LIST_CHANGED; do
     source image_info.sh
     IMAGE_NAME=${image#"images/"}
     if [ -z "$PLATFORMS" ]; then
-      docker build -t $IMAGE_NAME:$IMAGE_TAG --build-arg version=$IMAGE_TAG .
+      docker push $REGISTRY/$IMAGE_NAME:$IMAGE_TAG
     else
-      docker buildx build -t $IMAGE_NAME:$IMAGE_TAG --build-arg version=$IMAGE_TAG --platform ${PLATFORMS} .
+      docker buildx build -t $REGISTRY/$IMAGE_NAME:$IMAGE_TAG --build-arg version=$IMAGE_TAG --platform ${PLATFORMS} . --push
     fi
     popd
 done
