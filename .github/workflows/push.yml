@@ -52,10 +52,15 @@ jobs:
         run: |
             for image in $list_changed; do
               pushd $image
-              make push
-              tag=$image-$(grep "TAG=" Makefile | cut -d'=' -f2)
-              git tag -a "${tag}" -m "Automated push of ${tag}"
-              git push origin "${tag}"
+              source image_info.sh
+              if [ -z "$PLATFORMS" ]; then
+                docker build -t $image:$IMAGE_TAG --build-arg version=$IMAGE_TAG .
+                docker push $image:$IMAGET_TAG
+              else
+                docker buildx build -t $image:$IMAGE_TAG --build-arg version=$IMAGE_TAG --platform ${PLATFORMS} . --push
+              fi
+              git tag -a "v${IMAGE_TAG}" -m "Automated push of v${IMAGE_TAG}"
+              git push origin "v${IMAGE_TAG}"
               popd
             done
         env:

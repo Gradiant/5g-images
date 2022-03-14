@@ -40,7 +40,12 @@ jobs:
             for image in $list_changed; do
               echo "build image $image"
               pushd $image
-              make build
+              source image_info.sh
+              if [ -z "$PLATFORMS" ]; then
+                docker build -t $image:$IMAGE_TAG --build-arg version=$IMAGE_TAG .
+              else
+                docker buildx build -t $image:$IMAGE_TAG --build-arg version=$IMAGE_TAG --platform ${PLATFORMS} .
+              fi
               popd
             done
         env:
