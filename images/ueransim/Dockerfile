@@ -1,4 +1,4 @@
-FROM alpine:3.13 as builder
+FROM alpine:latest as builder
 
 ARG version=3.1.0
 
@@ -19,7 +19,7 @@ RUN cd /tmp && git clone https://github.com/aligungr/UERANSIM.git && \
     
 RUN cd /tmp/UERANSIM && echo "cmake --version" && make
 
-FROM alpine:3.13
+FROM alpine:latest
 
 COPY --from=builder /tmp/UERANSIM/build/* /usr/local/bin/
 
