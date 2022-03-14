@@ -3,7 +3,7 @@
 REGISTRY=docker.io
 IMAGE=openverso/ettus-uhd
 TAG=4.1.0
-PLATFORMS=linux/amd64#,linux/arm64
+PLATFORMS=linux/amd64,linux/arm64
 
 build:
 	docker buildx build -t ${IMAGE}:${TAG} --build-arg version=${TAG} . --platform ${PLATFORMS}
