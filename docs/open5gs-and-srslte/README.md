@@ -10,7 +10,7 @@ deploy the EPC core (open5gs) with:
 docker-compose -f epc.yaml up -d
 ```
 
-Register subscriber in ngc with `/register_subscriber.sh`.
+Register subscriber in ngc with `./register_subscriber.sh`.
 
 
 # Deployment RAN
