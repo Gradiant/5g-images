@@ -16,7 +16,7 @@ CURRENT_TAG=$( curl -sSL ${REMOTE_REPO_URL} | sed -n '/v[0-9.]\+/h; $g; s/^.*\/v
 
 # Compare CURRENT_TAG with saved IMAGE_TAG
 [[ ${CURRENT_TAG} == ${IMAGE_TAG} ]] || {
-	echo "Updating old TAG ${IMAGE_TAG} with new TAG ${current_tag}"
+	echo "Updating old TAG ${IMAGE_TAG} with new TAG ${CURRENT_TAG}"
 	sed -i "/IMAGE_TAG/s/=[.0-9]\+$/=${CURRENT_TAG}/" image_info.sh
 	exit 0
 } 
