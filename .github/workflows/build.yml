@@ -5,7 +5,9 @@ on:
     branches:
       - main
     paths:
-      - '**/image_info.sh'
+      - 'images/**'
+    ignore_paths:
+      - '**/update_current_tag.sh'
 
 env:
   images_dir: images
