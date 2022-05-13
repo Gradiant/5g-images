@@ -9,3 +9,4 @@ Follow the README.md of each image to evaluate the technologies in your containe
 
 
 <img src="micinncdti_2021.jpg" alt="micinncdti_2021" width="320"/>
+
