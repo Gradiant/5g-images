@@ -7,8 +7,7 @@ on:
       - main
     paths:
       - 'images/**'
-    paths-ignore:
-      - '**/update_current_tag.sh'
+      - '!**/update_current_tag.sh'
 
 env:
   images_dir: images
