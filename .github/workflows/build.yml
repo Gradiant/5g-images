@@ -1,6 +1,14 @@
 name: build images
 
-on: pull_request
+on: 
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'images/**'
+    ignore_paths:
+      - '**/update_current_tag.sh'
+
 env:
   images_dir: images
 
