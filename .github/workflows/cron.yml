@@ -50,7 +50,7 @@ jobs:
           ${{ steps.update_tag.outputs.OUTPUT == 0 }}
         uses: peter-evans/create-pull-request@v3
         with:
-          token: ${{ secret.gh_token }}
+          token: ${{ secret.GITHUB_TOKEN }}
           base: main
           branch: ${{ matrix.image }}-dev
           commit-message: "Updating version on ${{ matrix.image }} Image"
