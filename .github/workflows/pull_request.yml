@@ -3,11 +3,6 @@ name: Test Pull Request
 
 on: 
   pull_request:
-    branches:
-      - main
-    paths:
-      - 'images/**'
-      - '!images/**/update_current_tag.sh'
 
 jobs:
   main:
