@@ -13,7 +13,7 @@ jobs:
   generate-matrix:
     runs-on: ubuntu-latest
     outputs:
-      image: ${{ steps.generate-matrix.outputs.matrix }}
+      matrix: ${{ steps.generate-matrix.outputs.matrix }}
     steps:
 
       - name: Checkout code
@@ -26,6 +26,7 @@ jobs:
           echo "::set-output name=matrix::{ \"image\": [ ${IMAGES} ] }"
 
   check-repo-updates:
+    needs: generate-matrix
     runs-on: ubuntu-latest
     strategy:
       matrix: ${{ fromJson( needs.generate-matrix.outputs.matrix ) }}
