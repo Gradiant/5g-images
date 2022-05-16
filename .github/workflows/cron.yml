@@ -10,6 +10,7 @@ env:
   IMAGES_DIR: "images"
 
 jobs:
+  # Generate the values for the matrix where the updates are executed
   generate-matrix:
     runs-on: ubuntu-latest
     outputs:
@@ -24,13 +25,16 @@ jobs:
         run: |
           IMAGES=$( ls -1 ${{ env.IMAGES_DIR }} | tr '\n' ',' | sed 's/[^,]\+/"\0"/g;s/,$//' )
           echo "::set-output name=matrix::{ \"image\": [ ${IMAGES} ] }"
+  # ---
 
+  # Update the version of the existing images when possible and launch pull request
   check-repo-updates:
     needs: generate-matrix
     runs-on: ubuntu-latest
     strategy:
       matrix: ${{ fromJson( needs.generate-matrix.outputs.matrix ) }}
     steps:
+
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -59,4 +63,4 @@ jobs:
           commit-message: "Updating version on ${{ matrix.image }} Image"
           delete-branch: true
           title: "[${{ matrix.image }}] Update Version"
-
+  # ---
