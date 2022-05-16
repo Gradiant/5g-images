@@ -27,6 +27,9 @@ COPY /etc/ueransim /etc/ueransim
 COPY entrypoint.sh /entrypoint.sh
 RUN apk add --no-cache \
     bash \
+    bind-tools \
+    gettext \
+    iproute2 \
     liblksctp \
     libstdc++
 ENTRYPOINT ["/entrypoint.sh"]
