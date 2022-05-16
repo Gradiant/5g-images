@@ -2,15 +2,33 @@
 
 name: Check Repo Updates
 on:
+  workflow_dispatch:
   schedule:
     - cron: '0 0 * * 0' # Check every Sunday
 
+env:
+  IMAGES_DIR: "images"
+
 jobs:
+  generate-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      image: ${{ steps.generate-matrix.outputs.matrix }}
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Generate Matrix Content
+        id: generate-matrix
+        run: |
+          IMAGES=$( ls -1 ${{ env.IMAGES_DIR }} | tr '\n' ',' | sed 's/[^,]\+/"\0"/g;s/,$//' )
+          echo "::set-output name=matrix::{ \"image\": [ ${IMAGES} ] }"
+
   check-repo-updates:
     runs-on: ubuntu-latest
     strategy:
-      matrix:
-        image: [ ettus-uhd, free5gc, free5gc-webconsole, oai, open5gs, open5gs-dbctl, open5gs-webui, scrcpy, srsran, uearansim ]
+      matrix: ${{ fromJson( needs.generate-matrix.outputs.matrix ) }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -29,14 +47,14 @@ jobs:
 
       # Launch Pull Request only when the version is updated 
       - name: Create Pull Request for ${{ matrix.image }}
-        if: steps.update_tag.outputs.OUTPUT == 0
+        if: 
+          ${{ steps.update_tag.outputs.OUTPUT == 0 }}
         uses: peter-evans/create-pull-request@v3
         with:
-          token: ${{ secret.gh_token }}
+          token: ${{ secret.GITHUB_TOKEN }}
           base: main
           branch: ${{ matrix.image }}-dev
           commit-message: "Updating version on ${{ matrix.image }} Image"
           delete-branch: true
           title: "[${{ matrix.image }}] Update Version"
-
 
