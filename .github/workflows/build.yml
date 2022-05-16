@@ -6,7 +6,6 @@ on:
       - main
     paths:
       - 'images/**'
-      - '!images/**/update_current_tag.sh'
 
 env:
   images_dir: images
