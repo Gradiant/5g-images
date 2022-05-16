@@ -13,7 +13,7 @@ jobs:
   generate-matrix:
     runs-on: ubuntu-latest
     outputs:
-      image: ${{ steps.generate-matrix.outputs.matrix }}
+      matrix: ${{ steps.generate-matrix.outputs.matrix }}
     steps:
 
       - name: Checkout code
@@ -26,6 +26,7 @@ jobs:
           echo "::set-output name=matrix::{ \"image\": [ ${IMAGES} ] }"
 
   check-repo-updates:
+    needs: generate-matrix
     runs-on: ubuntu-latest
     strategy:
       matrix: ${{ fromJson( needs.generate-matrix.outputs.matrix ) }}
@@ -44,6 +45,7 @@ jobs:
           [[ -f ./update_current_tag.sh ]] && \
             ./update_current_tag.sh || \
             exit 1
+        continue-on-error: true
 
       # Launch Pull Request only when the version is updated 
       - name: Create Pull Request for ${{ matrix.image }}
