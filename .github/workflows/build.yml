@@ -2,10 +2,6 @@ name: build images
 
 on: 
   pull_request:
-    branches:
-      - main
-    paths:
-      - 'images/**'
 
 env:
   images_dir: images
