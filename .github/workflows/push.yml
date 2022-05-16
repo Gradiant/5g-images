@@ -1,8 +1,14 @@
-name: push images
+---
+name: Push Images
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+    paths:
+      - 'images/**'
+      - '!images/**/update_current_tag.sh'
+
 env:
   images_dir: images
 
@@ -67,3 +73,4 @@ jobs:
         env:
           list_changed: ${{steps.list-changed.outputs.list_changed}}
         if: steps.list-changed.outputs.changed == 'true'
+
