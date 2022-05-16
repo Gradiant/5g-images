@@ -55,7 +55,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           base: main
-          branch: ${{ matrix.image }}-dev
+          branch: ${{ matrix.image }}-version-update
           commit-message: "Updating version on ${{ matrix.image }} Image"
           delete-branch: true
           title: "[${{ matrix.image }}] Update Version"
