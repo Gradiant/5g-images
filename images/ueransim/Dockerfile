@@ -25,7 +25,13 @@ COPY --from=builder /tmp/UERANSIM/build/* /usr/local/bin/
 
 COPY /etc/ueransim /etc/ueransim
 COPY entrypoint.sh /entrypoint.sh
-
+RUN apk add --no-cache \
+    bash \
+    bind-tools \
+    gettext \
+    iproute2 \
+    liblksctp \
+    libstdc++
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["/bin/sh"]
 
