@@ -39,6 +39,7 @@ ENV N3_IFACE=eth0
 ENV RADIO_IFACE=eth0
 ENV AMF_HOSTNAME=amf
 ENV GNB_HOSTNAME=localhost
+
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["/bin/sh"]
 
