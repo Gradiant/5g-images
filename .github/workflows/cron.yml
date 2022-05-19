@@ -4,7 +4,7 @@ name: Check Repo Updates
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/10 * * * *' # Check every Sunday
+    - cron: '0 0 * * 0' # Check every Sunday
 
 env:
   IMAGES_DIR: "images"
