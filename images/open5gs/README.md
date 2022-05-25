@@ -27,3 +27,4 @@ We provide a `docker-compose.yaml` file to deploy open5gs.
 Just run `docker-compose up -d` and check the services are up with `docker-compose ps`.
 
 To remove the containers run `docker-compose down`.
+
