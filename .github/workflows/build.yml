@@ -45,9 +45,9 @@ jobs:
         id: image-info
         run: |
           source ./images/${{ matrix.image }}/image_info.sh
-          echo "::set-output platforms=$PLATFORMS"
-          echo "::set-output image_tag=$IMAGE_TAG"
-          echo "::set-output image=${{ matrix.image }}"
+          echo "::set-output name=platforms::$PLATFORMS"
+          echo "::set-output name=image_tag::$IMAGE_TAG"
+          echo "::set-output name=image::${{ matrix.image }}"
           
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
