@@ -27,7 +27,7 @@ jobs:
       - name: Generate Matrix Content
         id: generate-matrix
         run: |
-          changed=`echo "${{ steps.files.outputs.all_changed_files }}" | sed 's/ /\n/g' | grep $images_dir | cut -f2 -d'/' | uniq`
+          changed=`echo "${{ steps.files.outputs.all_changed_files }}" | sed 's/ /\n/g' | grep $images_dir | cut -f2 -d'/' | uniq | sed 's/^/"/;s/$/"/' | sed -z 's/\n/,/g;s/,$/\n/'`
           echo "::set-output name=matrix::{ \"image\": [ ${changed} ] }"
           
   # build image if changes in code
