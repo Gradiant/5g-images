@@ -76,6 +76,7 @@ jobs:
           context: ./images/${{ steps.image-info.outputs.image }}/
           push: true
           tags: openverso/${{ steps.image-info.outputs.image }}:${{ steps.image-info.outputs.image_tag }}
+          build-args: version=${{ steps.image-info.outputs.image_tag }}
           platforms: ${{ steps.image-info.outputs.platforms }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
