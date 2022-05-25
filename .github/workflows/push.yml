@@ -13,64 +13,70 @@ env:
   images_dir: images
 
 jobs:
-  push:
+  # Generate the values for images with changes
+  generate-matrix:
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.generate-matrix.outputs.matrix }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: config git
-        run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
       - id: files
-        uses: jitterbit/get-changed-files@v1
-
-      - name: Get changed images
-        id: list-changed
+        uses: tj-actions/changed-files@v17.3
+      - name: Generate Matrix Content
+        id: generate-matrix
         run: |
-          changed=`echo "${{ steps.files.outputs.all }}" | sed 's/ /\n/g' | grep $images_dir | cut -f1-2 -d'/' | uniq`
-          echo "Changed files are:"
-          echo "$changed"
-          echo "::set-output name=list_changed::$changed"
-          if [[ -n "$changed" ]]; then
-            echo "::set-output name=changed::true"
-          fi
-
+          changed=`echo "${{ steps.files.outputs.all_changed_files }}" | sed 's/ /\n/g' | grep $images_dir | cut -f2 -d'/' | uniq | sed 's/^/"/;s/$/"/' | sed -z 's/\n/,/g;s/,$/\n/'`
+          echo "::set-output name=matrix::{ \"image\": [ ${changed} ] }"
+          
+  # build image if changes in code
+  build-image:
+    needs: generate-matrix
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{ fromJson( needs.generate-matrix.outputs.matrix ) }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Get Image Info
+        id: image-info
+        run: |
+          source ./images/${{ matrix.image }}/image_info.sh
+          echo "::set-output name=platforms::$PLATFORMS"
+          echo "::set-output name=image_tag::$IMAGE_TAG"
+          echo "::set-output name=image::${{ matrix.image }}"
+          
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
-        if: steps.list-changed.outputs.changed == 'true'
 
       - name: Set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@v1
-        if: steps.list-changed.outputs.changed == 'true'
-
-      - name: Login to DockerHub
-        uses: docker/login-action@v1
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Login to DockerHub
+        uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}      
-
-      - name: push changed images
-        id: push
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      -
+        name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: ./images/${{ steps.image-info.outputs.image }}/
+          push: true
+          tags: openverso/${{ steps.image-info.outputs.image }}:${{ steps.image-info.outputs.image_tag }}
+          build-args: version=${{ steps.image-info.outputs.image_tag }}
+          platforms: ${{ steps.image-info.outputs.platforms }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      -
+        # Temp fix
+        # https://github.com/docker/build-push-action/issues/252
+        # https://github.com/moby/buildkit/issues/1896
+        name: Move cache
         run: |
-            for image in $list_changed; do
-              pushd $image
-              source image_info.sh
-              IMAGE_NAME=${image#"images/"}
-              if [ -z "$PLATFORMS" ]; then
-                docker build -t $IMAGE_NAME:$IMAGE_TAG --build-arg version=$IMAGE_TAG .
-                docker push $IMAGE_NAME:$IMAGET_TAG
-              else
-                docker buildx build -t $IMAGE_NAME:$IMAGE_TAG --build-arg version=$IMAGE_TAG --platform ${PLATFORMS} . --push
-              fi
-              git tag -a "v${IMAGE_TAG}" -m "Automated push of v${IMAGE_TAG}"
-              git push origin "v${IMAGE_TAG}"
-              popd
-            done
-        env:
-          list_changed: ${{steps.list-changed.outputs.list_changed}}
-        if: steps.list-changed.outputs.changed == 'true'
-
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
