@@ -59,7 +59,8 @@ jobs:
           ${{ steps.update_tag.outputs.old-version != steps.update_tag.outputs.new-version }}
         uses: peter-evans/create-pull-request@v3
         with:
-          token: ${{ secrets.GRADIANT_TOKEN }}
+          #token: ${{ secrets.GRADIANT_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           base: main
           body: >
             This PR is auto-generated to automatically test and update version for image ${{ matrix.image }}
