@@ -62,7 +62,7 @@ jobs:
           #token: ${{ secrets.GRADIANT_TOKEN }}
           token: ${{ secrets.GITHUB_TOKEN }}
           base: main
-          body: >
+          body: |
             This PR is auto-generated to automatically test and update version for image ${{ matrix.image }}
             From -> ${{ matrix.image }}:${{ steps.update_tag.outputs.old-version }} 
             To   -> ${{ matrix.image }}:${{ steps.update_tag.outputs.new-version }} 
