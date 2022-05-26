@@ -50,7 +50,7 @@ jobs:
           [[ -f ./update_current_tag.sh ]] && \
             ./update_current_tag.sh || \
             exit 1
-          echo "::set-output name=new-version::$( sed -n '/IMAGE_TAG/s/^.*=//p image_info.sh )"
+          echo "::set-output name=new-version::$( sed -n '/IMAGE_TAG/s/^.*=//p' image_info.sh || echo 'NOT_FOUND' )"
         continue-on-error: true
 
       # Launch Pull Request only when the version is updated 
