@@ -46,21 +46,28 @@ jobs:
         id: update_tag
         run: |
           cd ${{ env.IMAGE_DIR }}
-          [[ -f ./update_current_tag.sh ]] && \
-            ./update_current_tag.sh || \
-            exit 1
+          echo "::set-output name=old-version::$( sed -n '/IMAGE_TAG/s/^.*=//p' image_info.sh || echo 'NOT_FOUND' )"
+
+          [[ -f ./update_current_tag.sh ]] && ./update_current_tag.sh 
+
+          echo "::set-output name=new-version::$( sed -n '/IMAGE_TAG/s/^.*=//p' image_info.sh || echo 'NOT_FOUND' )"
         continue-on-error: true
 
       # Launch Pull Request only when the version is updated 
       - name: Create Pull Request for ${{ matrix.image }}
         if: 
-          ${{ steps.update_tag.outputs.OUTPUT == 0 }}
+          ${{ steps.update_tag.outputs.old-version != steps.update_tag.outputs.new-version }}
         uses: peter-evans/create-pull-request@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GRADIANT_TOKEN }}
+          #token: ${{ secrets.GITHUB_TOKEN }}
           base: main
+          body: |
+            This PR is auto-generated to automatically test and update version for image ${{ matrix.image }}
+            From -> ${{ matrix.image }}:${{ steps.update_tag.outputs.old-version }} 
+            To   -> ${{ matrix.image }}:${{ steps.update_tag.outputs.new-version }} 
           branch: ${{ matrix.image }}-version-update
-          commit-message: "Updating version on ${{ matrix.image }} Image"
+          commit-message: "Updating version ${{ matrix.image }} [${{ steps.update_tag.outputs.old-version }} -> ${{ steps.update_tag.outputs.new-version }}] "
           delete-branch: true
-          title: "[${{ matrix.image }}] Update Version"
+          title: "[${{ matrix.image }}] Update Version ${{ steps.update_tag.outputs.old-version }} -> ${{ steps.update_tag.outputs.new-version }}"
   # ---
