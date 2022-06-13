@@ -26,17 +26,25 @@ logger:
 #
 #  <GTP-C Server>
 #
-#  o GTP-C Server(127.0.0.3:2123, [fe80::2%lo]:2123)
+#  o GTP-C Server(127.0.0.3:2123, [fd69:f21d:873c:fa::2]:2123)
 #    gtpc:
 #      addr:
 #        - 127.0.0.3
-#        - fe80::2%lo
+#        - fd69:f21d:873c:fa::2
 #
 #  o On SGW, Same Configuration(127.0.0.3:2123,
-#  [fe80::2%lo]:2123) as below.
+#  [fd69:f21d:873c:fa::2]:2123) as below.
 #    gtpc:
 #      - addr: 127.0.0.3
-#      - addr: fe80::2%lo
+#      - addr: fd69:f21d:873c:fa::2
+#
+#  o GTP-C Option (Default)
+#    - so_bindtodevice : NULL
+#
+#    gtpc:
+#      addr: 127.0.0.3
+#      option:
+#        so_bindtodevice: vrf-blue
 #
 #  <PFCP Server>
 #
@@ -44,6 +52,18 @@ logger:
 #    pfcp:
 #      - addr: 127.0.0.3
 #      - addr: ::1
+#
+#  o PFCP-U Server(127.0.0.1:2152, [::1]:2152)
+#    pfcp:
+#      name: localhost
+#
+#  o PFCP Option (Default)
+#    - so_bindtodevice : NULL
+#
+#    pfcp:
+#      addr: 127.0.0.3
+#      option:
+#        so_bindtodevice: vrf-blue
 #
 sgwc:
     gtpc:
@@ -63,15 +83,10 @@ sgwc:
 #
 #  <SGWU_SELECTION_MODE - EPC only>
 #
-# o Round-Robin
-#   (note that round robin can be disabled for a particular node
-#     by setting flag 'rr' to 0)
-#
 #  sgwu:
 #    pfcp:
 #      - addr: 127.0.0.6
 #      - addr: 127.0.0.12
-#        rr: 0
 #      - addr: 127.0.0.18
 #
 # o SGWU selection by eNodeB TAC
@@ -110,9 +125,6 @@ sgwu:
 #
 # parameter:
 #
-#  o Number of output streams per SCTP associations.
-#      sctp_streams: 30
-#
 #  o Disable use of IPv4 addresses (only IPv6)
 #      no_ipv4: true
 #
@@ -122,11 +134,8 @@ sgwu:
 #  o Prefer IPv4 instead of IPv6 for estabishing new GTP connections.
 #      prefer_ipv4: true
 #
-#  o Enable Multicast traffic to the UE
-#      multicast: true
-#
-#  o Disable Stateless Address Autoconfiguration for IPv6
-#      no_slaac: true
+#  o Disable selection of SGW-U PFCP in Round-Robin manner
+#      no_pfcp_rr_select: true
 #
 parameter:
 
@@ -136,29 +145,16 @@ parameter:
 # o Maximum Number of UE per AMF/MME
 #    ue: 1024
 # o Maximum Number of gNB/eNB per AMF/MME
-#    gnb: 32
+#    gnb: 64
 #
 max:
 
 #
-# pool:
+# time:
 #
-# o The Number of Default Memory Pool Size
+#  o Message Wait Duration (Default : 10,000 ms = 10 seconds)
 #
-#   - Pool-size 128         => 32768 Number
-#   - Pool-size 256         => 4096 Number
-#   - Pool-size 512         => 2048 Number
-#   - Pool-size 1024        => 1024 Number
-#   - Pool-size 2048        => 512 Number
-#   - Pool-size 8192        => 128 Number
-#   - Pool-size 1024*1024   => 8 Number
-#
-#    128:  32768
-#    256:  4096
-#    512:  2048
-#    1024: 1024
-#    2048: 512
-#    8192: 128
-#    big:  8
-#
-pool:
+#  o Message Wait Duration (3000 ms)
+#    message:
+#        duration: 3000
+time:

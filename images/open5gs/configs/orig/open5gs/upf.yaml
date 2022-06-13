@@ -26,19 +26,31 @@ logger:
 #
 #  <PFCP Server>
 #
-#  o PFCP Server(127.0.0.7:8805)
+#  o PFCP Server(127.0.0.7:8805, ::1:8805)
+#    pfcp:
+#      - addr: 127.0.0.7
+#      - addr: ::1
+#
+#  o PFCP-U Server(127.0.0.1:2152, [::1]:2152)
+#    pfcp:
+#      name: localhost
+#
+#  o PFCP Option (Default)
+#    - so_bindtodevice : NULL
+#
 #    pfcp:
 #      addr: 127.0.0.7
+#      option:
+#        so_bindtodevice: vrf-blue
 #
 #  <GTP-U Server>>
 #
 #  o GTP-U Server(127.0.0.7:2152, [::1]:2152)
 #    gtpu:
-#      - addr:
-#        - 127.0.0.7
-#        - ::1
+#      - addr: 127.0.0.7
+#      - addr: ::1
 #
-#  o Same configuration(127.0.0.7:2152, [::1]:2152) as below.
+#  o GTP-U Server(127.0.0.1:2152, [::1]:2152)
 #    gtpu:
 #      name: localhost
 #
@@ -57,104 +69,119 @@ logger:
 #        network_instance: ims
 #        source_interface: 1
 #
-#  <PDN Configuration with UE Pool>
+#  o Provide custom UPF GTP-U address to be advertised inside NGAP messages
+#    gtpu:
+#      - addr: 10.4.128.21
+#        advertise: 172.24.15.30
+#
+#    gtpu:
+#      - addr: 10.4.128.21
+#        advertise:
+#        - 127.0.0.1
+#        - ::1
+#
+#    gtpu:
+#      - addr: 10.4.128.21
+#        advertise: upf1.5gc.mnc001.mcc001.3gppnetwork.org
+#
+#    gtpu:
+#      - dev: ens3
+#        advertise: upf1.5gc.mnc001.mcc001.3gppnetwork.org
+#
+#  o GTP-U Option (Default)
+#    - so_bindtodevice : NULL
+#
+#    gtpu:
+#      addr: 127.0.0.7
+#      option:
+#        so_bindtodevice: vrf-blue
+#
+#  <Subnet for UE network>
+#
+#  Note that you need to setup your UE network using TUN device.
+#  (ogstun, ogstun2, ogstunX, ..)
 #
 #  o IPv4 Pool
 #    $ sudo ip addr add 10.45.0.1/16 dev ogstun
 #
-#    pdn:
+#    subnet:
 #      addr: 10.45.0.1/16
 #
 #  o IPv4/IPv6 Pool
 #    $ sudo ip addr add 10.45.0.1/16 dev ogstun
-#    $ sudo ip addr add cafe:1::1/64 dev ogstun
+#    $ sudo ip addr add 2001:db8:cafe::1/48 dev ogstun
 #
-#    pdn:
+#    subnet:
 #      - addr: 10.45.0.1/16
-#      - addr: cafe:1::1/64
+#      - addr: 2001:db8:cafe::1/48
 #
 #
-#  o Specific DNN/APN(e.g 'ims') uses 10.46.0.1/16, cafe:2::1/64
-#    All other APNs use 10.45.0.1/16, cafe:1::1/64
+#  o Specific DNN/APN(e.g 'ims') uses 10.46.0.1/16, 2001:db8:babe::1/48
+#    All other APNs use 10.45.0.1/16, 2001:db8:cafe::1/48
 #    $ sudo ip addr add 10.45.0.1/16 dev ogstun
 #    $ sudo ip addr add 10.46.0.1/16 dev ogstun
-#    $ sudo ip addr add cafe:1::1/64 dev ogstun
-#    $ sudo ip addr add cafe:2::1/64 dev ogstun
+#    $ sudo ip addr add 2001:db8:cafe::1/48 dev ogstun
+#    $ sudo ip addr add 2001:db8:babe::1/48 dev ogstun
 #
-#    pdn:
+#    ; If the UE has unknown DNN/APN(not internet/ims), SMF/UPF will crash.
+#
+#    subnet:
 #      - addr: 10.45.0.1/16
-#        apn: internet
-#      - addr: cafe:1::1/64
-#        apn: internet
+#        dnn: internet
+#      - addr: 2001:db8:cafe::1/48
+#        dnn: internet
 #      - addr: 10.46.0.1/16
-#        apn: ims
-#      - addr: cafe:2::1/64
-#        apn: ims
+#        dnn: ims
+#      - addr: 2001:db8:babe::1/48
+#        dnn: ims
+#
+#  o Specific DNN/APN with the FALLBACK SUBNET(10.47.0.1/16)
+#    ; Note that put the FALLBACK SUBNET last to avoid SMF/UPF crash.
+#
+#    subnet:
+#      - addr: 10.45.0.1/16
+#        dnn: internet
+#      - addr: 10.46.0.1/16
+#        dnn: ims
+#      - addr: 10.50.0.1/16 ## FALLBACK SUBNET
 #
 #  o Multiple Devices (default: ogstun)
 #    $ sudo ip addr add 10.45.0.1/16 dev ogstun
-#    $ sudo ip addr add cafe:1::1/64 dev ogstun2
+#    $ sudo ip addr add 2001:db8:cafe::1/48 dev ogstun2
 #    $ sudo ip addr add 10.46.0.1/16 dev ogstun3
-#    $ sudo ip addr add cafe:2::1/64 dev ogstun3
+#    $ sudo ip addr add 2001:db8:babe::1/48 dev ogstun3
 #
-#    pdn:
+#    subnet:
 #      - addr: 10.45.0.1/16
-#        apn: internet
-#      - addr: cafe:1::1/64
-#        apn: internet
+#        dnn: internet
+#      - addr: 2001:db8:cafe::1/48
+#        dnn: internet
 #        dev: ogstun2
 #      - addr: 10.46.0.1/16
-#        apn: ims
+#        dnn: ims
 #        dev: ogstun3
-#      - addr: cafe:2::1/64
-#        apn: ims
+#      - addr: 2001:db8:babe::1/48
+#        dnn: ims
 #        dev: ogstun3
-#
-#  o Pool Range Sample
-#    pdn:
-#      - addr: 10.45.0.1/24
-#        range: 10.45.0.100-10.45.0.200
-#
-#    pdn:
-#      - addr: 10.45.0.1/24
-#        range:
-#          - 10.45.0.5-10.45.0.50
-#          - 10.45.0.100-
-#
-#    pdn:
-#      - addr: 10.45.0.1/24
-#        range:
-#          - -10.45.0.200
-#          - 10.45.0.210-10.45.0.220
-#
-#    pdn:
-#      - addr: 10.45.0.1/16
-#        range:
-#          - 10.45.0.100-10.45.0.200
-#          - 10.45.1.100-10.45.1.200
-#      - addr: cafe::1/64
-#        range:
-#          - cafe::a0-cafe:b0
-#          - cafe::c0-cafe:d0
 #
 upf:
     pfcp:
       - addr: 127.0.0.7
     gtpu:
       - addr: 127.0.0.7
-    pdn:
+    subnet:
       - addr: 10.45.0.1/16
-      - addr: cafe::1/64
+      - addr: 2001:db8:cafe::1/48
 
 #
 # smf:
 #
 #  <PFCP Client>>
 #
-#  o PFCP Client(127.0.0.3:8805)
+#  o PFCP Client(127.0.0.4:8805)
 #
 #    pfcp:
-#      addr: 127.0.0.3
+#      addr: 127.0.0.4
 #
 smf:
 
@@ -173,13 +200,6 @@ smf:
 #  o Prefer IPv4 instead of IPv6 for estabishing new GTP connections.
 #      prefer_ipv4: true
 #
-#  o Enable Multicast traffic to the UE
-#      multicast: true
-#
-#  o Disable Stateless Address Autoconfiguration for IPv6
-#      no_slaac: true
-#
-#
 parameter:
 
 #
@@ -188,29 +208,16 @@ parameter:
 # o Maximum Number of UE per AMF/MME
 #    ue: 1024
 # o Maximum Number of gNB/eNB per AMF/MME
-#    gnb: 32
+#    gnb: 64
 #
 max:
 
 #
-# pool:
+# time:
 #
-# o The Number of Default Memory Pool Size
+#  o Message Wait Duration (Default : 10,000 ms = 10 seconds)
 #
-#   - Pool-size 128         => 32768 Number
-#   - Pool-size 256         => 4096 Number
-#   - Pool-size 512         => 2048 Number
-#   - Pool-size 1024        => 1024 Number
-#   - Pool-size 2048        => 512 Number
-#   - Pool-size 8192        => 128 Number
-#   - Pool-size 1024*1024   => 8 Number
-#
-#    128:  32768
-#    256:  4096
-#    512:  2048
-#    1024: 1024
-#    2048: 512
-#    8192: 128
-#    big:  8
-#
-pool:
+#  o Message Wait Duration (3000 ms)
+#    message:
+#        duration: 3000
+time:

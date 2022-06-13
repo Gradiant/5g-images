@@ -47,6 +47,43 @@ logger:
 #    s1ap:
 #      dev: eth0
 #
+#  o S1AP Option (Default)
+#    - sctp_nodelay : true
+#    - so_linger.l_onoff : false
+#
+#    s1ap:
+#      addr: 127.0.0.2
+#      option:
+#        stcp_nodelay: false
+#        so_linger:
+#          l_onoff: true
+#          l_linger: 10
+#
+#  o S1AP SCTP Option (Default)
+#    - spp_hbinterval : 5000 (5secs)
+#    - spp_sackdelay : 200 (200ms)
+#    - srto_initial : 3000 (3secs)
+#    - srto_min : 1000 (1sec)
+#    - srto_max : 5000 (5secs)
+#    - sinit_num_ostreams : 30
+#    - sinit_max_instreams : 65535
+#    - sinit_max_attempts : 4
+#    - sinit_max_init_timeo : 8000(8secs)
+#
+#    s1ap:
+#      addr: 127.0.0.2
+#      option:
+#        sctp:
+#          spp_hbinterval : 5000
+#          spp_sackdelay : 200
+#          srto_initial : 3000
+#          srto_min : 1000
+#          srto_max : 5000
+#          sinit_num_ostreams : 30
+#          sinit_max_instreams : 65535
+#          sinit_max_attempts : 4
+#          sinit_max_init_timeo : 8000
+#
 #  <GTP-C Server>>
 #
 #  o GTP-C Server(all address avaiable)
@@ -113,7 +150,7 @@ logger:
 #            lac: 43692
 #      - addr
 #         - 127.0.0.4
-#         - fe80::2%lo
+#         - fd69:f21d:873c:fa::2
 #        map:
 #          tai:
 #            plmn_id:
@@ -201,6 +238,10 @@ logger:
 #
 #    mme_name: open5gs-mme0
 #
+#  <Relative Capacity> - Default(255)
+#
+#    relative_capacity: 100
+#
 mme:
     freeDiameter: /opt/open5gs/etc/freeDiameter/mme.conf
     s1ap:
@@ -233,25 +274,25 @@ mme:
 #  o Specify SGW addresses the GTP-C must connect to
 #
 #  o One SGW is defined.
-#    If prefer_ipv4 is not true, [fe80::2%lo] is selected.
+#    If prefer_ipv4 is not true, [fd69:f21d:873c:fa::2] is selected.
 #    gtpc:
 #      addr:
 #        - 127.0.0.3
-#        - fe80::2%lo
+#        - fd69:f21d:873c:fa::2
 #
 #  o Two SGW are defined. MME selects SGW with round-robin manner per UE
 #    gtpc:
 #      - addr: 127.0.0.3
-#      - addr: fe80::2%lo
+#      - addr: fd69:f21d:873c:fa::2
 #
 #  o Three SGW are defined. MME selects SGW with round-robin manner per UE
 #    gtpc:
 #      - addr
 #        - 127.0.0.3
-#        - fe80::2%lo
+#        - fd69:f21d:873c:fa::2
 #      - addr
 #        - 127.0.0.22
-#        - fe80::12%lo
+#        - fd69:f21d:873c:fa::12
 #      - name: sgw3.open5gs.org
 #
 # <SGW Selection Mode>
@@ -296,17 +337,17 @@ sgwc:
 #      you can use a specific SMF node for each UE.
 #
 #  o Two SMF are defined. 127.0.0.4:2123 is used.
-#    [fe80::3%lo]:2123 is ignored.
+#    [fd69:f21d:873c:fa::3]:2123 is ignored.
 #    gtpc:
 #      - addr: 127.0.0.4
-#      - addr: fe80::3%lo
+#      - addr: fd69:f21d:873c:fa::3
 #
 #  o One SMF is defined. if prefer_ipv4 is not true,
-#    [fe80::3%lo] is selected.
+#    [fd69:f21d:873c:fa::3] is selected.
 #    gtpc:
 #      - addr:
 #        - 127.0.0.4
-#        - fe80::3%lo
+#        - fd69:f21d:873c:fa::3
 #
 #  o Two SMF are defined with a different APN.
 #    - Note that if SMF IP for UE is configured in HSS,
@@ -331,9 +372,6 @@ smf:
 #
 # parameter:
 #
-#  o Number of output streams per SCTP associations.
-#      sctp_streams: 30
-#
 #  o Disable use of IPv4 addresses (only IPv6)
 #      no_ipv4: true
 #
@@ -343,11 +381,10 @@ smf:
 #  o Prefer IPv4 instead of IPv6 for estabishing new GTP connections.
 #      prefer_ipv4: true
 #
-#  o Enable Multicast traffic to the UE
-#      multicast: true
-#
-#  o Disable Stateless Address Autoconfiguration for IPv6
-#      no_slaac: true
+#  o Use OAI UE
+#    - Remove HashMME in Security-mode command message
+#    - Use the length 1 of EPS network feature support in Attach accept message
+#      use_openair: true
 #
 parameter:
 
@@ -357,44 +394,44 @@ parameter:
 # o Maximum Number of UE per AMF/MME
 #    ue: 1024
 # o Maximum Number of gNB/eNB per AMF/MME
-#    gnb: 32
+#    gnb: 64
 #
 max:
 
 #
-# pool:
+# usrsctp:
+#    udp_port : 9899
 #
-# o The Number of Default Memory Pool Size
-#
-#   - Pool-size 128         => 32768 Number
-#   - Pool-size 256         => 4096 Number
-#   - Pool-size 512         => 2048 Number
-#   - Pool-size 1024        => 1024 Number
-#   - Pool-size 2048        => 512 Number
-#   - Pool-size 8192        => 128 Number
-#   - Pool-size 1024*1024   => 8 Number
-#
-#    128:  32768
-#    256:  4096
-#    512:  2048
-#    1024: 1024
-#    2048: 512
-#    8192: 128
-#    big:  8
-#
-pool:
+usrsctp:
 
 #
-# sctp:
+# time:
 #
-#  o heartbit_interval : 5000 (5secs)
-#  o rto_initial : 3000 (3secs)
-#  o rto_min : 1000 (1sec)
-#  o rto_max : 5000 (5secs)
-#  o max_num_of_ostreams : 30
-#  o max_num_of_istreams : 65535
-#  o max_attempts : 4
-#  o max_initial_timeout : 8000(8secs)
-#  o usrsctp_udp_port : 9899
+#  o Message Wait Duration (Default : 10,000 ms = 10 seconds)
 #
-sctp:
+#  o Message Wait Duration (3000 ms)
+#    message:
+#        duration: 3000
+#
+#  o Handover Wait Duration (Default : 300 ms)
+#    Time to wait for MME to send UEContextReleaseCommand
+#    to the source eNB after receiving HandoverNotify
+#
+#  o Handover Wait Duration (500ms)
+#    handover:
+#        duration: 500
+time:
+
+#
+# metrics:
+#
+#  <Metrics Server>
+#
+#  o Metrics Server(http://<any address>:9090)
+#    metrics:
+#      addr: 0.0.0.0
+#      port: 9090
+#
+metrics:
+    addr: 0.0.0.0
+    port: 9090

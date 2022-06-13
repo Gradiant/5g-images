@@ -37,7 +37,7 @@ logger:
 #
 #  o SBI Server(https://<all address avaiable>:443)
 #    sbi:
-#        tls:
+#      - tls:
 #          key: udm.key
 #          pem: udm.pem
 #
@@ -51,7 +51,7 @@ logger:
 #
 #  o SBI Server(http://udm.open5gs.org:80)
 #    sbi:
-#      name: udm.open5gs.org
+#      - name: udm.open5gs.org
 #
 #  o SBI Server(http://127.0.0.12:7777)
 #    sbi:
@@ -60,7 +60,30 @@ logger:
 #
 #  o SBI Server(http://<eth0 IP address>:80)
 #    sbi:
-#      dev: eth0
+#      - dev: eth0
+#
+#  o Provide custom SBI address to be advertised to NRF
+#    sbi:
+#      - dev: eth0
+#        advertise: open5gs-udm.svc.local
+#
+#    sbi:
+#      - addr: localhost
+#        advertise:
+#          - 127.0.0.99
+#          - ::1
+#
+#  o SBI Option (Default)
+#    - tcp_nodelay : true
+#    - so_linger.l_onoff : false
+#
+#    sbi:
+#      addr: 127.0.0.12
+#      option:
+#        tcp_nodelay: false
+#        so_linger:
+#          l_onoff: true
+#          l_linger: 10
 #
 udm:
     sbi:
@@ -85,13 +108,25 @@ udm:
 #          pem: nrf.pem
 #      - name: nrf.open5gs.org
 #
-#  o SBI Client(http://[fe80::1%lo]:80)
+#  o SBI Client(http://[fd69:f21d:873c:fa::1]:80)
 #    If prefer_ipv4 is true, http://127.0.0.10:80 is selected.
 #
 #    sbi:
 #      addr:
 #        - 127.0.0.10
-#        - fe80::1%lo
+#        - fd69:f21d:873c:fa::1
+#
+#  o SBI Option (Default)
+#    - tcp_nodelay : true
+#    - so_linger.l_onoff : false
+#
+#    sbi:
+#      addr: 127.0.0.10
+#      option:
+#        tcp_nodelay: false
+#        so_linger:
+#          l_onoff: true
+#          l_linger: 10
 #
 nrf:
     sbi:
@@ -103,9 +138,6 @@ nrf:
 #
 # parameter:
 #
-#  o Number of output streams per SCTP associations.
-#      sctp_streams: 30
-#
 #  o Disable use of IPv4 addresses (only IPv6)
 #      no_ipv4: true
 #
@@ -115,12 +147,6 @@ nrf:
 #  o Prefer IPv4 instead of IPv6 for estabishing new GTP connections.
 #      prefer_ipv4: true
 #
-#  o Enable Multicast traffic to the UE
-#      multicast: true
-#
-#  o Disable Stateless Address Autoconfiguration for IPv6
-#      no_slaac: true
-#
 parameter:
 
 #
@@ -129,47 +155,25 @@ parameter:
 # o Maximum Number of UE per AMF/MME
 #    ue: 1024
 # o Maximum Number of gNB/eNB per AMF/MME
-#    gnb: 32
+#    gnb: 64
 #
 max:
 
 #
-# pool:
-#
-# o The Number of Default Memory Pool Size
-#
-#   - Pool-size 128         => 32768 Number
-#   - Pool-size 256         => 4096 Number
-#   - Pool-size 512         => 2048 Number
-#   - Pool-size 1024        => 1024 Number
-#   - Pool-size 2048        => 512 Number
-#   - Pool-size 8192        => 128 Number
-#   - Pool-size 1024*1024   => 8 Number
-#
-#    128:  32768
-#    256:  4096
-#    512:  2048
-#    1024: 1024
-#    2048: 512
-#    8192: 128
-#    big:  8
-#
-pool:
-
-#
 # time:
 #
-#  o NF Instance Heartbeat (Default : 10 seconds)
+#  o NF Instance Heartbeat (Default : 0)
+#    NFs will not send heart-beat timer in NFProfile
+#    NRF will send heart-beat timer in NFProfile
 #
-#  o NF Instance Heartbeat (Disabled)
+#  o NF Instance Heartbeat (20 seconds)
+#    NFs will send heart-beat timer (20 seconds) in NFProfile
+#    NRF can change heart-beat timer in NFProfile
+#
 #    nf_instance:
-#      heartbeat: 0
+#      heartbeat: 20
 #
-#  o NF Instance Heartbeat (10 seconds)
-#    nf_instance:
-#      heartbeat: 10
-#
-#  o Message Wait Duration (Default : 2000ms = 2 seconds)
+#  o Message Wait Duration (Default : 10,000 ms = 10 seconds)
 #
 #  o Message Wait Duration (3000 ms)
 #    message:

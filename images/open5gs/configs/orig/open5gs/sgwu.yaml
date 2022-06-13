@@ -24,24 +24,6 @@ logger:
 #
 # sgwu:
 #
-#  <GTP-U Server>
-#
-#  o GTP-U Server(all address available)
-#    gtpu:
-#
-#  o Provide custom SGW GTP-U address to be advertised inside S1AP messages
-#    gtpu:
-#      addr: 10.4.128.21
-#      advertise_addr: 172.24.15.30
-#
-#    gtpu:
-#      addr: 10.4.128.21
-#      advertise_name: sgw1.epc.mnc001.mcc001.3gppnetwork.org
-#
-#    gtpu:
-#      dev: ens3
-#      advertise_name: sgw1.epc.mnc001.mcc001.3gppnetwork.org
-#
 #  <PFCP Server>
 #
 #  o PFCP Server(127.0.0.6:8805, ::1:8805)
@@ -49,10 +31,75 @@ logger:
 #      - addr: 127.0.0.6
 #      - addr: ::1
 #
+#  o PFCP-U Server(127.0.0.1:2152, [::1]:2152)
+#    pfcp:
+#      - name: localhost
+#
+#  o PFCP Option (Default)
+#    - so_bindtodevice : NULL
+#
+#    pfcp:
+#      addr: 127.0.0.6
+#      option:
+#        so_bindtodevice: vrf-blue
+#
+#  <GTP-U Server>
+#
+#  o GTP-U Server(127.0.0.6:2152, [::1]:2152)
+#    gtpu:
+#      - addr: 127.0.0.6
+#      - addr: ::1
+#
+#  o GTP-U Server(127.0.0.1:2152, [::1]:2152)
+#    gtpu:
+#      - name: localhost
+#
+#  o User Plane IP Resource information
+#    gtpu:
+#      - addr:
+#        - 127.0.0.6
+#        - ::1
+#        teid_range_indication: 4
+#        teid_range: 10
+#        network_instance: internet
+#        source_interface: 0
+#      - addr: 127.0.10.4
+#        teid_range_indication: 4
+#        teid_range: 5
+#        network_instance: ims
+#        source_interface: 1
+#
+#  o Provide custom SGW-U GTP-U address to be advertised inside S1AP messages
+#    gtpu:
+#      - addr: 10.4.128.21
+#        advertise: 172.24.15.30
+#
+#    gtpu:
+#      - addr: 10.4.128.21
+#        advertise:
+#        - 127.0.0.1
+#        - ::1
+#
+#    gtpu:
+#      - addr: 10.4.128.21
+#        advertise: sgw1.epc.mnc001.mcc001.3gppnetwork.org
+#
+#    gtpu:
+#      - dev: ens3
+#        advertise: sgw1.epc.mnc001.mcc001.3gppnetwork.org
+#
+#  o GTP-U Option (Default)
+#    - so_bindtodevice : NULL
+#
+#    gtpu:
+#      addr: 127.0.0.6
+#      option:
+#        so_bindtodevice: vrf-blue
+#
 sgwu:
-    gtpu:
-      - addr: 127.0.0.6
     pfcp:
+      - addr: 127.0.0.6
+    gtpu:
       - addr: 127.0.0.6
 
 #
@@ -60,18 +107,15 @@ sgwu:
 #
 #  <PFCP Client>>
 #
-#  o PFCP Client(127.0.0.6:8805)
+#  o PFCP Client(127.0.0.3:8805)
 #
 #    pfcp:
-#      addr: 127.0.0.6
+#      addr: 127.0.0.3
 #
 sgwc:
 
 #
 # parameter:
-#
-#  o Number of output streams per SCTP associations.
-#      sctp_streams: 30
 #
 #  o Disable use of IPv4 addresses (only IPv6)
 #      no_ipv4: true
@@ -82,12 +126,6 @@ sgwc:
 #  o Prefer IPv4 instead of IPv6 for estabishing new GTP connections.
 #      prefer_ipv4: true
 #
-#  o Enable Multicast traffic to the UE
-#      multicast: true
-#
-#  o Disable Stateless Address Autoconfiguration for IPv6
-#      no_slaac: true
-#
 parameter:
 
 #
@@ -96,29 +134,16 @@ parameter:
 # o Maximum Number of UE per AMF/MME
 #    ue: 1024
 # o Maximum Number of gNB/eNB per AMF/MME
-#    gnb: 32
+#    gnb: 64
 #
 max:
 
 #
-# pool:
+# time:
 #
-# o The Number of Default Memory Pool Size
+#  o Message Wait Duration (Default : 10,000 ms = 10 seconds)
 #
-#   - Pool-size 128         => 32768 Number
-#   - Pool-size 256         => 4096 Number
-#   - Pool-size 512         => 2048 Number
-#   - Pool-size 1024        => 1024 Number
-#   - Pool-size 2048        => 512 Number
-#   - Pool-size 8192        => 128 Number
-#   - Pool-size 1024*1024   => 8 Number
-#
-#    128:  32768
-#    256:  4096
-#    512:  2048
-#    1024: 1024
-#    2048: 512
-#    8192: 128
-#    big:  8
-#
-pool:
+#  o Message Wait Duration (3000 ms)
+#    message:
+#        duration: 3000
+time:
