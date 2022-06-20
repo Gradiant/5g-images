@@ -1,4 +1,4 @@
-FROM node:lts as dev
+FROM node:16.14 as dev
 LABEL maintainer="cgiraldo@gradiant.org" \
       organization="gradiant.org"
 
@@ -15,7 +15,7 @@ RUN ln -s /opt/open5gs-${VERSION} /opt/open5gs
 RUN cd /opt/open5gs-${VERSION}/webui && npm install  && npm run build
 
 
-FROM node:lts-slim
+FROM node:16.14-slim
 
 
 ENV VERSION=$version \
