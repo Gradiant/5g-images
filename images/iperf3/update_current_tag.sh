@@ -1,4 +1,4 @@
-CURRENT_TAG=$((docker run --pull -ti --rm alpine:latest apk info --no-cache iperf3) | grep -Po '(?<=iperf3-)\d.\d.' | head -1)
+CURRENT_TAG=$(docker run --pull -ti --rm alpine:latest apk info --no-cache iperf3 | grep -Po '(?<=iperf3-)\d.\d.' | head -1)
 
 # Load IMAGE_TAG
 [[ -f image_info.sh ]] && source image_info.sh || exit 1
