@@ -246,7 +246,7 @@ services:
       - "4060/tcp"
     restart: on-failure
   scscf:
-    image: mmarquez99/ims
+    image: openverso/ims
     container_name: scscf
     volumes:
       - /etc/timezone:/etc/timezone:ro
