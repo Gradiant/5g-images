@@ -1,0 +1,27 @@
+version: '3'
+services:
+  enodeb:
+    image: openverso/srsran:21_10
+    container_name: srsenb
+    stdin_open: true
+    tty: true
+    command: 
+      - enb
+    privileged: true
+    volumes:
+      - ./config/srsran/:/etc/srsran/
+      - /dev/bus/usb:/dev/bus/usb
+      - ./uhd_images:/usr/share/uhd/images
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    cap_add:
+      - all
+    expose:
+      - "36412/sctp"
+      - "2152/udp"
+    environment:
+      UHD_IMAGES_DIR: /usr/share/uhd/images
+      MME_HOSTNAME: mme
+      ENB_HOSTNAME: enodeb
+      MCC: "001"
+      MNC: "01"

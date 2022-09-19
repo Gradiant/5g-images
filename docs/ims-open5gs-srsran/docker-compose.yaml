@@ -1,0 +1,336 @@
+version: '3'
+services:
+  mongo:
+    image: mongo
+    environment:
+      MONGO_INITDB_DATABASE: open5gs
+    container_name: mongo
+    volumes:
+      - mongodbdata:/data/db
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    expose:
+      - "27017/udp"
+      - "27017/tcp"
+    command: mongod --bind_ip 0.0.0.0
+    restart: on-failure
+  webui:
+    image: openverso/open5gs-webui:2.4.9
+    container_name: webui
+    depends_on:
+      - mongo
+    environment:
+      - DB_URI=mongodb://mongo/open5gs
+      - NODE_ENV=dev
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    expose:
+      - "3000/tcp"
+    ports:
+      - "3000:3000/tcp"
+    restart: on-failure
+  hss:
+    image: openverso/open5gs:2.4.9
+    entrypoint: /entrypoint_open5gs.sh
+    container_name: hss
+    command: open5gs-hssd
+    volumes:
+      - ./entrypoint_open5gs.sh:/entrypoint_open5gs.sh
+      - ./config/hss.conf:/opt/open5gs/etc/freeDiameter/hss.conf
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      - mongo
+    environment:
+      - DB_URI=mongodb://mongo/open5gs
+    expose:
+      - "3868/udp"
+      - "3868/tcp"
+      - "3868/sctp"
+      - "5868/udp"
+      - "5868/tcp"
+      - "5868/sctp"
+    restart: on-failure
+  sgwc:
+    image: openverso/open5gs:2.4.9
+    entrypoint: /entrypoint_open5gs.sh
+    command: open5gs-sgwcd
+    depends_on:
+      - smf
+      - upf
+    container_name: sgwc
+    volumes:
+      - ./entrypoint_open5gs.sh:/entrypoint_open5gs.sh
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    expose:
+      - "2123/udp"
+      - "8805/udp"
+    restart: on-failure
+  sgwu:
+    image: openverso/open5gs:2.4.9
+    entrypoint: /entrypoint_open5gs.sh
+    command: open5gs-sgwud
+    depends_on:
+      - smf
+      - upf
+    container_name: sgwu
+    volumes:
+      - ./entrypoint_open5gs.sh:/entrypoint_open5gs.sh
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    expose:
+      - "8805/udp"
+      - "2152/udp"
+    restart: on-failure
+  smf:
+    image: openverso/open5gs:2.4.9
+    entrypoint: /entrypoint_open5gs.sh
+    command: open5gs-smfd 
+    container_name: smf
+    volumes:
+      - ./entrypoint_open5gs.sh:/entrypoint_open5gs.sh
+      - ./config/smf.conf:/opt/open5gs/etc/freeDiameter/smf.conf
+      - ./config/smf.yaml:/opt/open5gs/smf.yaml
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    expose:
+      - "3868/udp"
+      - "3868/tcp"
+      - "3868/sctp"
+      - "5868/udp"
+      - "5868/tcp"
+      - "5868/sctp"
+      - "8805/udp"
+      - "2123/udp"
+      - "7777/tcp"
+    restart: on-failure
+  upf:
+    image: openverso/open5gs:2.4.9
+    entrypoint: /entrypoint_open5gs.sh
+    command: open5gs-upfd
+    depends_on:
+      - smf
+    container_name: upf
+    volumes:
+      - ./entrypoint_open5gs.sh:/entrypoint_open5gs.sh
+      - ./config/upf.yaml:/opt/open5gs/etc/open5gs/upf.yaml
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    expose:
+      - "2152/udp"
+      - "8805/udp"
+    ports:
+      - 2152:2152
+    cap_add:
+      - all
+    privileged: true
+    sysctls:
+      - net.ipv4.ip_forward=1
+    restart: on-failure
+  mme:
+    image: openverso/open5gs:2.4.9
+    entrypoint: /entrypoint_open5gs.sh
+    command: open5gs-mmed
+    depends_on:
+      - hss
+      - sgwc
+      - sgwu
+      - smf
+      - upf
+      - osmomsc
+    container_name: mme
+    volumes:
+      - ./entrypoint_open5gs.sh:/entrypoint_open5gs.sh
+      - ./config/mme.yaml:/opt/open5gs/etc/open5gs/mme.yaml
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    expose:
+      - "3868/udp"
+      - "3868/tcp"
+      - "3868/sctp"
+      - "5868/udp"
+      - "5868/tcp"
+      - "5868/sctp"
+      - "36412/sctp"
+      - "2123/udp"
+    ports:
+      - 36412:36412
+    restart: on-failure
+  pcrf:
+    image: openverso/open5gs:2.4.9
+    entrypoint: /entrypoint_open5gs.sh
+    command: open5gs-pcrfd
+    container_name: pcrf
+    environment:
+      - DB_URI=mongodb://mongo/open5gs
+    depends_on:
+      - mongo
+    volumes:
+      - ./entrypoint_open5gs.sh:/entrypoint_open5gs.sh
+      - ./config/pcrf.conf:/opt/open5gs/etc/freeDiameter/pcrf.conf
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    expose:
+      - "3868/udp"
+      - "3868/tcp"
+      - "3868/sctp"
+      - "5868/udp"
+      - "5868/tcp"
+      - "5868/sctp"
+    restart: on-failure
+  dns:
+    image: openverso/ims-dns
+    container_name: dns
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    expose:
+      - "53/udp"
+    restart: on-failure
+  rtpengine:
+    image: openverso/ims-rtpengine
+    container_name: rtpengine
+    privileged: true
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    cap_add:
+      - NET_ADMIN
+    restart: on-failure
+    expose:
+      - "2223/udp"
+      - "49000-50000/udp"
+  mysql:
+    image: openverso/ims-mysql
+    container_name: mysql
+    volumes:
+      - dbdata:/var/lib/mysql
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    expose:
+      - "3306/tcp"
+    restart: on-failure
+  fhoss:
+    image: openverso/ims-fhoss
+    container_name: fhoss
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      - dns
+      - mysql
+    expose:
+      - "3868/udp"
+      - "3868/tcp"
+    ports:
+      - "8080:8080/tcp"
+    restart: on-failure
+  icscf:
+    image: openverso/ims
+    container_name: icscf
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - COMPONENT_NAME=icscf-1
+    depends_on:
+      - dns
+      - mysql
+      - fhoss
+    expose:
+      - "3869/udp"
+      - "3869/tcp"
+      - "4060/udp"
+      - "4060/tcp"
+    restart: on-failure
+  scscf:
+    image: mmarquez99/ims
+    container_name: scscf
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - COMPONENT_NAME=scscf-1
+    depends_on:
+      - dns
+      - mysql
+      - fhoss
+    expose:
+      - "3870/udp"
+      - "3870/tcp"
+      - "6060/udp"
+      - "6060/tcp"
+    restart: on-failure
+  pcscf:
+    image: openverso/ims
+    container_name: pcscf
+    privileged: true
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ../../images/ims/kamailio_init.sh:/kamailio_init.sh
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - COMPONENT_NAME=pcscf-1
+    depends_on:
+      - dns
+      - mysql
+      - rtpengine
+      - icscf
+      - scscf
+    expose:
+      - "3871/udp"
+      - "3871/tcp"
+      - "5060/tcp"
+      - "5060/udp"
+      - "5100-5120/tcp"
+      - "5100-5120/udp"
+      - "6100-6120/tcp"
+      - "6100-6120/udp"
+    restart: on-failure
+  smsc:
+    image: openverso/ims
+    container_name: smsc
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - COMPONENT_NAME=smsc-1
+    depends_on:
+      - dns
+      - mysql
+    expose:
+      - "7090/udp"
+      - "7090/tcp"
+    restart: on-failure
+  osmomsc:
+    image: openverso/ims-osmomsc
+    container_name: osmomsc
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - COMPONENT_NAME=osmomsc-1
+    depends_on:
+      - osmohlr
+    expose:
+      - "29118/sctp"
+      - "2775/tcp"
+    restart: on-failure
+  osmohlr:
+    image: openverso/ims-osmohlr
+    container_name: osmohlr
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - COMPONENT_NAME=osmohlr-1
+    expose:
+      - "4222/tcp"
+    restart: on-failure
+volumes:
+  mongodbdata: {}
+  dbdata: {}
