@@ -216,8 +216,11 @@ services:
       - "3306/tcp"
     restart: on-failure
   fhoss:
-    image: mmarquez99/ims-fhoss
+    image: mmarquez99/fhoss
     container_name: fhoss
+    environment:
+      IMS_DOMAIN: ims.mnc001.mcc001.3gppnetwork.org
+      EPC_DOMAIN: openverso
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
@@ -273,7 +276,6 @@ services:
     cap_add:
       - NET_ADMIN
     volumes:
-      - ../../images/ims/kamailio_init.sh:/kamailio_init.sh
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     environment:
