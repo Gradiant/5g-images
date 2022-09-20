@@ -189,9 +189,13 @@ services:
       - "53/udp"
     restart: on-failure
   rtpengine:
-    image: mmarquez99/ims-rtpengine
+    image: mmarquez99/rtpengine
     container_name: rtpengine
     privileged: true
+    environment:
+      GW_HOSTNAME: upf
+      APN_IMS_SUBNET: 192.168.101.0/24
+      RTPENGINE_HOSTNAME: rtpengine
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
@@ -227,7 +231,7 @@ services:
       - "8080:8080/tcp"
     restart: on-failure
   icscf:
-    image: mmarquez99/ims
+    image: mmarquez99/kamailio-ims
     container_name: icscf
     volumes:
       - /etc/timezone:/etc/timezone:ro
@@ -245,7 +249,7 @@ services:
       - "4060/tcp"
     restart: on-failure
   scscf:
-    image: mmarquez99/ims
+    image: mmarquez99/kamailio-ims
     container_name: scscf
     volumes:
       - /etc/timezone:/etc/timezone:ro
@@ -263,7 +267,7 @@ services:
       - "6060/tcp"
     restart: on-failure
   pcscf:
-    image: mmarquez99/ims
+    image: mmarquez99/kamailio-ims
     container_name: pcscf
     privileged: true
     cap_add:

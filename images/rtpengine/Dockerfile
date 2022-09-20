@@ -48,13 +48,14 @@ COPY rtpengine_init.sh /mnt/rtpengine/
 
 RUN chmod +x /mnt/rtpengine/rtpengine_init.sh
 
-ENV UPF_HOSTNAME=upf \
+ENV GW_HOSTNAME=upf \
     RTPENGINE_HOSTNAME=rtpengine \
 	TABLE=0 \
 	PIDFILE=/run/ngcp-rtpengine-daemon.pid  \
 	PORT_MAX=50000 \
 	PORT_MIN=49000 \
 	NO_FALLBACK=no \
-	TOS=184
+	TOS=184 \
+	APN_IMS_SUBNET=192.168.101.0/24
 
 CMD /mnt/rtpengine/rtpengine_init.sh

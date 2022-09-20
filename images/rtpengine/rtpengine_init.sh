@@ -35,30 +35,26 @@ else
 	modprobe xt_RTPENGINE
 fi
 
-UPF_IP=${UPF_IP:-"$(host -4 $UPF_HOSTNAME |awk '/has.*address/{print $NF; exit}')"}
-export UPF_IP
-echo "UPF_IP: $UPF_IP"
+GW_IP=${GW_IP:-"$(host -4 $GW_HOSTNAME |awk '/has.*address/{print $NF; exit}')"}
+export GW_IP
+echo "GW_IP: $GW_IP"
 
-RTPENGINE_IP=${RTPENGINE_IP:-"$(host -4 $RTPENGINE_HOSTNAME |awk '/has.*address/{print $NF; exit}')"}
-export RTPENGINE_IP
-echo "RTPENGINE_IP: $RTPENGINE_IP"
+INTERFACE_IP=${INTERFACE_IP:-"$(host -4 $RTPENGINE_HOSTNAME |awk '/has.*address/{print $NF; exit}')"}
+export INTERFACE_IP
+echo "INTERFACE_IP: $INTERFACE_IP"
 
-INTERFACE=${RTPENGINE_IP:-"$(host -4 $RTPENGINE_HOSTNAME |awk '/has.*address/{print $NF; exit}')"}
-export INTERFACE
-echo "INTERFACE: $INTERFACE"
-
-LISTEN_NG=${INTERFACE}:2223
+LISTEN_NG=${INTERFACE_IP}:2223
 export LISTEN_NG
 echo "LISTEN_NG: $LISTEN_NG"
 
-if [ -z "$UPF_IP" ] \
-    || [[ -z "$RTPENGINE_IP" ]]; then
-echo "Unable to resolve some IPs... restarting"
-exit 1
+if [ -z "$GW_IP" ]
+then
+	echo "Unable to resolve some IPs... restarting"
+	exit 1
 fi
 
 # Populate options of the rtpengine cli command
-[ -z "$INTERFACE" ] && INTERFACE="$(awk 'END{print $1}' /etc/hosts)"
+[ -z "$INTERFACE_IP" ] && INTERFACE_IP="$(awk 'END{print $1}' /etc/hosts)"
 [ -z "$TABLE" ] && TABLE="0"
 [ -z "$LISTEN_NG" ] && LISTEN_NG="$(awk 'END{print $1}' /etc/hosts):2223"
 [ -z "$PORT_MIN" ] && PORT_MIN="30000"
@@ -69,7 +65,7 @@ fi
 LISTEN_CLI="$(awk 'END{print $1}' /etc/hosts):9901"
 
 OPTIONS=""
-OPTIONS="$OPTIONS --interface=$INTERFACE --listen-ng=$LISTEN_NG --listen-cli=$LISTEN_CLI --pidfile=$PIDFILE --port-min=$PORT_MIN --port-max=$PORT_MAX "
+OPTIONS="$OPTIONS --interface=$INTERFACE_IP --listen-ng=$LISTEN_NG --listen-cli=$LISTEN_CLI --pidfile=$PIDFILE --port-min=$PORT_MIN --port-max=$PORT_MAX "
 OPTIONS="$OPTIONS --table=$TABLE  --tos=$TOS --foreground"
 
 if test "$NO_FALLBACK" = "yes" ; then
@@ -107,7 +103,7 @@ ip6tables -I rtpengine -p udp -j RTPENGINE --id "$TABLE"
 ip6tables-save > /etc/ip6tables.rules
 
 # Add static route to route traffic back to UE as there is not NATing
-ip r add 192.168.101.0/24 via ${UPF_IP}
+ip r add ${APN_IMS_SUBNET} via ${GW_IP}
 
 set -x
 
