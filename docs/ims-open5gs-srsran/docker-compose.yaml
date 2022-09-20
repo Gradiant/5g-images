@@ -139,7 +139,6 @@ services:
       - sgwu
       - smf
       - upf
-      - osmomsc
     container_name: mme
     volumes:
       - ./entrypoint_open5gs.sh:/entrypoint_open5gs.sh
@@ -181,7 +180,7 @@ services:
       - "5868/sctp"
     restart: on-failure
   dns:
-    image: openverso/ims-dns
+    image: mmarquez99/ims-dns
     container_name: dns
     volumes:
       - /etc/timezone:/etc/timezone:ro
@@ -190,7 +189,7 @@ services:
       - "53/udp"
     restart: on-failure
   rtpengine:
-    image: openverso/ims-rtpengine
+    image: mmarquez99/ims-rtpengine
     container_name: rtpengine
     privileged: true
     volumes:
@@ -203,7 +202,7 @@ services:
       - "2223/udp"
       - "49000-50000/udp"
   mysql:
-    image: openverso/ims-mysql
+    image: mmarquez99/ims-mysql
     container_name: mysql
     volumes:
       - dbdata:/var/lib/mysql
@@ -213,7 +212,7 @@ services:
       - "3306/tcp"
     restart: on-failure
   fhoss:
-    image: openverso/ims-fhoss
+    image: mmarquez99/ims-fhoss
     container_name: fhoss
     volumes:
       - /etc/timezone:/etc/timezone:ro
@@ -228,7 +227,7 @@ services:
       - "8080:8080/tcp"
     restart: on-failure
   icscf:
-    image: openverso/ims
+    image: mmarquez99/ims
     container_name: icscf
     volumes:
       - /etc/timezone:/etc/timezone:ro
@@ -246,7 +245,7 @@ services:
       - "4060/tcp"
     restart: on-failure
   scscf:
-    image: openverso/ims
+    image: mmarquez99/ims
     container_name: scscf
     volumes:
       - /etc/timezone:/etc/timezone:ro
@@ -264,7 +263,7 @@ services:
       - "6060/tcp"
     restart: on-failure
   pcscf:
-    image: openverso/ims
+    image: mmarquez99/ims
     container_name: pcscf
     privileged: true
     cap_add:
@@ -290,46 +289,6 @@ services:
       - "5100-5120/udp"
       - "6100-6120/tcp"
       - "6100-6120/udp"
-    restart: on-failure
-  smsc:
-    image: openverso/ims
-    container_name: smsc
-    volumes:
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
-    environment:
-      - COMPONENT_NAME=smsc-1
-    depends_on:
-      - dns
-      - mysql
-    expose:
-      - "7090/udp"
-      - "7090/tcp"
-    restart: on-failure
-  osmomsc:
-    image: openverso/ims-osmomsc
-    container_name: osmomsc
-    volumes:
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
-    environment:
-      - COMPONENT_NAME=osmomsc-1
-    depends_on:
-      - osmohlr
-    expose:
-      - "29118/sctp"
-      - "2775/tcp"
-    restart: on-failure
-  osmohlr:
-    image: openverso/ims-osmohlr
-    container_name: osmohlr
-    volumes:
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
-    environment:
-      - COMPONENT_NAME=osmohlr-1
-    expose:
-      - "4222/tcp"
     restart: on-failure
 volumes:
   mongodbdata: {}

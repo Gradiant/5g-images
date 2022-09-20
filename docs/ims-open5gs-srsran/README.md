@@ -12,7 +12,7 @@ docker-compose up -d
 
 # Register subscribers
 
-Register both subscribers in Open5gs, OsmoHLR and FHoSS following the instructions provided in https://github.com/MAlexVR/docker_open5gs
+Register both subscribers in Open5gs and FHoSS following the instructions provided in https://github.com/MAlexVR/docker_open5gs
 
 # Deployment RAN
 Download the uhd_images folder using *uhd_image_downloader.py* script provided. Then:

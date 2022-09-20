@@ -51,7 +51,6 @@ ENV MNC=01 \
 	UPF_HOSTNAME=upf \
     ICSCF_HOSTNAME=icscf \
     SCSCF_HOSTNAME=scscf \
-    SMSC_HOSTNAME=smsc \
     DNS_HOSTNAME=dns
 
 # Build and Install Kamailio
@@ -70,9 +69,6 @@ RUN chmod +x /mnt/pcscf/pcscf_init.sh
 
 COPY scscf/ /mnt/scscf/
 RUN chmod +x /mnt/scscf/scscf_init.sh
-
-COPY smsc/ /mnt/smsc/
-RUN chmod +x /mnt/smsc/smsc_init.sh
 
 COPY kamailio_init.sh /
 CMD /kamailio_init.sh

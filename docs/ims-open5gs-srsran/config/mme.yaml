@@ -2,19 +2,6 @@ mme:
     freeDiameter: mme.conf
     s1ap:
     gtpc:
-    sgsap:
-      name: osmomsc
-      map:
-        tai:
-          plmn_id:
-            mcc: 001
-            mnc: 01
-          tac: 1
-        lai:
-          plmn_id:
-            mcc: 001
-            mnc: 01
-          lac: 1
     gummei: 
       plmn_id:
         mcc: 001

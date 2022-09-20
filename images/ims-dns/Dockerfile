@@ -46,8 +46,7 @@ ENV IMS_DOMAIN=ims.mnc001.mcc001.3gppnetwork.org \
     ICSCF_HOSTNAME=icscf \
     SCSCF_HOSTNAME=scscf \
     PCSCF_HOSTNAME=pcscf \
-    FHOSS_HOSTNAME=fhoss \
-    SMSC_HOSTNAME=smsc
+    FHOSS_HOSTNAME=fhoss
 
 CMD /mnt/dns/dns_init.sh && \
 	/usr/sbin/named -c /etc/bind/named.conf -g -u bind

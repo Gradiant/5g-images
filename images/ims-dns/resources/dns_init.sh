@@ -50,15 +50,10 @@ FHOSS_IP=${FHOSS_IP:-"$(host -4 $FHOSS_HOSTNAME |awk '/has.*address/{print $NF; 
 export FHOSS_IP
 echo "FHOSS_IP: $FHOSS_IP"
 
-SMSC_IP=${SMSC_IP:-"$(host -4 $SMSC_HOSTNAME |awk '/has.*address/{print $NF; exit}')"}
-export SMSC_IP
-echo "SMSC_IP: $SMSC_IP"
-
 if [ -z "$DNS_IP" ] \
     || [[ -z "$PCRF_IP" ]] \
     || [[ -z "$PCSCF_IP" ]] \
     || [[ -z "$FHOSS_IP" ]] \
-    || [[ -z "$SMSC_IP" ]] \
     || [[ -z "$ICSCF_IP" ]] \
     || [[ -z "$SCSCF_IP" ]]; then
 echo "Unable to resolve some IPs... restarting"
@@ -83,7 +78,6 @@ sed -i 's|PCSCF_IP|'$PCSCF_IP'|g' /etc/bind/ims_zone
 sed -i 's|ICSCF_IP|'$ICSCF_IP'|g' /etc/bind/ims_zone
 sed -i 's|SCSCF_IP|'$SCSCF_IP'|g' /etc/bind/ims_zone
 sed -i 's|FHOSS_IP|'$FHOSS_IP'|g' /etc/bind/ims_zone
-sed -i 's|SMSC_IP|'$SMSC_IP'|g' /etc/bind/ims_zone
 
 sed -i 's|IMS_DOMAIN|'$IMS_DOMAIN'|g' /etc/bind/e164.arpa
 sed -i 's|DNS_IP|'$DNS_IP'|g' /etc/bind/e164.arpa
