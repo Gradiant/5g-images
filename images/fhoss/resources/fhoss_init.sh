@@ -82,8 +82,8 @@ then
 	FHOSS_USER_EXISTS=`mysql -u root -h ${MYSQL_IP} -s -N -e "SELECT EXISTS(SELECT 1 FROM mysql.user WHERE User = 'hss' AND Host = '%')"`
 	if [[ "$FHOSS_USER_EXISTS" == 0 ]]
 	then
-		mysql -u root -h ${MYSQL_IP} -e "CREATE USER 'hss'@'%' IDENTIFIED WITH mysql_native_password BY 'hss'";
-		mysql -u root -h ${MYSQL_IP} -e "CREATE USER 'hss'@'$FHOSS_IP' IDENTIFIED WITH mysql_native_password BY 'hss'";
+		mysql -u root -h ${MYSQL_IP} -e "CREATE USER 'hss'@'%' IDENTIFIED VIA mysql_native_password USING PASSWORD('hss')";
+		mysql -u root -h ${MYSQL_IP} -e "CREATE USER 'hss'@'$FHOSS_IP' IDENTIFIED VIA mysql_native_password USING PASSWORD('hss')";
 		mysql -u root -h ${MYSQL_IP} -e "GRANT ALL ON hss_db.* TO 'hss'@'%'";
 		mysql -u root -h ${MYSQL_IP} -e "GRANT ALL ON hss_db.* TO 'hss'@'$FHOSS_IP'";
 		mysql -u root -h ${MYSQL_IP} -e "FLUSH PRIVILEGES;"

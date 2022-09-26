@@ -1,7 +1,7 @@
-version: '3'
+version: "3"
 services:
   mongo:
-    image: mongo
+    image: mongo:4.4.13
     environment:
       MONGO_INITDB_DATABASE: open5gs
     container_name: mongo
@@ -36,8 +36,8 @@ services:
     container_name: hss
     command: open5gs-hssd
     volumes:
-      - ./entrypoint_open5gs.sh:/entrypoint_open5gs.sh
-      - ./config/hss.conf:/opt/open5gs/etc/freeDiameter/hss.conf
+      - ./config/open5gs/entrypoint_open5gs.sh:/entrypoint_open5gs.sh
+      - ./config/open5gs/hss.conf:/opt/open5gs/etc/freeDiameter/hss.conf
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     depends_on:
@@ -61,7 +61,7 @@ services:
       - upf
     container_name: sgwc
     volumes:
-      - ./entrypoint_open5gs.sh:/entrypoint_open5gs.sh
+      - ./config/open5gs/entrypoint_open5gs.sh:/entrypoint_open5gs.sh
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     expose:
@@ -77,7 +77,7 @@ services:
       - upf
     container_name: sgwu
     volumes:
-      - ./entrypoint_open5gs.sh:/entrypoint_open5gs.sh
+      - ./config/open5gs/entrypoint_open5gs.sh:/entrypoint_open5gs.sh
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     expose:
@@ -87,12 +87,12 @@ services:
   smf:
     image: openverso/open5gs:2.4.9
     entrypoint: /entrypoint_open5gs.sh
-    command: open5gs-smfd 
+    command: open5gs-smfd
     container_name: smf
     volumes:
-      - ./entrypoint_open5gs.sh:/entrypoint_open5gs.sh
-      - ./config/smf.conf:/opt/open5gs/etc/freeDiameter/smf.conf
-      - ./config/smf.yaml:/opt/open5gs/smf.yaml
+      - ./config/open5gs/entrypoint_open5gs.sh:/entrypoint_open5gs.sh
+      - ./config/open5gs/smf.conf:/opt/open5gs/etc/freeDiameter/smf.conf
+      - ./config/open5gs/smf.yaml:/opt/open5gs/smf.yaml
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     expose:
@@ -114,8 +114,8 @@ services:
       - smf
     container_name: upf
     volumes:
-      - ./entrypoint_open5gs.sh:/entrypoint_open5gs.sh
-      - ./config/upf.yaml:/opt/open5gs/etc/open5gs/upf.yaml
+      - ./config/open5gs/entrypoint_open5gs.sh:/entrypoint_open5gs.sh
+      - ./config/open5gs/upf.yaml:/opt/open5gs/etc/open5gs/upf.yaml
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     expose:
@@ -141,8 +141,8 @@ services:
       - upf
     container_name: mme
     volumes:
-      - ./entrypoint_open5gs.sh:/entrypoint_open5gs.sh
-      - ./config/mme.yaml:/opt/open5gs/etc/open5gs/mme.yaml
+      - ./config/open5gs/entrypoint_open5gs.sh:/entrypoint_open5gs.sh
+      - ./config/open5gs/mme.yaml:/opt/open5gs/etc/open5gs/mme.yaml
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     expose:
@@ -167,8 +167,8 @@ services:
     depends_on:
       - mongo
     volumes:
-      - ./entrypoint_open5gs.sh:/entrypoint_open5gs.sh
-      - ./config/pcrf.conf:/opt/open5gs/etc/freeDiameter/pcrf.conf
+      - ./config/open5gs/entrypoint_open5gs.sh:/entrypoint_open5gs.sh
+      - ./config/open5gs/pcrf.conf:/opt/open5gs/etc/freeDiameter/pcrf.conf
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     expose:
@@ -206,10 +206,15 @@ services:
       - "2223/udp"
       - "49000-50000/udp"
   mysql:
-    image: mmarquez99/ims-mysql
+    image: mariadb:10.9.3
     container_name: mysql
+    environment:
+      MARIADB_ROOT_PASSWORD: ims
     volumes:
       - dbdata:/var/lib/mysql
+      - ./config/mariadb/custom-config.cnf:/etc/mysql/conf.d/custom-config.cnf
+      - ./config/mariadb/my.cnf:/root/.my.cnf
+      - ./config/mariadb/entrypoint.sh:/docker-entrypoint-initdb.d/entrypoint.sh
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     expose:
