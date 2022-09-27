@@ -14,6 +14,9 @@ services:
       - "27017/tcp"
     command: mongod --bind_ip 0.0.0.0
     restart: on-failure
+    networks:
+      default:
+        ipv4_address: 172.22.0.2
   webui:
     image: openverso/open5gs-webui:2.4.9
     container_name: webui
@@ -30,6 +33,9 @@ services:
     ports:
       - "3000:3000/tcp"
     restart: on-failure
+    networks:
+      default:
+        ipv4_address: 172.22.0.26
   hss:
     image: openverso/open5gs:2.4.9
     entrypoint: /entrypoint_open5gs.sh
@@ -52,6 +58,9 @@ services:
       - "5868/tcp"
       - "5868/sctp"
     restart: on-failure
+    networks:
+      default:
+        ipv4_address: 172.22.0.3
   sgwc:
     image: openverso/open5gs:2.4.9
     entrypoint: /entrypoint_open5gs.sh
@@ -68,6 +77,9 @@ services:
       - "2123/udp"
       - "8805/udp"
     restart: on-failure
+    networks:
+      default:
+        ipv4_address: 172.22.0.5
   sgwu:
     image: openverso/open5gs:2.4.9
     entrypoint: /entrypoint_open5gs.sh
@@ -84,6 +96,9 @@ services:
       - "8805/udp"
       - "2152/udp"
     restart: on-failure
+    networks:
+      default:
+        ipv4_address: 172.22.0.6
   smf:
     image: openverso/open5gs:2.4.9
     entrypoint: /entrypoint_open5gs.sh
@@ -106,6 +121,9 @@ services:
       - "2123/udp"
       - "7777/tcp"
     restart: on-failure
+    networks:
+      default:
+        ipv4_address: 172.22.0.7
   upf:
     image: openverso/open5gs:2.4.9
     entrypoint: /entrypoint_open5gs.sh
@@ -129,6 +147,9 @@ services:
     sysctls:
       - net.ipv4.ip_forward=1
     restart: on-failure
+    networks:
+      default:
+        ipv4_address: 172.22.0.8
   mme:
     image: openverso/open5gs:2.4.9
     entrypoint: /entrypoint_open5gs.sh
@@ -157,6 +178,9 @@ services:
     ports:
       - 36412:36412
     restart: on-failure
+    networks:
+      default:
+        ipv4_address: 172.22.0.9
   pcrf:
     image: openverso/open5gs:2.4.9
     entrypoint: /entrypoint_open5gs.sh
@@ -179,15 +203,28 @@ services:
       - "5868/tcp"
       - "5868/sctp"
     restart: on-failure
+    networks:
+      default:
+        ipv4_address: 172.22.0.4
   dns:
-    image: mmarquez99/ims-dns
+    image: internetsystemsconsortium/bind9:9.18
     container_name: dns
     volumes:
+      - ./config/bind9/e164.arpa:/etc/bind/e164.arpa
+      - ./config/bind9/epc_zone:/etc/bind/epc_zone
+      - ./config/bind9/ims_zone:/etc/bind/ims_zone
+      - ./config/bind9/named.conf:/etc/bind/named.conf
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     expose:
       - "53/udp"
-    restart: on-failure
+      - "53/tcp"
+    ports:
+      - "127.0.0.1:953:953/tcp"
+    restart: always
+    networks:
+      default:
+        ipv4_address: 172.22.0.15
   rtpengine:
     image: mmarquez99/rtpengine
     container_name: rtpengine
@@ -205,6 +242,9 @@ services:
     expose:
       - "2223/udp"
       - "49000-50000/udp"
+    networks:
+      default:
+        ipv4_address: 172.22.0.16
   mysql:
     image: mariadb:10.9.3
     container_name: mysql
@@ -220,6 +260,9 @@ services:
     expose:
       - "3306/tcp"
     restart: on-failure
+    networks:
+      default:
+        ipv4_address: 172.22.0.17
   fhoss:
     image: mmarquez99/fhoss
     container_name: fhoss
@@ -238,6 +281,9 @@ services:
     ports:
       - "8080:8080/tcp"
     restart: on-failure
+    networks:
+      default:
+        ipv4_address: 172.22.0.18
   icscf:
     image: mmarquez99/kamailio-ims
     container_name: icscf
@@ -256,6 +302,9 @@ services:
       - "4060/udp"
       - "4060/tcp"
     restart: on-failure
+    networks:
+      default:
+        ipv4_address: 172.22.0.19
   scscf:
     image: mmarquez99/kamailio-ims
     container_name: scscf
@@ -274,6 +323,9 @@ services:
       - "6060/udp"
       - "6060/tcp"
     restart: on-failure
+    networks:
+      default:
+        ipv4_address: 172.22.0.20
   pcscf:
     image: mmarquez99/kamailio-ims
     container_name: pcscf
@@ -301,6 +353,14 @@ services:
       - "6100-6120/tcp"
       - "6100-6120/udp"
     restart: on-failure
+    networks:
+      default:
+        ipv4_address: 172.22.0.21
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: 172.22.0.0/24
 volumes:
   mongodbdata: {}
   dbdata: {}

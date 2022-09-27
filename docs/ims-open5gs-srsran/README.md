@@ -15,7 +15,12 @@ docker-compose up -d
 Register both subscribers in Open5gs and FHoSS following the instructions provided in https://github.com/MAlexVR/docker_open5gs
 
 # Deployment RAN
-Download the uhd_images folder using *uhd_image_downloader.py* script provided. Then:
+Download the uhd_images folder using *uhd_image_downloader.py* script provided: 
+```
+python3 uhd_image_downloader.py -i uhd_images/
+```
+
+Then:
 
 ```
 docker-compose -f srsenb.yaml up -d
