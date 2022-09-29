@@ -25,3 +25,9 @@ services:
       ENB_HOSTNAME: enodeb
       MCC: "001"
       MNC: "01"
+    networks:
+      default:
+        ipv4_address: 172.22.0.22
+networks:
+  default:
+      name: ims-open5gs-srsran_default

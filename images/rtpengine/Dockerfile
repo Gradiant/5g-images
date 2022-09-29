@@ -39,8 +39,8 @@ RUN apt-get update && \
 					libcurl4-openssl-dev netcat-openbsd netcat iptables iproute2 net-tools iputils-ping libconfig-tiny-perl libwebsockets-dev dnsutils
 
 # Fetch RTPEngine code (tag mr7.4.1), build and install
-RUN git clone https://github.com/sipwise/rtpengine && \
-	cd rtpengine && git checkout mr9.4.1 && dpkg-checkbuilddeps && \
+RUN git clone --depth 1 --branch mr9.4.1.1 https://github.com/sipwise/rtpengine && \
+	cd rtpengine && dpkg-checkbuilddeps && \
 	dpkg-buildpackage -b -uc -us && cd .. && \
 	dpkg -i *.deb && ldconfig
 

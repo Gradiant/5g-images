@@ -41,9 +41,7 @@ RUN mkdir -p /usr/local/src/ && cd /usr/local/src/ && \
 	git clone https://github.com/herlesupreeth/kamailio && \
 	cd kamailio && git checkout 5.3
 
-ENV MNC=01 \
-    MCC=001 \
-	IMS_DOMAIN=ims.mnc001.mcc001.3gppnetwork.org \
+ENV IMS_DOMAIN=ims.mnc001.mcc001.3gppnetwork.org \
     EPC_DOMAIN=openverso \
 	MYSQL_HOSTNAME=mysql \
 	PCSCF_HOSTNAME=pcscf \
