@@ -38,7 +38,7 @@ RUN apt-get update && \
 					markdown dkms module-assistant keyutils libnfsidmap2 nfs-common rpcbind libglib2.0-dev zlib1g-dev libavcodec-extra \
 					libcurl4-openssl-dev netcat-openbsd netcat iptables iproute2 net-tools iputils-ping libconfig-tiny-perl libwebsockets-dev dnsutils
 
-# Fetch RTPEngine code (tag mr7.4.1), build and install
+# Fetch RTPEngine code (tag mr9.4.1.1), build and install
 RUN git clone --depth 1 --branch mr9.4.1.1 https://github.com/sipwise/rtpengine && \
 	cd rtpengine && dpkg-checkbuilddeps && \
 	dpkg-buildpackage -b -uc -us && cd .. && \
