@@ -226,7 +226,7 @@ services:
       default:
         ipv4_address: 172.22.0.15
   rtpengine:
-    image: openverso/rtpengine
+    image: openverso/rtpengine:9.4.1.1
     container_name: rtpengine
     privileged: true
     environment:
@@ -264,7 +264,7 @@ services:
       default:
         ipv4_address: 172.22.0.17
   fhoss:
-    image: openverso/fhoss
+    image: openverso/fhoss:develop
     container_name: fhoss
     environment:
       IMS_DOMAIN: ims.mnc001.mcc001.3gppnetwork.org
@@ -285,7 +285,7 @@ services:
       default:
         ipv4_address: 172.22.0.18
   icscf:
-    image: openverso/kamailio-ims
+    image: openverso/kamailio-ims:5.3-dev
     container_name: icscf
     volumes:
       - /etc/timezone:/etc/timezone:ro
@@ -308,7 +308,7 @@ services:
       default:
         ipv4_address: 172.22.0.19
   scscf:
-    image: openverso/kamailio-ims
+    image: openverso/kamailio-ims:5.3-dev
     container_name: scscf
     volumes:
       - /etc/timezone:/etc/timezone:ro
@@ -331,7 +331,7 @@ services:
       default:
         ipv4_address: 172.22.0.20
   pcscf:
-    image: openverso/kamailio-ims
+    image: openverso/kamailio-ims:5.3-dev
     container_name: pcscf
     privileged: true
     cap_add:
