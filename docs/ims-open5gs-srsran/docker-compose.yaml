@@ -1,0 +1,372 @@
+version: "3"
+services:
+  mongo:
+    image: mongo:4.4.13
+    environment:
+      MONGO_INITDB_DATABASE: open5gs
+    container_name: mongo
+    volumes:
+      - mongodbdata:/data/db
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    expose:
+      - "27017/udp"
+      - "27017/tcp"
+    command: mongod --bind_ip 0.0.0.0
+    restart: on-failure
+    networks:
+      default:
+        ipv4_address: 172.22.0.2
+  webui:
+    image: openverso/open5gs-webui:2.4.9
+    container_name: webui
+    depends_on:
+      - mongo
+    environment:
+      - DB_URI=mongodb://mongo/open5gs
+      - NODE_ENV=dev
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    expose:
+      - "3000/tcp"
+    ports:
+      - "3000:3000/tcp"
+    restart: on-failure
+    networks:
+      default:
+        ipv4_address: 172.22.0.26
+  hss:
+    image: openverso/open5gs:2.4.9
+    entrypoint: /entrypoint_open5gs.sh
+    container_name: hss
+    command: open5gs-hssd
+    volumes:
+      - ./config/open5gs/entrypoint_open5gs.sh:/entrypoint_open5gs.sh
+      - ./config/open5gs/hss.conf:/opt/open5gs/etc/freeDiameter/hss.conf
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      - mongo
+    environment:
+      - DB_URI=mongodb://mongo/open5gs
+    expose:
+      - "3868/udp"
+      - "3868/tcp"
+      - "3868/sctp"
+      - "5868/udp"
+      - "5868/tcp"
+      - "5868/sctp"
+    restart: on-failure
+    networks:
+      default:
+        ipv4_address: 172.22.0.3
+  sgwc:
+    image: openverso/open5gs:2.4.9
+    entrypoint: /entrypoint_open5gs.sh
+    command: open5gs-sgwcd
+    depends_on:
+      - smf
+      - upf
+    container_name: sgwc
+    volumes:
+      - ./config/open5gs/entrypoint_open5gs.sh:/entrypoint_open5gs.sh
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    expose:
+      - "2123/udp"
+      - "8805/udp"
+    restart: on-failure
+    networks:
+      default:
+        ipv4_address: 172.22.0.5
+  sgwu:
+    image: openverso/open5gs:2.4.9
+    entrypoint: /entrypoint_open5gs.sh
+    command: open5gs-sgwud
+    depends_on:
+      - smf
+      - upf
+    container_name: sgwu
+    volumes:
+      - ./config/open5gs/entrypoint_open5gs.sh:/entrypoint_open5gs.sh
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    expose:
+      - "8805/udp"
+      - "2152/udp"
+    restart: on-failure
+    networks:
+      default:
+        ipv4_address: 172.22.0.6
+  smf:
+    image: openverso/open5gs:2.4.9
+    entrypoint: /entrypoint_open5gs.sh
+    command: open5gs-smfd
+    container_name: smf
+    volumes:
+      - ./config/open5gs/entrypoint_open5gs.sh:/entrypoint_open5gs.sh
+      - ./config/open5gs/smf.conf:/opt/open5gs/etc/freeDiameter/smf.conf
+      - ./config/open5gs/smf.yaml:/opt/open5gs/smf.yaml
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    expose:
+      - "3868/udp"
+      - "3868/tcp"
+      - "3868/sctp"
+      - "5868/udp"
+      - "5868/tcp"
+      - "5868/sctp"
+      - "8805/udp"
+      - "2123/udp"
+      - "7777/tcp"
+    restart: on-failure
+    networks:
+      default:
+        ipv4_address: 172.22.0.7
+  upf:
+    image: openverso/open5gs:2.4.9
+    entrypoint: /entrypoint_open5gs.sh
+    command: open5gs-upfd
+    depends_on:
+      - smf
+    container_name: upf
+    volumes:
+      - ./config/open5gs/entrypoint_open5gs.sh:/entrypoint_open5gs.sh
+      - ./config/open5gs/upf.yaml:/opt/open5gs/etc/open5gs/upf.yaml
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    expose:
+      - "2152/udp"
+      - "8805/udp"
+    ports:
+      - 2152:2152
+    cap_add:
+      - all
+    privileged: true
+    sysctls:
+      - net.ipv4.ip_forward=1
+    restart: on-failure
+    networks:
+      default:
+        ipv4_address: 172.22.0.8
+  mme:
+    image: openverso/open5gs:2.4.9
+    entrypoint: /entrypoint_open5gs.sh
+    command: open5gs-mmed
+    depends_on:
+      - hss
+      - sgwc
+      - sgwu
+      - smf
+      - upf
+    container_name: mme
+    volumes:
+      - ./config/open5gs/entrypoint_open5gs.sh:/entrypoint_open5gs.sh
+      - ./config/open5gs/mme.yaml:/opt/open5gs/etc/open5gs/mme.yaml
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    expose:
+      - "3868/udp"
+      - "3868/tcp"
+      - "3868/sctp"
+      - "5868/udp"
+      - "5868/tcp"
+      - "5868/sctp"
+      - "36412/sctp"
+      - "2123/udp"
+    ports:
+      - 36412:36412
+    restart: on-failure
+    networks:
+      default:
+        ipv4_address: 172.22.0.9
+  pcrf:
+    image: openverso/open5gs:2.4.9
+    entrypoint: /entrypoint_open5gs.sh
+    command: open5gs-pcrfd
+    container_name: pcrf
+    environment:
+      - DB_URI=mongodb://mongo/open5gs
+    depends_on:
+      - mongo
+    volumes:
+      - ./config/open5gs/entrypoint_open5gs.sh:/entrypoint_open5gs.sh
+      - ./config/open5gs/pcrf.conf:/opt/open5gs/etc/freeDiameter/pcrf.conf
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    expose:
+      - "3868/udp"
+      - "3868/tcp"
+      - "3868/sctp"
+      - "5868/udp"
+      - "5868/tcp"
+      - "5868/sctp"
+    restart: on-failure
+    networks:
+      default:
+        ipv4_address: 172.22.0.4
+  dns:
+    image: internetsystemsconsortium/bind9:9.18
+    container_name: dns
+    volumes:
+      - ./config/bind9/e164.arpa:/etc/bind/e164.arpa
+      - ./config/bind9/epc_zone:/etc/bind/epc_zone
+      - ./config/bind9/ims_zone:/etc/bind/ims_zone
+      - ./config/bind9/named.conf:/etc/bind/named.conf
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    expose:
+      - "53/udp"
+      - "53/tcp"
+    ports:
+      - "127.0.0.1:953:953/tcp"
+    restart: always
+    networks:
+      default:
+        ipv4_address: 172.22.0.15
+  rtpengine:
+    image: openverso/rtpengine:9.4.1.1
+    container_name: rtpengine
+    privileged: true
+    environment:
+      GW_HOSTNAME: upf
+      APN_IMS_SUBNET: 192.168.101.0/24
+      RTPENGINE_HOSTNAME: rtpengine
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    cap_add:
+      - NET_ADMIN
+    restart: on-failure
+    expose:
+      - "2223/udp"
+      - "49000-50000/udp"
+    networks:
+      default:
+        ipv4_address: 172.22.0.16
+  mysql:
+    image: mariadb:10.9.3
+    container_name: mysql
+    environment:
+      MARIADB_ROOT_PASSWORD: ims
+    volumes:
+      - dbdata:/var/lib/mysql
+      - ./config/mariadb/custom-config.cnf:/etc/mysql/conf.d/custom-config.cnf
+      - ./config/mariadb/my.cnf:/root/.my.cnf
+      - ./config/mariadb/entrypoint.sh:/docker-entrypoint-initdb.d/entrypoint.sh
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    expose:
+      - "3306/tcp"
+    restart: on-failure
+    networks:
+      default:
+        ipv4_address: 172.22.0.17
+  fhoss:
+    image: openverso/fhoss:develop
+    container_name: fhoss
+    environment:
+      IMS_DOMAIN: ims.mnc001.mcc001.3gppnetwork.org
+      EPC_DOMAIN: openverso
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      - dns
+      - mysql
+    expose:
+      - "3868/udp"
+      - "3868/tcp"
+    ports:
+      - "8080:8080/tcp"
+    restart: on-failure
+    networks:
+      default:
+        ipv4_address: 172.22.0.18
+  icscf:
+    image: openverso/kamailio-ims:5.3-dev
+    container_name: icscf
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - COMPONENT_NAME=icscf-1
+      - IMS_DOMAIN=ims.mnc001.mcc001.3gppnetwork.org
+      - EPC_DOMAIN=openverso
+    depends_on:
+      - dns
+      - mysql
+      - fhoss
+    expose:
+      - "3869/udp"
+      - "3869/tcp"
+      - "4060/udp"
+      - "4060/tcp"
+    restart: on-failure
+    networks:
+      default:
+        ipv4_address: 172.22.0.19
+  scscf:
+    image: openverso/kamailio-ims:5.3-dev
+    container_name: scscf
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - COMPONENT_NAME=scscf-1
+      - IMS_DOMAIN=ims.mnc001.mcc001.3gppnetwork.org
+      - EPC_DOMAIN=openverso
+    depends_on:
+      - dns
+      - mysql
+      - fhoss
+    expose:
+      - "3870/udp"
+      - "3870/tcp"
+      - "6060/udp"
+      - "6060/tcp"
+    restart: on-failure
+    networks:
+      default:
+        ipv4_address: 172.22.0.20
+  pcscf:
+    image: openverso/kamailio-ims:5.3-dev
+    container_name: pcscf
+    privileged: true
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - COMPONENT_NAME=pcscf-1
+      - IMS_DOMAIN=ims.mnc001.mcc001.3gppnetwork.org
+      - EPC_DOMAIN=openverso
+    depends_on:
+      - dns
+      - mysql
+      - rtpengine
+      - icscf
+      - scscf
+    expose:
+      - "3871/udp"
+      - "3871/tcp"
+      - "5060/tcp"
+      - "5060/udp"
+      - "5100-5120/tcp"
+      - "5100-5120/udp"
+      - "6100-6120/tcp"
+      - "6100-6120/udp"
+    restart: on-failure
+    networks:
+      default:
+        ipv4_address: 172.22.0.21
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: 172.22.0.0/24
+volumes:
+  mongodbdata: {}
+  dbdata: {}
