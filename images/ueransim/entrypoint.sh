@@ -2,6 +2,22 @@
 
 set -e
 
+_term() { 
+    case "$command" in
+    ue) 
+        echo "Deleting ue: nr-ue -c ue.yaml"
+        for x in $(./usr/local/bin/nr-cli -d); do 
+            ./usr/local/bin/nr-cli $x --exec "deregister switch-off"
+        done
+        echo "UEs switched off"
+        sleep 5
+        ;;
+    *) 
+        echo "It isn't necessary to perform any cleanup"
+        ;;
+    esac
+}
+
 if [ $# -lt 1 ]
 then
         echo "Usage : $0 [gnb|ue]"
@@ -9,6 +25,7 @@ then
 fi
 
 command=$1
+trap _term SIGTERM
 shift
 
 case "$command" in
@@ -19,7 +36,9 @@ ue)
     echo "GNB_IP: $GNB_IP"
     envsubst < /etc/ueransim/ue.yaml > ue.yaml
     echo "Launching ue: nr-ue -c ue.yaml"
-    nr-ue -c ue.yaml $@
+    nr-ue -c ue.yaml $@ &
+    child=$!
+    wait "$child"
     ;;
 gnb)
     N2_BIND_IP=${N2_BIND_IP:-"$(ip addr show ${N2_IFACE}  | grep -o 'inet [[:digit:]]\{1,3\}\.[[:digit:]]\{1,3\}\.[[:digit:]]\{1,3\}\.[[:digit:]]\{1,3\}'| cut -c 6-)"}
