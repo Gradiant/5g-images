@@ -1,3 +1,3 @@
-IMAGE_TAG=2022.w47
+IMAGE_TAG=2023.w03
 #comma separated list of platforms. If empty, image will not be multiarch.
 PLATFORMS=
