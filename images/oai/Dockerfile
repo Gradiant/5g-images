@@ -42,7 +42,7 @@ RUN /bin/sh oaienv && \
 RUN /bin/sh oaienv && \ 
     cd cmake_targets && \
     mkdir -p log && \
-    ./build_oai --eNB --ninja -w USRP --verbose-ci
+    ./build_oai --eNB -w USRP --verbose-ci
 
 
 
@@ -52,14 +52,14 @@ RUN apt-get install -y python3-pip && \
 #run build_oai to build the target image
 RUN /bin/sh oaienv && \ 
     cd cmake_targets && \
-    ./build_oai --gNB --ninja -w USRP --verbose-ci
+    ./build_oai --gNB -w USRP --verbose-ci
 RUN python3 ./docker/scripts/generateTemplate.py ./docker/scripts/gnb_parameters.yaml
 
 #run build_oai to build the target image
 RUN /bin/sh oaienv && \ 
     cd cmake_targets && \
     mkdir -p log && \
-    ./build_oai --nrUE --ninja -w USRP --verbose-ci
+    ./build_oai --nrUE -w USRP --verbose-ci
 RUN cp ci-scripts/conf_files/nr-ue-sim.conf docker/etc
 
 #start from scratch for target executable
