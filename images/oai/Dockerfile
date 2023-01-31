@@ -30,6 +30,7 @@ WORKDIR /oai-ran
 RUN git clone https://gitlab.eurecom.fr/oai/openairinterface5g.git . 
 RUN git checkout $VERSION
 
+RUN sed -i 's/libuhd4.2.0/libuhd4.3.0/g' cmake_targets/tools/build_helper
 
 #run build_oai -I to get the builder image
 RUN /bin/sh oaienv && \ 
@@ -41,7 +42,7 @@ RUN /bin/sh oaienv && \
 RUN /bin/sh oaienv && \ 
     cd cmake_targets && \
     mkdir -p log && \
-    ./build_oai --eNB --ninja -w USRP --verbose-ci
+    ./build_oai --eNB -w USRP --verbose-ci
 
 
 
@@ -51,14 +52,14 @@ RUN apt-get install -y python3-pip && \
 #run build_oai to build the target image
 RUN /bin/sh oaienv && \ 
     cd cmake_targets && \
-    ./build_oai --gNB --ninja -w USRP --verbose-ci
+    ./build_oai --gNB -w USRP --verbose-ci
 RUN python3 ./docker/scripts/generateTemplate.py ./docker/scripts/gnb_parameters.yaml
 
 #run build_oai to build the target image
 RUN /bin/sh oaienv && \ 
     cd cmake_targets && \
     mkdir -p log && \
-    ./build_oai --nrUE --ninja -w USRP --verbose-ci
+    ./build_oai --nrUE -w USRP --verbose-ci
 RUN cp ci-scripts/conf_files/nr-ue-sim.conf docker/etc
 
 #start from scratch for target executable
@@ -94,19 +95,17 @@ RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install --yes \
         python \
         libusb-1.0-0 \
-        libuhd4.2.0 \
         uhd-host && \
     rm -rf /var/lib/apt/lists/*
 
-COPY --from=build /oai-ran/targets/bin/* /opt/oai/bin/
+COPY --from=build /oai-ran/cmake_targets/ran_build/build/*softmodem /opt/oai/bin/
 COPY --from=build /oai-ran/docker/scripts/*.sh /
-COPY --from=build /oai-ran/targets/bin/*.so.Rel15 /usr/local/lib/
-COPY --from=build /oai-ran/targets/bin/*.so /usr/local/lib/
 COPY --from=build /oai-ran/cmake_targets/ran_build/build/*.so /usr/local/lib/
 
-RUN /bin/bash -c "ln -sf /usr/local/lib/liboai_eth_transpro.so.Rel15 /usr/local/lib/liboai_transpro.so"
-RUN /bin/bash -c "ln -sf /usr/local/lib/liboai_usrpdevif.so.Rel15 /usr/local/lib/liboai_device.so"
-RUN /bin/bash -c "ln -sf /usr/local/lib/librfsimulator.so.Rel15 /usr/local/lib/librfsimulator.so"
+RUN cd /opt/oai/bin && \
+    ln -s nr-softmodem nr-softmodem.Rel15 && \
+    ln -s lte-softmodem lte-softmodem.Rel15 && \
+    ln -s nr-uesoftmodem nr-uesoftmodem.Rel15
 
 RUN ldconfig
 

@@ -78,6 +78,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
     libcurl4 \
     libmicrohttpd12 \
     libnghttp2-14 \
+    wondershaper \
     iproute2 iputils-ping procps net-tools iptables && \
     rm -rf /var/lib/apt/lists/*
 
