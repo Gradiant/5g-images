@@ -1,6 +1,6 @@
 #/bin/bash
 
-REMOTE_REPO_URL="https://api.github.com/repos/srsran/srsRAN/git/refs/tags/"
+REMOTE_REPO_URL="https://api.github.com/repos/srsran/srsRAN_4G/git/refs/tags/"
 
 GH="https://api.github.*"
 GL="https://gitlab.*"
