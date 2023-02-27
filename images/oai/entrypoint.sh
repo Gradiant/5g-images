@@ -13,6 +13,11 @@ if [ "$#" -eq 0 ]; then
   echo "This image provides predefined config templates. To choose a template, set CONFIG_TEMPLATE variable to:"
   echo "  - gnb_nsa_tdd_mono"
   echo "  - gnb_sa_tdd_mono"
+  echo "  - gnb_sa_tdd_mono_b2xx"
+  echo "  - gnb_sa_fdd_mono"
+  echo "  - gnb_sa_cu"
+  echo "  - gnb_sa_du_tdd"
+  echo "  - gnb_sa_nfapi_vnf"
   echo "  - enb_fdd_cu"
   echo "  - enb_fdd_du"
   echo "  - enb_fdd_mono"
@@ -22,7 +27,12 @@ if [ "$#" -eq 0 ]; then
   echo "  - enb_tdd_if4p5_rcc"
   echo "  - enb_fdd_rru"
   echo "  - enb_tdd_rru"
+  echo "  - enb.nfapi.vnf.conf"
+  echo "  - lte_ru_fdd"
+  echo "  - lte_ru_tdd"
+  echo "  - lte_ue_nfapi"
   echo "  - nr_ue"
+  echo "  - nr_ue_nfapi"
   echo "/oai.conf is generated from the template replacing '@VAR@' placeholders with environment variable values."
   echo "You can also mount your own template and provide the path with CONFIG_TEMPLATE_PATH environment variable."
   echo ""
@@ -34,6 +44,7 @@ PREFIX=/opt/oai
 ENABLE_X2=${ENABLE_X2:-yes}
 RRC_INACTIVITY_THRESHOLD=${RRC_INACTIVITY_THRESHOLD:-0}
 ENABLE_MEASUREMENT_REPORTS=${ENABLE_MEASUREMENT_REPORTS:-no}
+THREAD_PARALLEL_CONFIG=${THREAD_PARALLEL_CONFIG:-PARALLEL_SINGLE_THREAD}
 
 # Get IP address of interfaces for env vars ending in _IF_NAME
 for IFNAME_VAR in $(compgen -A variable | grep _IF_NAME); do
@@ -62,6 +73,16 @@ if [ "$CONFIG_TEMPLATE" == "gnb_nsa_tdd_mono" ]; then
     CONFIG_TEMPLATE_PATH="$PREFIX/etc/gnb.nsa.tdd.conf";
 elif [ "$CONFIG_TEMPLATE" == "gnb_sa_tdd_mono" ]; then
     CONFIG_TEMPLATE_PATH="$PREFIX/etc/gnb.sa.tdd.conf";
+elif [ "$CONFIG_TEMPLATE" == "gnb_sa_tdd_mono_b2xx" ]; then
+    CONFIG_TEMPLATE_PATH="$PREFIX/etc/gnb.sa.tdd.b2xx.conf";
+elif [ "$CONFIG_TEMPLATE" == "gnb_sa_fdd_mono" ]; then
+    CONFIG_TEMPLATE_PATH="$PREFIX/etc/gnb.sa.fdd.conf";
+elif [ "$CONFIG_TEMPLATE" == "gnb_sa_cu" ]; then
+    CONFIG_TEMPLATE_PATH="$PREFIX/etc/gnb.sa.cu.conf";
+elif [ "$CONFIG_TEMPLATE" == "gnb_sa_du_tdd" ]; then
+    CONFIG_TEMPLATE_PATH="$PREFIX/etc/gnb.sa.du.tdd.conf";
+elif [ "$CONFIG_TEMPLATE" == "gnb_sa_nfapi_vnf" ]; then
+    CONFIG_TEMPLATE_PATH="$PREFIX/etc/gnb.sa.nfapi.vnf.conf";
 elif [ "$CONFIG_TEMPLATE" == "enb_fdd_cu" ]; then
     CONFIG_TEMPLATE_PATH="$PREFIX/etc/cu.fdd.conf";
 elif [ "$CONFIG_TEMPLATE" == "enb_fdd_du" ]; then
@@ -80,8 +101,18 @@ elif [ "$CONFIG_TEMPLATE" == "enb_fdd_rru" ]; then
     CONFIG_TEMPLATE_PATH="$PREFIX/etc/rru.fdd.conf";
 elif [ "$CONFIG_TEMPLATE" == "enb_tdd_rru" ]; then
     CONFIG_TEMPLATE_PATH="$PREFIX/etc/rru.tdd.conf";
+elif [ "$CONFIG_TEMPLATE" == "enb_nfapi_vnf" ]; then
+    CONFIG_TEMPLATE_PATH="$PREFIX/etc/enb.nfapi.vnf.conf";
+elif [ "$CONFIG_TEMPLATE" == "lte_ru_fdd" ]; then
+    CONFIG_TEMPLATE_PATH="$PREFIX/etc/rru.fdd.conf";
+elif [ "$CONFIG_TEMPLATE" == "lte_ru_tdd" ]; then
+    CONFIG_TEMPLATE_PATH="$PREFIX/etc/rru.tdd.conf";
+elif [ "$CONFIG_TEMPLATE" == "lte_ue_nfapi" ]; then
+    CONFIG_TEMPLATE_PATH="$PREFIX/etc/ue.nfapi.conf";
 elif [ "$CONFIG_TEMPLATE" == "nr_ue" ]; then
     CONFIG_TEMPLATE_PATH="$PREFIX/etc/nr-ue-sim.conf";
+elif [ "$CONFIG_TEMPLATE" == "nr_ue_nfapi" ]; then
+    CONFIG_TEMPLATE_PATH="$PREFIX/etc/nr-ue.nfapi.conf";
 fi
 
 if [[ ! -z "$CONFIG_TEMPLATE_PATH" ]]; then 
