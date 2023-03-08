@@ -3,7 +3,9 @@ nrf:
   sbi:
     - dev: eth0
       advertise: nrf
+# scp:
+#     sbi:
+#       - name: scp
 parameter:
 max:
-pool:
 time:

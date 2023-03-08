@@ -4,21 +4,24 @@ amf:
     - dev: eth0
       advertise: amf
   ngap:
+  metrics:
+    - addr: 0.0.0.0
+      port: 9090
   guami:
     - plmn_id:
-        mcc: 901
+        mcc: 999
         mnc: 70
       amf_id:
         region: 2
         set: 1
   tai:
     - plmn_id:
-        mcc: 901
+        mcc: 999
         mnc: 70
       tac: 1
   plmn_support:
     - plmn_id:
-        mcc: 901
+        mcc: 999
         mnc: 70
       s_nssai:
         - sst: 1
@@ -29,12 +32,14 @@ amf:
   network_name:
     full: Openverso
   amf_name: amf
-
+# scp:
+#     sbi:
+#       - name: scp
 nrf:
   sbi:
     - name: nrf
 
 parameter:
 max:
-pool:
+usrsctp:
 time:

@@ -6,6 +6,9 @@ smf:
   gtpc:
   gtpu:
   pfcp:
+  metrics:
+    - addr: 0.0.0.0
+      port: 9090
   subnet:
     - addr: 10.45.0.1/16
     #- addr: cafe::1/64
@@ -16,8 +19,12 @@ smf:
     #- 2001:4860:4860::8888
     #- 2001:4860:4860::8844
   mtu: 1400
+  ctf:
+    enabled: auto
   freeDiameter: smf.conf
-
+# scp:
+#     sbi:
+#       - name: scp
 nrf:
   sbi:
     - name: nrf
@@ -27,5 +34,4 @@ upf:
 
 parameter:
 max:
-pool:
 time:

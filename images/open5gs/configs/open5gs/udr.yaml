@@ -3,10 +3,12 @@ udr:
   sbi:
     - dev: eth0
       advertise: udr
+# scp:
+#     sbi:
+#       - name: scp
 nrf:
   sbi:
     - name: nrf
 parameter:
 max:
-pool:
 time:
