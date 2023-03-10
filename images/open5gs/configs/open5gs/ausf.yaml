@@ -3,11 +3,13 @@ ausf:
   sbi:
     - dev: eth0
       advertise: ausf
+# scp:
+#     sbi:
+#       - name: scp
 nrf:
   sbi:
     - name: nrf
 
 parameter:
 max:
-pool:
 time:

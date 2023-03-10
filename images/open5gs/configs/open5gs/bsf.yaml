@@ -2,10 +2,12 @@ bsf:
   sbi:
     - dev: eth0
       advertise: bsf
+# scp:
+#     sbi:
+#       - name: scp
 nrf:
   sbi:
     - name: nrf
 parameter:
 max:
-pool:
 time:

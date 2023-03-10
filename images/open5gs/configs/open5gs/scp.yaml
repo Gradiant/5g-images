@@ -1,11 +1,11 @@
 ### For reference, see `/opt/open5gs/etc/orig/open5gs/`
-sgwu:
-    gtpu:
-    pfcp:
+scp:
+    sbi:
+      - dev: eth0
+nrf:
+    sbi:
+      - name: nrf
 
-sgwc:
-    pfcp:
-      - name: sgwc
 parameter:
 max:
 time:

@@ -3,10 +3,15 @@ pcf:
   sbi:
     - dev: eth0
       advertise: pcf
+  metrics:
+    - addr: 0.0.0.0
+      port: 9090
+# scp:
+#     sbi:
+#       - name: scp
 nrf:
   sbi:
     - name: nrf
 parameter:
 max:
-pool:
 time:

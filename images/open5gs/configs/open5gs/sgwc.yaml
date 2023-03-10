@@ -8,7 +8,5 @@ sgwu:
       - name: sgwu
 
 parameter:
-
 max:
-
-pool:
+time:

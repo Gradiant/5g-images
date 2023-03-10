@@ -3,15 +3,18 @@ mme:
     freeDiameter: mme.conf
     s1ap:
     gtpc:
+    metrics:
+      - addr: 0.0.0.0
+        port: 9090
     gummei: 
       plmn_id:
-        mcc: 901
+        mcc: 999
         mnc: 70
       mme_gid: 2
       mme_code: 1
     tai:
       plmn_id:
-        mcc: 901
+        mcc: 999
         mnc: 70
       tac: 1
     security:
@@ -20,7 +23,6 @@ mme:
     network_name:
         full: Openverso
     mme_name: open5gs-mme0
-
 sgwc:
     gtpc:
       - name: sgwc
@@ -29,9 +31,6 @@ smf:
       - name: smf
 
 parameter:
-
 max:
-  
-pool:
-  
-sctp:
+usrsctp:
+time:

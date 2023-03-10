@@ -4,9 +4,12 @@ udm:
   sbi:
     - dev: eth0
       advertise: udm
+# scp:
+#     sbi:
+#       - name: scp
 nrf:
   sbi:
     - name: nrf
 parameter:
-pool:
+max:
 time:
