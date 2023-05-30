@@ -1,0 +1,32 @@
+FROM ubi9/nodejs-18:latest as dev
+
+ARG version=2.6.4
+
+LABEL org.opencontainers.image.authors="Alaitz Mendiola <alaitz@redhat.com>" \
+      org.opencontainers.image.vendor="Red Hat Inc." \
+      org.opencontainers.image.licenses="Apache-2.0" \
+      org.opencontainers.image.version="$version"
+
+ENV VERSION=$version
+
+RUN curl -sSL https://github.com/open5gs/open5gs/archive/v${VERSION}.tar.gz | tar xvz -C /opt/app-root/src
+
+RUN ln -s /opt/app-root/src/open5gs-${VERSION} /opt/app-root/src/open5gs
+
+RUN cd /opt/app-root/src/open5gs-${VERSION}/webui && npm install  && npm run build
+
+
+FROM ubi9/nodejs-18-minimal
+
+ENV VERSION=$version \
+    DB_URI=mongodb://mongo/open5gs
+
+COPY --from=dev --chown=1001:root /opt/app-root/src/open5gs/webui/ /opt/app-root/src/open5gs-webui
+
+USER 1001
+
+WORKDIR /opt/app-root/src/open5gs-webui
+RUN npm run-script build
+ENV NODE_ENV=production
+ENV HOSTNAME="0.0.0.0"
+ENTRYPOINT ["node", "server/index.js"]

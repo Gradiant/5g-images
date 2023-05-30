@@ -1,0 +1,127 @@
+FROM ubi9:latest as builder
+
+ARG version=2.6.4
+ENV VERSION=$version
+
+LABEL org.opencontainers.image.authors="Alaitz Mendiola <alaitz@redhat.com>" \
+      org.opencontainers.image.vendor="Red Hat Inc." \
+      org.opencontainers.image.licenses="Apache-2.0" \
+      org.opencontainers.image.version="$version"
+
+RUN rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm \
+        && rpm -ql epel-release
+
+RUN dnf group install "Development Tools" -y
+
+RUN dnf install --enablerepo=codeready-builder-for-rhel-9-$(arch)-rpms -y \
+        ninja-build \
+        libmicrohttpd-devel \
+        libtalloc-devel \
+        meson
+
+RUN dnf install -y \
+        python3 \
+        flex \
+        bison \
+        git \
+        cmake \
+        lksctp-tools-devel \
+        gnutls-devel \
+        libgcrypt-devel \
+        openssl-devel \
+        libidn-devel \
+        cyrus-sasl-devel \
+        mongo-c-driver-devel \
+        libbson-devel \
+        libyaml-devel \
+        libnghttp2-devel \
+        libcurl-devel \
+        libtins-devel \
+        wget \
+        iproute \
+        net-tools \
+        iputils \
+        bind-utils \
+        gettext \
+        iptables \
+        && dnf clean all
+
+RUN	mkdir -p /opt/open5gs && \
+      cd /tmp && \
+      git clone https://github.com/open5gs/open5gs && \
+	cd open5gs && \
+      if [ "$VERSION" = "dev" ]; then \
+            git checkout main; \
+            wget https://api.github.com/repos/open5gs/open5gs/git/refs/heads/main -O /open5gs-ver.json; \
+      else \
+            git checkout v$VERSION; \
+            wget https://api.github.com/repos/open5gs/open5gs/git/refs/tags/v$VERSION -O /open5gs-ver.json; \
+      fi && \
+      meson build --prefix=/opt/open5gs && \
+      ln -s /opt/open5gs/subprojects/ /opt/open5gs/../subprojects && \
+      ninja -C build install
+
+CMD ["/bin/bash"]
+
+FROM ubi9-minimal:latest
+
+ARG version=2.6.1
+ENV VERSION=$version
+
+LABEL org.opencontainers.image.authors="Alaitz Mendiola <alaitz@redhat.com>" \
+      org.opencontainers.image.vendor="Red Hat Inc." \
+      org.opencontainers.image.licenses="Apache-2.0" \
+      org.opencontainers.image.version="$version"
+
+RUN rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm \
+        && rpm -ql epel-release
+
+RUN microdnf install --enablerepo=codeready-builder-for-rhel-9-$(arch)-rpms -y \
+        libtalloc-devel 
+        
+RUN microdnf install -y --nobest \
+    libyaml \
+    mongo-c-driver \
+    lksctp-tools \
+    libidn \
+    libcurl \
+    libmicrohttpd \
+    libnghttp2 \
+    iproute \
+    iputils \
+    procps-ng \
+    net-tools \
+    git \
+    make \
+    iperf3 \
+    tcpdump \
+    traceroute \
+    iptables 
+
+RUN git clone https://github.com/magnific0/wondershaper && \
+    cd wondershaper && \
+    make install
+
+ENV APP_ROOT=/opt/open5gs
+COPY --from=builder /opt/open5gs/bin ${APP_ROOT}/bin/
+COPY --from=builder /opt/open5gs/etc ${APP_ROOT}/etc/orig
+COPY configs/ ${APP_ROOT}/etc/
+COPY --from=builder /opt/open5gs/lib64/ /usr/local/lib/
+
+ENV PATH=${APP_ROOT}/bin:${PATH} HOME=${APP_ROOT}
+WORKDIR ${APP_ROOT}
+
+RUN echo /usr/local/lib > /etc/ld.so.conf.d/open5gs.conf
+RUN ldconfig
+COPY entrypoint.sh /entrypoint.sh
+
+#Default CONF values
+ENV DB_URI=mongodb://mongo/open5gs
+
+ENV IPV4_TUN_SUBNET="10.45.0.0/16" \
+    IPV4_TUN_ADDR="10.45.0.1/16" \
+    IPV6_TUN_ADDR="cafe::1/64" \
+    ENABLE_NAT=true
+
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["/bin/bash"]

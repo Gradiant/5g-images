@@ -28,3 +28,6 @@ Just run `docker-compose up -d` and check the services are up with `docker-compo
 
 To remove the containers run `docker-compose down`.
 
+## Requirements for Red Hat UBI-based images
+
+It is necessary to have a Red Hat Login to get the UBI images from registry.redhat.io. You can get a free Red Hat account by signing up for the [Red Hat Developer Program](https://developers.redhat.com/).
