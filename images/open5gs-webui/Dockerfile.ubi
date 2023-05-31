@@ -1,4 +1,4 @@
-FROM ubi9/nodejs-18:latest as dev
+FROM registry.redhat.io/ubi9/nodejs-18:latest as dev
 
 ARG version=2.6.4
 
@@ -16,7 +16,7 @@ RUN ln -s /opt/app-root/src/open5gs-${VERSION} /opt/app-root/src/open5gs
 RUN cd /opt/app-root/src/open5gs-${VERSION}/webui && npm install  && npm run build
 
 
-FROM ubi9/nodejs-18-minimal
+FROM registry.redhat.io/ubi9/nodejs-18-minimal
 
 ENV VERSION=$version \
     DB_URI=mongodb://mongo/open5gs

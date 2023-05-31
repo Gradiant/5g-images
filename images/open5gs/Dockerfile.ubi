@@ -1,4 +1,4 @@
-FROM ubi9:latest as builder
+FROM registry.redhat.io/ubi9:latest as builder
 
 ARG version=2.6.4
 ENV VERSION=$version
@@ -63,7 +63,7 @@ RUN	mkdir -p /opt/open5gs && \
 
 CMD ["/bin/bash"]
 
-FROM ubi9-minimal:latest
+FROM registry.redhat.io/ubi9-minimal:latest
 
 ARG version=2.6.1
 ENV VERSION=$version
