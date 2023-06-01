@@ -87,7 +87,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./images/${{ steps.image-info.outputs.image }}/
-          file: { context }/Dockerfile.ubi
+          file: ./images/${{ steps.image-info.outputs.image }}/Dockerfile.ubi
           push: false
           tags: openverso/${{ steps.image-info.outputs.image }}:${{ steps.image-info.outputs.image_tag }}-ubi
           build-args: version=${{ steps.image-info.outputs.image_tag }}
