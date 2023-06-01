@@ -74,15 +74,6 @@ jobs:
           else
             echo "build_ubi=false" >> $GITHUB_OUTPUT
           fi
-
-      - name: Get Image Info for ubi
-        if: steps.ubi_dockerfile.outputs.build_ubi == 'true'
-        id: ubi-image-info
-        run: |
-          source ./images/${{ matrix.image }}/ubi_image_info.sh
-          echo "::set-output name=platforms::$PLATFORMS"
-          echo "::set-output name=image_tag::$IMAGE_TAG-ubi"
-          echo "::set-output name=image::${{ matrix.image }}"
           
       - name: Login to RedHat Registry
         if: steps.ubi_dockerfile.outputs.build_ubi == 'true'
@@ -95,11 +86,11 @@ jobs:
         if: steps.ubi_dockerfile.outputs.build_ubi == 'true'
         uses: docker/build-push-action@v3
         with:
-          context: ./images/${{ steps.ubi-image-info.outputs.image }}/
+          context: ./images/${{ steps.image-info.outputs.image }}/
           file: { context }/Dockerfile.ubi
           push: false
-          tags: openverso/${{ steps.ubi-image-info.outputs.image }}:${{ steps.ubi-image-info.outputs.image_tag }}
-          build-args: version=${{ steps.ubi-image-info.outputs.image_tag }}
-          platforms: ${{ steps.ubi-image-info.outputs.platforms }}
+          tags: openverso/${{ steps.image-info.outputs.image }}:${{ steps.image-info.outputs.image_tag }}-ubi
+          build-args: version=${{ steps.image-info.outputs.image_tag }}
+          platforms: ${{ steps.image-info.outputs.platforms }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
