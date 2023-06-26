@@ -26,7 +26,7 @@ RUN apt-get update && \
         libgnutls28-dev \
         libgcrypt-dev \
         libssl-dev \
-        libidn11-dev \
+        libidn-dev \
         libmongoc-dev \
         libbson-dev \
         libyaml-dev \
@@ -74,7 +74,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
     libyaml-0-2 \
     libmongoc-1.0-0 \
     libsctp1 \
-    libidn11 \
+    libidn12 \
     libcurl4 \
     libmicrohttpd12 \
     libnghttp2-14 \
