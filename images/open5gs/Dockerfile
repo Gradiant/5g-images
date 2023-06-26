@@ -50,7 +50,7 @@ RUN	mkdir -p /opt/open5gs && cd /tmp && git clone https://github.com/open5gs/ope
       git checkout v$VERSION; \
       wget https://api.github.com/repos/open5gs/open5gs/git/refs/tags/v$VERSION -O /open5gs-ver.json; \
     fi && \
-    meson build --prefix=/opt/open5gs && meson configure -Dmetrics_impl=prometheus build && \
+    meson  build --prefix=/opt/open5gs && \
     ln -s /opt/open5gs/subprojects/ /opt/open5gs/../subprojects && \
     ninja -C build install
 
