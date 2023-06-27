@@ -26,7 +26,7 @@ RUN apt-get update && \
         libgnutls28-dev \
         libgcrypt-dev \
         libssl-dev \
-        libidn11-dev \
+        libidn-dev \
         libmongoc-dev \
         libbson-dev \
         libyaml-dev \
@@ -50,7 +50,7 @@ RUN	mkdir -p /opt/open5gs && cd /tmp && git clone https://github.com/open5gs/ope
       git checkout v$VERSION; \
       wget https://api.github.com/repos/open5gs/open5gs/git/refs/tags/v$VERSION -O /open5gs-ver.json; \
     fi && \
-    meson build --prefix=/opt/open5gs && meson configure -Dmetrics_impl=prometheus build && \
+    meson  build --prefix=/opt/open5gs && \
     ln -s /opt/open5gs/subprojects/ /opt/open5gs/../subprojects && \
     ninja -C build install
 
@@ -74,7 +74,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
     libyaml-0-2 \
     libmongoc-1.0-0 \
     libsctp1 \
-    libidn11 \
+    libidn12 \
     libcurl4 \
     libmicrohttpd12 \
     libnghttp2-14 \
