@@ -32,7 +32,7 @@ RUN	cd /opt && git clone https://github.com/srsran/srsRAN_Project.git && \
 	cd srsRAN_Project && git checkout release_$VERSION && \
     mkdir build && \
     cd build && \
-    cmake -DCMAKE_INSTALL_PREFIX=/opt/srsRAN_Project/target -DENABLE_EXPORT=ON -DENABLE_ZEROMQ=ON ../ && \
+    cmake -DCMAKE_INSTALL_PREFIX=/opt/srsRAN_Project/target -DENABLE_EXPORT=ON -DENABLE_ZEROMQ=ON -DENABLE_AVX512=False ../ && \
     make
 
 RUN cd /opt/srsRAN_Project/build && make install 
