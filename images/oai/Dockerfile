@@ -1,6 +1,6 @@
 FROM ubuntu:focal AS build
 
-ARG version=2023.w24
+ARG version=2023.w28
 
 ENV VERSION=$version
 
@@ -42,7 +42,7 @@ RUN /bin/sh oaienv && \
 RUN /bin/sh oaienv && \ 
     cd cmake_targets && \
     mkdir -p log && \
-    ./build_oai --eNB --gNB --RU --UE --nrUE --ninja --build-lib "telnetsrv enbscope uescope nrscope nrqtscope" -w USRP --verbose-ci --noavx512 -c --cmake-opt -DCMAKE_C_FLAGS=-Werror --cmake-opt -DCMAKE_CXX_FLAGS=-Werror
+    ./build_oai --eNB --gNB --RU --UE --nrUE --ninja --build-lib "telnetsrv enbscope uescope nrscope nrqtscope" -w USRP -t Ethernet --verbose-ci --noavx512 -c --cmake-opt -DCMAKE_C_FLAGS=-Werror --cmake-opt -DCMAKE_CXX_FLAGS=-Werror
 
 #start from scratch for target executable
 FROM ubuntu:focal as oai
@@ -89,10 +89,7 @@ COPY --from=build \
     /oai-ran/cmake_targets/nas_sim_tools/build/nvram \
     /oai-ran/cmake_targets/nas_sim_tools/build/usim \
     /oai-ran/cmake_targets/ran_build/build/nr-cuup \
-    /opt/oai/bin/ 
-COPY --from=build \
-    /oai-ran/ci-scripts/conf_files/nr-ue-sim.conf \
-    /opt/oai/etc/
+    /opt/oai/bin/
 COPY --from=build /oai-ran/docker/scripts/*.sh /
 COPY --from=build /oai-ran/cmake_targets/ran_build/build/*.so /usr/local/lib/
 
