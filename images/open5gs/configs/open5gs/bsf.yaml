@@ -1,3 +1,9 @@
+sbi:
+    server:
+      no_tls: true
+    client:
+      no_tls: true
+
 bsf:
   sbi:
     - dev: eth0
