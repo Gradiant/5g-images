@@ -1,4 +1,10 @@
 ### For reference, see `/opt/open5gs/etc/orig/open5gs/`
+sbi:
+    server:
+      no_tls: true
+    client:
+      no_tls: true
+
 scp:
     sbi:
       - dev: eth0
