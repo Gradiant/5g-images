@@ -86,6 +86,7 @@ services:
     restart: on-failure
     environment:
       DB_URI: mongodb://mongo/open5gs
+      NODE_ENV: development
     ports:
       - 3000:3000
     
