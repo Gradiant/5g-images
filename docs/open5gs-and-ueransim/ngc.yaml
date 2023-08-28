@@ -5,35 +5,34 @@ services:
     environment:
       MONGO_INITDB_DATABASE: open5gs
   amf:
-    image: openverso/open5gs:2.3.2
+    image: openverso/open5gs:2.6.4
     command: 
       - open5gs-amfd 
     restart : on-failure
     
   ausf:
-    image: openverso/open5gs:2.3.2
+    image: openverso/open5gs:2.6.4
     command: 
       - open5gs-ausfd
     restart : on-failure
     
   bsf:
-    image: openverso/open5gs:2.3.2
-    command: 
-      - open5gs-bsfd
+    image: openverso/open5gs:2.6.4
+    command: open5gs-bsfd
     restart : on-failure
     
   nrf:
-    image: openverso/open5gs:2.3.2
+    image: openverso/open5gs:2.6.4
     command: open5gs-nrfd
     restart : on-failure 
     
   nssf:
-    image: openverso/open5gs:2.3.2
+    image: openverso/open5gs:2.6.4
     command: open5gs-nssfd   
     restart : on-failure 
     
   pcf:
-    image: openverso/open5gs:2.3.2
+    image: openverso/open5gs:2.6.4
     command: 
       - open5gs-pcfd
     environment:
@@ -41,25 +40,30 @@ services:
     restart : on-failure
     
   pcrf:
-    image: openverso/open5gs:2.3.2
+    image: openverso/open5gs:2.6.4
     command: ["open5gs-pcrfd"]
     environment:
       DB_URI: mongodb://mongo/open5gs
     restart: on-failure
-    
+  scp:
+    image: openverso/open5gs:2.6.4
+    command: open5gs-scpd
+    environment:
+      DB_URI: mongodb://mongo/open5gs
+    restart: on-failure    
   smf:
-    image: openverso/open5gs:2.3.2
-    command: open5gs-smfd    
+    image: openverso/open5gs:2.6.4
+    command: open5gs-smfd
     restart : on-failure 
     
   udm:
-    image: openverso/open5gs:2.3.2
+    image: openverso/open5gs:2.6.4
     restart: on-failure
     command: 
       - open5gs-udmd
     
   udr:
-    image: openverso/open5gs:2.3.2
+    image: openverso/open5gs:2.6.4
     restart: on-failure
     environment:
       DB_URI: mongodb://mongo/open5gs
@@ -67,7 +71,7 @@ services:
       - open5gs-udrd
     
   upf:
-    image: openverso/open5gs:2.3.2
+    image: openverso/open5gs:2.6.4
     command:
       - open5gs-upfd
     cap_add:
@@ -78,7 +82,7 @@ services:
       - 2152:2152
     
   webui:
-    image: openverso/open5gs-webui:2.3.2  
+    image: openverso/open5gs-webui:2.6.4
     restart: on-failure
     environment:
       DB_URI: mongodb://mongo/open5gs
