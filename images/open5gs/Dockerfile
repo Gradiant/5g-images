@@ -1,4 +1,4 @@
-FROM debian:stable as builder
+FROM debian:bullseye as builder
 
 ARG version=2.0.18
 ENV VERSION=$version
@@ -26,7 +26,7 @@ RUN apt-get update && \
         libgnutls28-dev \
         libgcrypt-dev \
         libssl-dev \
-        libidn-dev \
+        libidn11-dev \
         libmongoc-dev \
         libbson-dev \
         libyaml-dev \
@@ -57,8 +57,10 @@ RUN	mkdir -p /opt/open5gs && cd /tmp && git clone https://github.com/open5gs/ope
 
 RUN apt-get update && apt-get install -y net-tools iputils-ping iproute2 dnsutils gettext-base iptables
 
+## Replace default config values to work in containers (use dev eth0 and reference other containers by name)
+COPY configs/open5gs/* /opt/open5gs/etc/open5gs/
 
-FROM debian:stable-slim
+FROM debian:bullseye-slim
 
 ARG version=2.0.18
 ENV VERSION=$version
@@ -74,7 +76,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
     libyaml-0-2 \
     libmongoc-1.0-0 \
     libsctp1 \
-    libidn12 \
+    libidn11 \
     libcurl4 \
     libmicrohttpd12 \
     libnghttp2-14 \
@@ -82,16 +84,10 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
     rm -rf /var/lib/apt/lists/*
 
 ENV APP_ROOT=/opt/open5gs
-COPY --from=builder /opt/open5gs/bin ${APP_ROOT}/bin/
-COPY --from=builder /opt/open5gs/etc ${APP_ROOT}/etc/orig
-COPY configs/ ${APP_ROOT}/etc/
-COPY --from=builder /opt/open5gs/lib/ /usr/local/lib/
+COPY --from=builder /opt/open5gs ${APP_ROOT}
 
 ENV PATH=${APP_ROOT}/bin:${PATH} HOME=${APP_ROOT}
 WORKDIR ${APP_ROOT}
-
-# update /usr/local/lib libraries 
-RUN ldconfig
 COPY entrypoint.sh /entrypoint.sh
 
 # TODO: run with non-root user
