@@ -1,7 +1,9 @@
 FROM debian:bullseye as builder
 
 ARG version=2.0.18
+ARG branch=main
 ENV VERSION=$version
+ENV BRANCH=$branch
 
 LABEL org.opencontainers.image.authors="Carlos Giraldo <cgiraldo@gradiant.org>" \
       org.opencontainers.image.vendor="Gradiant" \
@@ -44,8 +46,8 @@ RUN apt-get update && \
 RUN	mkdir -p /opt/open5gs && cd /tmp && git clone https://github.com/open5gs/open5gs && \
 	cd open5gs && \
     if [ "$VERSION" = "dev" ]; then \
-      git checkout main; \
-      wget https://api.github.com/repos/open5gs/open5gs/git/refs/heads/main -O /open5gs-ver.json; \
+      git checkout $BRANCH; \
+      wget https://api.github.com/repos/open5gs/open5gs/git/refs/heads/$BRANCH -O /open5gs-ver.json; \
     else \
       git checkout v$VERSION; \
       wget https://api.github.com/repos/open5gs/open5gs/git/refs/tags/v$VERSION -O /open5gs-ver.json; \
