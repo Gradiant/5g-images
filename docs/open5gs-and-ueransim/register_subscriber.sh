@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MONGO_CONTAINER=open5gs-and-ueransim_mongo_1
+MONGO_CONTAINER=open5gs-and-ueransim-mongo-1
 
 : 'open5gs-dbctl: Open5GS Database Configuration Tool (0.9.1)
 COMMANDS:
@@ -19,10 +19,29 @@ COMMANDS:
 
 docker cp open5gs-dbctl $MONGO_CONTAINER:/
 
-docker exec -ti $MONGO_CONTAINER /open5gs-dbctl add 901700000000001 465B5CE8B199B49FAA5F0A2EE238A6BC E8ED289DEBA952E4283B54E88E6183CA
-docker exec -ti $MONGO_CONTAINER /open5gs-dbctl add 901700000000002 465B5CE8B199B49FAA5F0A2EE238A6BC E8ED289DEBA952E4283B54E88E6183CA
-docker exec -ti $MONGO_CONTAINER /open5gs-dbctl add 901700000000003 465B5CE8B199B49FAA5F0A2EE238A6BC E8ED289DEBA952E4283B54E88E6183CA
-docker exec -ti $MONGO_CONTAINER /open5gs-dbctl add 901700000000011 465B5CE8B199B49FAA5F0A2EE238A6BC E8ED289DEBA952E4283B54E88E6183CA
-docker exec -ti $MONGO_CONTAINER /open5gs-dbctl add 901700000000012 465B5CE8B199B49FAA5F0A2EE238A6BC E8ED289DEBA952E4283B54E88E6183CA
-docker exec -ti $MONGO_CONTAINER /open5gs-dbctl add 901700000000013 465B5CE8B199B49FAA5F0A2EE238A6BC E8ED289DEBA952E4283B54E88E6183CA
+docker run -ti --rm \
+    --net open5gs-and-ueransim_default \
+    -e DB_URI=mongodb://$MONGO_CONTAINER/open5gs \
+    openverso/open5gs-dbctl open5gs-dbctl add 999700000000001 465B5CE8B199B49FAA5F0A2EE238A6BC E8ED289DEBA952E4283B54E88E6183CA
+docker run -ti --rm \
+    --net open5gs-and-ueransim_default \
+    -e DB_URI=mongodb://$MONGO_CONTAINER/open5gs \
+    openverso/open5gs-dbctl open5gs-dbctl add 999700000000002 465B5CE8B199B49FAA5F0A2EE238A6BC E8ED289DEBA952E4283B54E88E6183CA
+docker run -ti --rm \
+    --net open5gs-and-ueransim_default \
+    -e DB_URI=mongodb://$MONGO_CONTAINER/open5gs \
+    openverso/open5gs-dbctl open5gs-dbctl add 999700000000003 465B5CE8B199B49FAA5F0A2EE238A6BC E8ED289DEBA952E4283B54E88E6183CA
+docker run -ti --rm \
+    --net open5gs-and-ueransim_default \
+    -e DB_URI=mongodb://$MONGO_CONTAINER/open5gs \
+    openverso/open5gs-dbctl open5gs-dbctl add 999700000000011 465B5CE8B199B49FAA5F0A2EE238A6BC E8ED289DEBA952E4283B54E88E6183CA
+docker run -ti --rm \
+    --net open5gs-and-ueransim_default \
+    -e DB_URI=mongodb://$MONGO_CONTAINER/open5gs \
+    openverso/open5gs-dbctl open5gs-dbctl add 999700000000012 465B5CE8B199B49FAA5F0A2EE238A6BC E8ED289DEBA952E4283B54E88E6183CA
+docker run -ti --rm \
+    --net open5gs-and-ueransim_default \
+    -e DB_URI=mongodb://$MONGO_CONTAINER/open5gs \
+    openverso/open5gs-dbctl open5gs-dbctl add 999700000000013 465B5CE8B199B49FAA5F0A2EE238A6BC E8ED289DEBA952E4283B54E88E6183CA
+
 
