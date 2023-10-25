@@ -8,11 +8,11 @@ services:
     environment:
       AMF_HOSTNAME: amf
       GNB_HOSTNAME: gnb1
-      MCC: '901'
+      MCC: '999'
       MNC: '70'
       SST: '1'
       SD: '0xffffff'
-  ue:
+  ues1:
     image: openverso/ueransim:3.2.2
     command: ['ue','-n','3']
     cap_add:
@@ -22,7 +22,7 @@ services:
       GNB_HOSTNAME: gnb1
       APN: internet
       MSISDN: '0000000001'
-      MCC: '901'
+      MCC: '999'
       MNC: '70'
       KEY: '465B5CE8B199B49FAA5F0A2EE238A6BC'
       OP_TYPE: OPC
