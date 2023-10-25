@@ -12,7 +12,7 @@ services:
       MNC: '70'
       SST: '1'
       SD: '0xffffff'
-  ues:
+  ues1:
     image: openverso/ueransim:3.2.2
     command: ['ue','-n','3']
     cap_add:
