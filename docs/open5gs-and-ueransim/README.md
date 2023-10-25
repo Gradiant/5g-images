@@ -2,6 +2,9 @@
 
 5G end to end communication demo with open5gs and ueransim.
 
+TL;DR -> [![asciicast](https://asciinema.org/a/617049.png)](https://asciinema.org/a/617049)
+
+
 # Deployment NGC and register subscribers
 
 deploy the ngc core (open5gs) with:
