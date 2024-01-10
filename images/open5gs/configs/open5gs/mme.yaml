@@ -17,9 +17,11 @@ mme:
     - dev: eth0
     client:
       sgwc:
-      - dev: eth0
+      - address: sgwc
+        tac: 1
       smf:
-      - dev: eth0
+      - address: smf
+        tac: 1
   metrics:
     server:
     - dev: eth0

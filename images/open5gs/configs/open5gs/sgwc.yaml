@@ -16,7 +16,8 @@ sgwc:
     - dev: eth0
     client:
       sgwu:
-      - dev: eth0
+      - address: sgwu
+        tac: 1
 
 ################################################################################
 # GTP-C Server

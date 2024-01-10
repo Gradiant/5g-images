@@ -60,6 +60,8 @@ RUN apt-get update && apt-get install -y net-tools iputils-ping iproute2 dnsutil
 
 ## Replace default config values to work in containers (use dev eth0 and reference other containers by name)
 COPY configs/open5gs/* /opt/open5gs/etc/open5gs/
+COPY configs/freeDiameter/* /opt/open5gs/etc/freeDiameter/
+
 
 FROM debian:bullseye-slim
 
