@@ -16,5 +16,13 @@ if [[ -z "${AMF_BIND_ADDR}" ]] ; then
     export AMF_BIND_ADDR=$(ip addr show $AMF_BIND_INTERFACE | grep -Po 'inet \K[\d.]+')
 fi
 
+if [[ ! -z "$GNB_HOSTNAME" ]] ; then 
+    export GNB_ADDRESS="$(host -4 $GNB_HOSTNAME |awk '/has.*address/{print $NF; exit}')"
+fi
+
+if [[ ! -z "$UE_HOSTNAME" ]] ; then 
+    export UE_ADDRESS="$(host -4 $UE_HOSTNAME |awk '/has.*address/{print $NF; exit}')"
+fi
+
 envsubst < /opt/srsRAN_Project/target/share/srsran/gnb_rf_b200_tdd_n78_20mhz.yml > gnb.yml
 /opt/srsRAN_Project/target/bin/gnb -c gnb.yml

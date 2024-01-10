@@ -1,0 +1,98 @@
+version: '3'
+services: 
+  mongo:
+    image: mongo
+    environment:
+      MONGO_INITDB_DATABASE: open5gs
+  amf:
+    image: openverso/open5gs:2.7.0
+    command: 
+      - open5gs-amfd 
+    restart : on-failure
+    
+  ausf:
+    image: openverso/open5gs:2.7.0
+    command: 
+      - open5gs-ausfd
+    restart : on-failure
+    
+  bsf:
+    image: openverso/open5gs:2.7.0
+    command: open5gs-bsfd
+    restart : on-failure
+    
+  nrf:
+    image: openverso/open5gs:2.7.0
+    command: open5gs-nrfd
+    restart : on-failure 
+    
+  nssf:
+    image: openverso/open5gs:2.7.0
+    command: open5gs-nssfd   
+    restart : on-failure 
+    
+  pcf:
+    image: openverso/open5gs:2.7.0
+    command: 
+      - open5gs-pcfd
+    environment:
+      DB_URI: mongodb://mongo/open5gs
+    restart : on-failure
+    
+  pcrf:
+    image: openverso/open5gs:2.7.0
+    command: ["open5gs-pcrfd"]
+    environment:
+      DB_URI: mongodb://mongo/open5gs
+    restart: on-failure
+  scp:
+    image: openverso/open5gs:2.7.0
+    command: open5gs-scpd
+    environment:
+      DB_URI: mongodb://mongo/open5gs
+    restart: on-failure    
+  smf:
+    image: openverso/open5gs:2.7.0
+    command: open5gs-smfd
+    restart : on-failure 
+    
+  udm:
+    image: openverso/open5gs:2.7.0
+    restart: on-failure
+    command: 
+      - open5gs-udmd
+    
+  udr:
+    image: openverso/open5gs:2.7.0
+    restart: on-failure
+    environment:
+      DB_URI: mongodb://mongo/open5gs
+    command: 
+      - open5gs-udrd
+    
+  upf:
+    image: openverso/open5gs:2.7.0
+    command:
+      - open5gs-upfd
+    cap_add:
+      - all
+    privileged: true
+    restart: on-failure
+    ports:
+      - 2152:2152
+    
+  webui:
+    image: openverso/open5gs-webui:2.7.0
+    restart: on-failure
+    environment:
+      DB_URI: mongodb://mongo/open5gs
+      NODE_ENV: development
+    ports:
+      - 9999:9999
+    
+  # portainer:
+  #   image: portainer/portainer-ce
+  #   ports:
+  #   - 9000:9000
+  #   volumes:
+  #   - /var/run/docker.sock:/var/run/docker.sock

@@ -90,7 +90,7 @@ RUN apt-get update && \
     apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install --yes \
         libuhd-dev \ 
-        libuhd4.4.0 \
+        libuhd4.6.0 \
         uhd-host && \
     uhd_images_downloader && \
     rm -rf /var/lib/apt/lists/*
