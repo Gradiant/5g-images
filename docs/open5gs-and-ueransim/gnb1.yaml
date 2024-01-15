@@ -1,19 +1,20 @@
 version: '3'
 services: 
   gnb1:
-    image: openverso/ueransim:3.2.2
+    image: openverso/ueransim:3.2.6
     container_name: gnb1
     command: 
       - gnb
     environment:
       AMF_HOSTNAME: amf
       GNB_HOSTNAME: gnb1
+      TAC: '1'
       MCC: '999'
       MNC: '70'
       SST: '1'
       SD: '0xffffff'
   ues1:
-    image: openverso/ueransim:3.2.2
+    image: openverso/ueransim:3.2.6
     command: ['ue','-n','3']
     cap_add:
       - all
