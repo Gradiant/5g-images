@@ -40,7 +40,7 @@ services:
     command:
     - open5gs-pcfd
     environment:
-      _URI: mongodb://mongo/open5gs
+      DB_URI: mongodb://mongo/open5gs
     restart: on-failure
 
   scp:
