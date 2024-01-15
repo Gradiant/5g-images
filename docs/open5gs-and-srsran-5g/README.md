@@ -29,7 +29,7 @@ To test srsUE connectivity through srsRAN5G, you have to change the default rout
 docker compose -f gnb.yaml exec ue ip route replace default via 10.45.0.1
 ```
 
-Then you can traceroute to internet and check first hop is through pgw:
+Then you can traceroute to internet and check first hop is through UPF:
 
 ```
 docker compose -f gnb.yaml exec ue traceroute google.es

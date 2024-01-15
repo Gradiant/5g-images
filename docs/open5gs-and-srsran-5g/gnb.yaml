@@ -2,8 +2,6 @@ version: '3'
 services:
   gnb:
     image: openverso/srsran-5g:23_10_1
-    volumes:
-      - ./gnb_rf_b200_tdd_n78_20mhz.yaml:/opt/srsRAN_Project/target/share/srsran/gnb_rf_b200_tdd_n78_20mhz.yml
     command: 
       - gnb 
     privileged: true
@@ -12,21 +10,21 @@ services:
     environment:
       GNB_HOSTNAME: gnb
       UE_HOSTNAME: ue
-      # AMF_HOSTNAME: amf
-      # AMF_BIND_INTERFACE: eth0
-      # DEVICE_DRIVER: zmq   
-      # DEVICE_ARGS: tx_port=tcp://SRS_GNB_IP:2000,rx_port=tcp://SRS_UE_IP:2001,base_srate=23.04e6
-      # SRATE: 23.04   
-      # TX_GAIN: 75  
-      # RX_GAIN: 75
-      # #DL_ARFCN: 632628
-      # #BAND: 78   
-      # #BANDWIDTH: 20
-      # #SCS: 30   
-      # #PLMN: 99970
-      # PCI: 1
-      # TAC: 1   
-      # OTW_FORMAT: default
+      AMF_HOSTNAME: amf
+      AMF_BIND_INTERFACE: eth0
+      DEVICE_DRIVER: zmq   
+      DEVICE_ARGS: tx_port=tcp://:2000,rx_port=tcp://:2001,id=gnb,base_srate=23.04e6
+      SRATE: 23.04   
+      TX_GAIN: 75  
+      RX_GAIN: 75
+      DL_ARFCN: 368500
+      BAND: 3   
+      BANDWIDTH: 20
+      SCS: 15   
+      PLMN: 99970
+      TAC: 1   
+      OTW_FORMAT: default
+ 
   ue:
     image: openverso/srsran-4g:23_11
     volumes:
@@ -39,4 +37,3 @@ services:
     environment:
       ENB_HOSTNAME: gnb
       UE_HOSTNAME: ue
-      

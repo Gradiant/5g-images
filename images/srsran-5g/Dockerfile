@@ -52,7 +52,9 @@ RUN cd /opt/srsRAN_Project/target/share/srsran && \
     sed -i 's/common_scs:.*/common_scs: ${SCS}/' gnb_rf_b200_tdd_n78_20mhz.yml && \
     sed -i 's/plmn:.*/plmn: "${PLMN}"/' gnb_rf_b200_tdd_n78_20mhz.yml && \
     sed -i 's/tac:.*/tac: ${TAC}/' gnb_rf_b200_tdd_n78_20mhz.yml && \
-    sed -i 's/pci:.*/pci: ${PCI}/' gnb_rf_b200_tdd_n78_20mhz.yml
+    sed -i 's/pci:.*/pci: ${PCI}/' gnb_rf_b200_tdd_n78_20mhz.yml && \
+    sed -i 's/otw_format:.*/otw_format: ${OTW_FORMAT}/' gnb_rf_b200_tdd_n78_20mhz.yml
+
 
 FROM ubuntu:20.04
 
