@@ -24,11 +24,9 @@ services:
       PLMN: 99970
       TAC: 1   
       OTW_FORMAT: default
- 
+     
   ue:
     image: openverso/srsran-4g:23_11
-    volumes:
-      - ./srsUE.conf:/etc/srsran/ue.conf
     command: 
       - ue
     privileged: true
@@ -37,3 +35,21 @@ services:
     environment:
       ENB_HOSTNAME: gnb
       UE_HOSTNAME: ue
+      DL_EARFCN: 2850
+      BANDS: 3
+      APN: internet
+      APN_PROTOCOL: ipv4
+      SRATE: 23.04
+      TX_GAIN: 50
+      RX_GAIN: 40
+      OPC: E8ED289DEBA952E4283B54E88E6183CA
+      KEY: 465B5CE8B199B49FAA5F0A2EE238A6BC
+      MCC: 999
+      MNC: 70
+      MSISDN: "0000000001"
+      EUTRA_NOF_CARRIERS: 0
+      NR_NOF_CARRIERS: 1
+      NR_MAX_NOF_PRB: 106 
+      NR_NOF_PRB: 106
+
+      
