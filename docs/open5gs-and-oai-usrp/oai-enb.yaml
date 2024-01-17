@@ -1,7 +1,7 @@
 version: '3'
 services: 
   enodeb:
-    image: openverso/oai-enb:2021.w31
+    image: gradiant/oai-enb:2021.w31
     privileged: true
     volumes:
     - /dev/bus/usb:/dev/bus/usb

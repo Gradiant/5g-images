@@ -1,7 +1,7 @@
 version: '3'
 services:
   gnb:
-    image: openverso/srsran-5g:23_10_1
+    image: gradiant/srsran-5g:23_10_1
     command: 
       - gnb 
     privileged: true
@@ -26,7 +26,7 @@ services:
       OTW_FORMAT: default
      
   ue:
-    image: openverso/srsran-4g:23_11
+    image: gradiant/srsran-4g:23_11
     command: 
       - ue
     privileged: true

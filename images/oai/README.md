@@ -4,7 +4,7 @@ oai is a docker image to run Open Air Interface as a container.
 
 ## Usage
 
-This docker image must be run with a command (docker run -ti openverso/oai CMD)
+This docker image must be run with a command (docker run -ti gradiant/oai CMD)
 
 example of commands:
   - /opt/oai/bin/lte-softmodem.Rel15 -O /oai.conf
@@ -33,7 +33,7 @@ The entrypoint does also some magic to deal with hostnames, interface names and 
 For example, if GNB_NG_IF_NAME=eth0, the IP of the eth0 is extracted and assigned to GNB_NG_IP_ADDRESS variable.
 
 - It resolves the IPs of the names *_HOSTNAME environment variables and generates corresponding *_IP_ADDRESS environment variables.
-For example, if MME_S1C_HOSTNAME=mme.openverso.org, the entrypoints resolves the IP and assigns it to MME_S1C_IP_ADDRESS variable.
+For example, if MME_S1C_HOSTNAME=mme.gradiant.org, the entrypoints resolves the IP and assigns it to MME_S1C_IP_ADDRESS variable.
 
 Set USE_B2XX, USE_X3XX or USE_N3XX to load the USRP binaries.
 
@@ -45,7 +45,7 @@ docker run --rm -ti --privileged \
   -v $PWD/examples/enb.fdd.conf:/opt/oai/etc/enb.fdd.conf \
   --env-file $PWD/examples/enb-fdd.env \
   --privileged \
-  openverso/oai:2021.w36 opt/oai/bin/lte-softmodem.Rel15 -O /oai.conf
+  gradiant/oai:2021.w36 opt/oai/bin/lte-softmodem.Rel15 -O /oai.conf
 ```
 
 ### Example 2: gnodeb standalone
@@ -56,7 +56,7 @@ docker run --rm -ti --privileged \
   -v $PWD/examples/gnb.sa.tdd.conf:/opt/oai/etc/gnb.sa.tdd.conf \
   --env-file $PWD/examples/gnb-sa.env \
   --privileged \
-  openverso/oai:2021.w36 opt/oai/bin/nr-softmodem.Rel15 -E --sa -O /oai.conf
+  gradiant/oai:2021.w36 opt/oai/bin/nr-softmodem.Rel15 -E --sa -O /oai.conf
 ```
 
 
@@ -68,5 +68,5 @@ docker run --rm -ti --privileged \
   -v $PWD/examples/nr-ue-sim.conf:/opt/oai/etc/nr-ue-sim.conf \
   --env-file $PWD/examples/nr_ue.env \
   --privileged \
-  openverso/oai:2021.w36 /opt/oai/bin/nr-uesoftmodem.Rel15 -E --sa -O /oai.conf
+  gradiant/oai:2021.w36 /opt/oai/bin/nr-uesoftmodem.Rel15 -E --sa -O /oai.conf
 ```

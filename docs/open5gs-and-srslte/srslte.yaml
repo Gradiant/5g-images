@@ -1,7 +1,7 @@
 version: '3'
 services: 
   enodeb:
-    image: openverso/srsran-4g:23_11
+    image: gradiant/srsran-4g:23_11
     command: 
       - enb
     privileged: true
@@ -15,7 +15,7 @@ services:
       MNC: "70"
 
   ue:
-    image: openverso/srsran-4g:23_11
+    image: gradiant/srsran-4g:23_11
     command: 
       - ue
     privileged: true

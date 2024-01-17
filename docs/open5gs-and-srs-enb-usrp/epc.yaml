@@ -5,36 +5,36 @@ services:
     environment:
       MONGO_INITDB_DATABASE: open5gs
   webui:
-    image: openverso/open5gs-webui:2.3.2  
+    image: gradiant/open5gs-webui:2.3.2  
     restart: on-failure
     environment:
       DB_URI: mongodb://mongo/open5gs
     ports:
       - 3000:3000
   nrf:
-    image: openverso/open5gs:2.3.2
+    image: gradiant/open5gs:2.3.2
     command: open5gs-nrfd   
     restart : on-failure 
   smf:
-    image: openverso/open5gs:2.3.2
+    image: gradiant/open5gs:2.3.2
     command: open5gs-smfd    
     restart : on-failure 
   mme:
-    image: openverso/open5gs:2.3.2
+    image: gradiant/open5gs:2.3.2
     command: open5gs-mmed
     restart: on-failure
     ports:
       - 36412:36412
   sgwc:
-    image: openverso/open5gs:2.3.2
+    image: gradiant/open5gs:2.3.2
     command: open5gs-sgwcd
     restart : on-failure
   sgwu:
-    image: openverso/open5gs:2.3.2
+    image: gradiant/open5gs:2.3.2
     command: open5gs-sgwud
     restart : on-failure
   upf:
-    image: openverso/open5gs:2.3.2
+    image: gradiant/open5gs:2.3.2
     command: ["open5gs-upfd"]
     cap_add:
       - all
@@ -43,13 +43,13 @@ services:
     ports:
       - 2152:2152
   pcrf:
-    image: openverso/open5gs:2.3.2
+    image: gradiant/open5gs:2.3.2
     command: ["open5gs-pcrfd"]
     environment:
       DB_URI: mongodb://mongo/open5gs
     restart: on-failure
   hss:
-    image: openverso/open5gs:2.3.2
+    image: gradiant/open5gs:2.3.2
     command: open5gs-hssd
     environment:
       DB_URI: mongodb://mongo/open5gs
