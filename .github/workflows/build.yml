@@ -60,7 +60,7 @@ jobs:
         with:
           context: ./images/${{ steps.image-info.outputs.image }}/
           push: false
-          tags: openverso/${{ steps.image-info.outputs.image }}:${{ steps.image-info.outputs.image_tag }}
+          tags: gradiant/${{ steps.image-info.outputs.image }}:${{ steps.image-info.outputs.image_tag }}
           build-args: version=${{ steps.image-info.outputs.image_tag }}
           platforms: ${{ steps.image-info.outputs.platforms }}
           cache-from: type=gha
@@ -90,7 +90,7 @@ jobs:
           context: ./images/${{ steps.image-info.outputs.image }}/
           file: ./images/${{ steps.image-info.outputs.image }}/Dockerfile.ubi
           push: false
-          tags: openverso/${{ steps.image-info.outputs.image }}:${{ steps.image-info.outputs.image_tag }}-ubi
+          tags: gradiant/${{ steps.image-info.outputs.image }}:${{ steps.image-info.outputs.image_tag }}-ubi
           build-args: version=${{ steps.image-info.outputs.image_tag }}
           platforms: ${{ steps.image-info.outputs.platforms }}
           cache-from: type=gha

@@ -18,7 +18,7 @@ services:
       default:
         ipv4_address: 172.22.0.2
   webui:
-    image: openverso/open5gs-webui:2.4.9
+    image: gradiant/open5gs-webui:2.4.9
     container_name: webui
     depends_on:
       - mongo
@@ -37,7 +37,7 @@ services:
       default:
         ipv4_address: 172.22.0.26
   hss:
-    image: openverso/open5gs:2.4.9
+    image: gradiant/open5gs:2.4.9
     entrypoint: /entrypoint_open5gs.sh
     container_name: hss
     command: open5gs-hssd
@@ -62,7 +62,7 @@ services:
       default:
         ipv4_address: 172.22.0.3
   sgwc:
-    image: openverso/open5gs:2.4.9
+    image: gradiant/open5gs:2.4.9
     entrypoint: /entrypoint_open5gs.sh
     command: open5gs-sgwcd
     depends_on:
@@ -81,7 +81,7 @@ services:
       default:
         ipv4_address: 172.22.0.5
   sgwu:
-    image: openverso/open5gs:2.4.9
+    image: gradiant/open5gs:2.4.9
     entrypoint: /entrypoint_open5gs.sh
     command: open5gs-sgwud
     depends_on:
@@ -100,7 +100,7 @@ services:
       default:
         ipv4_address: 172.22.0.6
   smf:
-    image: openverso/open5gs:2.4.9
+    image: gradiant/open5gs:2.4.9
     entrypoint: /entrypoint_open5gs.sh
     command: open5gs-smfd
     container_name: smf
@@ -125,7 +125,7 @@ services:
       default:
         ipv4_address: 172.22.0.7
   upf:
-    image: openverso/open5gs:2.4.9
+    image: gradiant/open5gs:2.4.9
     entrypoint: /entrypoint_open5gs.sh
     command: open5gs-upfd
     depends_on:
@@ -151,7 +151,7 @@ services:
       default:
         ipv4_address: 172.22.0.8
   mme:
-    image: openverso/open5gs:2.4.9
+    image: gradiant/open5gs:2.4.9
     entrypoint: /entrypoint_open5gs.sh
     command: open5gs-mmed
     depends_on:
@@ -182,7 +182,7 @@ services:
       default:
         ipv4_address: 172.22.0.9
   pcrf:
-    image: openverso/open5gs:2.4.9
+    image: gradiant/open5gs:2.4.9
     entrypoint: /entrypoint_open5gs.sh
     command: open5gs-pcrfd
     container_name: pcrf
@@ -226,7 +226,7 @@ services:
       default:
         ipv4_address: 172.22.0.15
   rtpengine:
-    image: openverso/rtpengine:9.4.1.1
+    image: gradiant/rtpengine:9.4.1.1
     container_name: rtpengine
     privileged: true
     environment:
@@ -264,11 +264,11 @@ services:
       default:
         ipv4_address: 172.22.0.17
   fhoss:
-    image: openverso/fhoss:develop
+    image: gradiant/fhoss:develop
     container_name: fhoss
     environment:
       IMS_DOMAIN: ims.mnc001.mcc001.3gppnetwork.org
-      EPC_DOMAIN: openverso
+      EPC_DOMAIN: gradiant
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
@@ -285,7 +285,7 @@ services:
       default:
         ipv4_address: 172.22.0.18
   icscf:
-    image: openverso/kamailio-ims:5.3-dev
+    image: gradiant/kamailio-ims:5.3-dev
     container_name: icscf
     volumes:
       - /etc/timezone:/etc/timezone:ro
@@ -293,7 +293,7 @@ services:
     environment:
       - COMPONENT_NAME=icscf-1
       - IMS_DOMAIN=ims.mnc001.mcc001.3gppnetwork.org
-      - EPC_DOMAIN=openverso
+      - EPC_DOMAIN=gradiant
     depends_on:
       - dns
       - mysql
@@ -308,7 +308,7 @@ services:
       default:
         ipv4_address: 172.22.0.19
   scscf:
-    image: openverso/kamailio-ims:5.3-dev
+    image: gradiant/kamailio-ims:5.3-dev
     container_name: scscf
     volumes:
       - /etc/timezone:/etc/timezone:ro
@@ -316,7 +316,7 @@ services:
     environment:
       - COMPONENT_NAME=scscf-1
       - IMS_DOMAIN=ims.mnc001.mcc001.3gppnetwork.org
-      - EPC_DOMAIN=openverso
+      - EPC_DOMAIN=gradiant
     depends_on:
       - dns
       - mysql
@@ -331,7 +331,7 @@ services:
       default:
         ipv4_address: 172.22.0.20
   pcscf:
-    image: openverso/kamailio-ims:5.3-dev
+    image: gradiant/kamailio-ims:5.3-dev
     container_name: pcscf
     privileged: true
     cap_add:
@@ -342,7 +342,7 @@ services:
     environment:
       - COMPONENT_NAME=pcscf-1
       - IMS_DOMAIN=ims.mnc001.mcc001.3gppnetwork.org
-      - EPC_DOMAIN=openverso
+      - EPC_DOMAIN=gradiant
     depends_on:
       - dns
       - mysql

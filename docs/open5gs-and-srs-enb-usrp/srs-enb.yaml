@@ -1,7 +1,7 @@
 version: '3'
 services: 
   enodeb:
-    image: openverso/srs-lte:20_10_1
+    image: gradiant/srs-lte:20_10_1
     command: 
       - enb
     privileged: true

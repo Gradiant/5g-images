@@ -1,4 +1,4 @@
-$ORIGIN openverso.
+$ORIGIN gradiant.
 $TTL 1W
 @                       1D IN SOA       localhost. root.localhost. (
                                         1		; serial

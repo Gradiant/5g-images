@@ -1,7 +1,7 @@
 version: '3'
 services:
   epc:
-    image: openverso/srs-lte:20_10_1
+    image: gradiant/srs-lte:20_10_1
     command: 
       - epc
     #restart: on-failure
@@ -18,7 +18,7 @@ services:
       - ./srs-config/:/etc/srslte/
   
   enodeb:
-    image: openverso/srs-lte:20_10_1
+    image: gradiant/srs-lte:20_10_1
     command: 
       - enb
     privileged: true
