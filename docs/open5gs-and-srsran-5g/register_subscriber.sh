@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MONGO_CONTAINER=open5gs-and-ueransim-mongo-1
+MONGO_CONTAINER=open5gs-and-srsran-5g-mongo-1
 
 : 'open5gs-dbctl: Open5GS Database Configuration Tool (0.10.3)
     FLAGS: --db_uri=mongodb://localhost
@@ -27,34 +27,10 @@ MONGO_CONTAINER=open5gs-and-ueransim-mongo-1
        subscriber_status {imsi subscriber_status_val={0,1} operator_determined_barring={0..8}}: Change TS 29.272 values for Subscriber-Status (7.3.29) and Operator-Determined-Barring (7.3.30)
 '
 
+
 docker cp open5gs-dbctl $MONGO_CONTAINER:/
 
 docker run -ti --rm \
-    --net open5gs-and-ueransim_default \
+    --net open5gs-and-srsran-5g_default \
     -e DB_URI=mongodb://$MONGO_CONTAINER/open5gs \
     gradiant/open5gs-dbctl:0.10.3 "open5gs-dbctl add 999700000000001 465B5CE8B199B49FAA5F0A2EE238A6BC E8ED289DEBA952E4283B54E88E6183CA"
-
-docker run -ti --rm \
-    --net open5gs-and-ueransim_default \
-    -e DB_URI=mongodb://$MONGO_CONTAINER/open5gs \
-    gradiant/open5gs-dbctl:0.10.3 "open5gs-dbctl add 999700000000002 465B5CE8B199B49FAA5F0A2EE238A6BC E8ED289DEBA952E4283B54E88E6183CA"
-
-docker run -ti --rm \
-    --net open5gs-and-ueransim_default \
-    -e DB_URI=mongodb://$MONGO_CONTAINER/open5gs \
-    gradiant/open5gs-dbctl:0.10.3 "open5gs-dbctl add 999700000000003 465B5CE8B199B49FAA5F0A2EE238A6BC E8ED289DEBA952E4283B54E88E6183CA"
-
-docker run -ti --rm \
-    --net open5gs-and-ueransim_default \
-    -e DB_URI=mongodb://$MONGO_CONTAINER/open5gs \
-    gradiant/open5gs-dbctl:0.10.3 "open5gs-dbctl add 999700000000011 465B5CE8B199B49FAA5F0A2EE238A6BC E8ED289DEBA952E4283B54E88E6183CA"
-
-docker run -ti --rm \
-    --net open5gs-and-ueransim_default \
-    -e DB_URI=mongodb://$MONGO_CONTAINER/open5gs \
-    gradiant/open5gs-dbctl:0.10.3 "open5gs-dbctl add 999700000000012 465B5CE8B199B49FAA5F0A2EE238A6BC E8ED289DEBA952E4283B54E88E6183CA"
-
-docker run -ti --rm \
-    --net open5gs-and-ueransim_default \
-    -e DB_URI=mongodb://$MONGO_CONTAINER/open5gs \
-    gradiant/open5gs-dbctl:0.10.3 "open5gs-dbctl add 999700000000013 465B5CE8B199B49FAA5F0A2EE238A6BC E8ED289DEBA952E4283B54E88E6183CA"

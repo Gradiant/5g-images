@@ -1,7 +1,7 @@
 version: '3'
 services: 
   gnb1:
-    image: openverso/ueransim:3.2.2
+    image: gradiant/ueransim:3.2.2
     container_name: gnb1
     command: 
       - gnb
@@ -15,7 +15,7 @@ services:
       SD: '123'
 
   ue1:
-    image: openverso/ueransim:3.2.2
+    image: gradiant/ueransim:3.2.2
     command: ['ue','-n','1']
     cap_add:
       - all

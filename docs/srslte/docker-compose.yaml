@@ -1,7 +1,7 @@
 version: '3'
 services: 
   epc:
-    image: openverso/srs-lte:20_10_1
+    image: gradiant/srs-lte:20_10_1
     command: 
       - epc
     privileged: true
@@ -10,7 +10,7 @@ services:
     volumes:
       - ./user_db.csv:/etc/srslte/user_db.csv
   enodeb:
-    image: openverso/srs-lte:20_10_1
+    image: gradiant/srs-lte:20_10_1
     command: 
       - enb
     privileged: true
@@ -21,7 +21,7 @@ services:
       ENB_HOSTNAME: enodeb
       UE_HOSTNAME: ue
   ue:
-    image: openverso/srs-lte:20_10_1
+    image: gradiant/srs-lte:20_10_1
     command: 
       - ue
     privileged: true

@@ -1,7 +1,7 @@
 version: '3'
 services: 
   enodeb:
-    image: openverso/srsran:21_10
+    image: gradiant/srsran-4g:23_11
     command: 
       - enb
     privileged: true
@@ -11,11 +11,11 @@ services:
       MME_HOSTNAME: mme
       ENB_HOSTNAME: enodeb
       UE_HOSTNAME: ue
-      MCC: "901"
+      MCC: "999"
       MNC: "70"
 
   ue:
-    image: openverso/srsran:21_10
+    image: gradiant/srsran-4g:23_11
     command: 
       - ue
     privileged: true
@@ -24,7 +24,7 @@ services:
     environment:
       ENB_HOSTNAME: enodeb
       UE_HOSTNAME: ue
-      MCC: "901"
+      MCC: "999"
       MNC: "70"
       MSISDN: "0000000001"
       KEY: "465B5CE8B199B49FAA5F0A2EE238A6BC"

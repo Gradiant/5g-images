@@ -42,7 +42,7 @@ RUN mkdir -p /usr/local/src/ && cd /usr/local/src/ && \
 	cd kamailio && git checkout 5.3
 
 ENV IMS_DOMAIN=ims.mnc001.mcc001.3gppnetwork.org \
-    EPC_DOMAIN=openverso \
+    EPC_DOMAIN=gradiant \
 	MYSQL_HOSTNAME=mysql \
 	PCSCF_HOSTNAME=pcscf \
 	RTPENGINE_HOSTNAME=rtpengine \

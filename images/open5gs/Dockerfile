@@ -1,6 +1,6 @@
 FROM debian:bullseye as builder
 
-ARG version=2.0.18
+ARG version
 ARG branch=main
 ENV VERSION=$version
 ENV BRANCH=$branch
@@ -22,7 +22,7 @@ RUN apt-get update && \
         flex \
         bison \
         git \
-        libtalloc-dev \
+        cmake \
         meson \
         libsctp-dev \
         libgnutls28-dev \
@@ -32,14 +32,15 @@ RUN apt-get update && \
         libmongoc-dev \
         libbson-dev \
         libyaml-dev \
+        libmicrohttpd-dev \
+        libcurl4-gnutls-dev \
+        libnghttp2-dev \
+        libtins-dev \
+        libtalloc-dev \
         iproute2 \
         ca-certificates \
         netbase \
         pkg-config \
-        cmake \
-        libnghttp2-dev \
-        libmicrohttpd-dev \
-        libcurl4-openssl-dev \
         wget && \
     apt-get clean
 
@@ -61,10 +62,12 @@ RUN apt-get update && apt-get install -y net-tools iputils-ping iproute2 dnsutil
 
 ## Replace default config values to work in containers (use dev eth0 and reference other containers by name)
 COPY configs/open5gs/* /opt/open5gs/etc/open5gs/
+COPY configs/freeDiameter/* /opt/open5gs/etc/freeDiameter/
+
 
 FROM debian:bullseye-slim
 
-ARG version=2.0.18
+ARG version
 ENV VERSION=$version
 
 LABEL org.opencontainers.image.authors="Carlos Giraldo <cgiraldo@gradiant.org>" \
@@ -74,7 +77,13 @@ LABEL org.opencontainers.image.authors="Carlos Giraldo <cgiraldo@gradiant.org>" 
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
     curl \
-    libtalloc-dev \
+    libtalloc2 \
+    libgnutls30 \
+    libgcrypt20 \
+    libssl1.1 \
+    libbson-1.0-0 \
+    libtins4.0 \
+    libcurl4-gnutls-dev \
     libyaml-0-2 \
     libmongoc-1.0-0 \
     libsctp1 \

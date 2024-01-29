@@ -1,96 +1,95 @@
 version: '3'
-
-services:
+services: 
   mongo:
     image: mongo
     environment:
       MONGO_INITDB_DATABASE: open5gs
-
   amf:
     image: gradiant/open5gs:2.7.0
-    command:
-    - open5gs-amfd
-    restart: on-failure
-
+    command: 
+      - open5gs-amfd 
+    restart : on-failure
+    
   ausf:
     image: gradiant/open5gs:2.7.0
-    command:
-    - open5gs-ausfd
-    restart: on-failure
-
+    command: 
+      - open5gs-ausfd
+    restart : on-failure
+    
   bsf:
     image: gradiant/open5gs:2.7.0
-    command:
-    - open5gs-bsfd
-    restart: on-failure
-
+    command: open5gs-bsfd
+    restart : on-failure
+    
   nrf:
     image: gradiant/open5gs:2.7.0
     command: open5gs-nrfd
-    restart: on-failure
-
+    restart : on-failure 
+    
   nssf:
     image: gradiant/open5gs:2.7.0
-    command: open5gs-nssfd
-    restart: on-failure
-
-
+    command: open5gs-nssfd   
+    restart : on-failure 
+    
   pcf:
     image: gradiant/open5gs:2.7.0
-    command:
-    - open5gs-pcfd
+    command: 
+      - open5gs-pcfd
+    environment:
+      DB_URI: mongodb://mongo/open5gs
+    restart : on-failure
+    
+  pcrf:
+    image: gradiant/open5gs:2.7.0
+    command: ["open5gs-pcrfd"]
     environment:
       DB_URI: mongodb://mongo/open5gs
     restart: on-failure
-
   scp:
     image: gradiant/open5gs:2.7.0
     command: open5gs-scpd
     environment:
       DB_URI: mongodb://mongo/open5gs
-    restart: on-failure
-
+    restart: on-failure    
   smf:
     image: gradiant/open5gs:2.7.0
-    restart: on-failure
     command: open5gs-smfd
-
+    restart : on-failure 
+    
   udm:
     image: gradiant/open5gs:2.7.0
     restart: on-failure
-    command:
-    - open5gs-udmd
-
+    command: 
+      - open5gs-udmd
+    
   udr:
     image: gradiant/open5gs:2.7.0
     restart: on-failure
     environment:
       DB_URI: mongodb://mongo/open5gs
-    command:
-    - open5gs-udrd
-
+    command: 
+      - open5gs-udrd
+    
   upf:
     image: gradiant/open5gs:2.7.0
     command:
-    - open5gs-upfd
+      - open5gs-upfd
     cap_add:
-    - all
+      - all
     privileged: true
     restart: on-failure
-    # environment:
-    # ENABLE_NAT: "false"
     ports:
-    - 2152:2152
-
+      - 2152:2152
+    
   webui:
     image: gradiant/open5gs-webui:2.7.0
     restart: on-failure
     environment:
       DB_URI: mongodb://mongo/open5gs
-      NODE_ENV: dev
+      NODE_ENV: development
     ports:
-    - 9999:9999
-
+      - 9999:9999
+    
   # portainer:
   #   image: portainer/portainer-ce
   #   ports:

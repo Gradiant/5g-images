@@ -33,6 +33,8 @@ fi
 # Just wait 10 seconds to be "running" and resolvable
 if [[ "$COMMAND"  == *"open5gs-pcrfd" ]] \
     || [[ "$COMMAND"  == *"open5gs-mmed" ]] \
+    || [[ "$COMMAND"  == *"open5gs-nrfd" ]] \
+    || [[ "$COMMAND"  == *"open5gs-scpd" ]] \
     || [[ "$COMMAND"  == *"open5gs-sgwcd" ]] \
     || [[ "$COMMAND"  == *"open5gs-upfd" ]]; then
 sleep 10
