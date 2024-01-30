@@ -7,7 +7,7 @@ body:
       value: > 
         **Please note**
         
-        This form should only be used if _you can reporoduce_ the bug the in the latest version of openverso-images.
+        This form should only be used if _you can reporoduce_ the bug the in the latest version of 5g-images.
         
         **This form is not for support requests.*
   - type: textarea
@@ -15,7 +15,7 @@ body:
       label: Steps to reproduce
       description: >
         Please describe in detail the steps needed to reproduce this bug. These steps
-        should reproduce the issue on the most current release of openverso-images. Be sure to
+        should reproduce the issue on the most current release of 5g-images. Be sure to
         include configuration and platform details.
         Please include logs from the relevant daemons as well as any relevant packet captures.
     validations:
