@@ -1,5 +1,5 @@
 name: Feature request
-description: Propose an enhancement to openverso-images
+description: Propose an enhancement to 5g-images
 labels: ['Enhancement']
 body:
   - type: markdown
