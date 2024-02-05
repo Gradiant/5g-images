@@ -1,0 +1,43 @@
+gnodeb:
+  controlif:
+    ip: "${GNB_NGAP_ADDR}"
+    port: 9487
+  dataif:
+    ip: "${GNB_GTPU_ADDR}"
+    port: 2152
+  plmnlist:
+    mcc: "${MCC}"
+    mnc: "${MNC}"
+    tac: "${TAC}"
+    gnbid: "${GNBID}"
+  slicesupportlist:
+    sst: "${GNBSST}"
+    sd: "${GNBSD}"
+
+ue:
+  msin: "${MSIN}"
+  key: "${KEY}"
+  opc: "${OPC}"
+  amf: "8000"
+  sqn: "00000000"
+  dnn: "${DNN}"
+  hplmn:
+    mcc: "${MCC}"
+    mnc: "${MNC}"
+  snssai:
+    sst: ${UESST}
+    sd: "${UESD}"
+  integrity:
+    nia0: false
+    nia1: false
+    nia2: true
+    nia3: false
+  ciphering:
+    nea0: false
+    nea1: false
+    nea2: true
+    nea3: false
+
+amfif:
+  ip: "${AMF_ADDR}"
+  port: 38412

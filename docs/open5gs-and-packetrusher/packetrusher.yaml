@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  packetrusher:
+    image: gradiant/packetrusher:cec07b7
+    container_name: packetrusher
+    cap_add:
+      - all
+    privileged: true
+    environment:
+      GNBSD: ffffff
+      UESD: ffffff
