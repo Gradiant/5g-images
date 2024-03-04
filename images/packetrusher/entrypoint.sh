@@ -2,6 +2,12 @@
 
 set -ex
 
+if [ $# -lt 1 ]
+then
+        echo "Usage : $0 [ue | multi-ue -n N]"
+        exit
+fi
+
 if [[ -z "${GNB_NGAP_ADDR}" ]] ; then
     export GNB_NGAP_ADDR=$(ip addr show $GNB_NGAP_DEV | grep -Po 'inet \K[\d.]+')
 fi
@@ -16,4 +22,4 @@ fi
 
 envsubst < config/config.yml > config.yml
 
-./packetrusher --config config.yml ue
+./packetrusher --config config.yml $@

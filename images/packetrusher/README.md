@@ -7,6 +7,6 @@ To be able to run this image, you have to:
 - Run the container with cap_add=all
 - Run the container with privileged=true
 
-The image uses the basic mode of PacketRusher: 1 gNB and 1 UE.
+The image receives the mode of PacketRusher (ue, multi-ue...) as a command. entrypoint can be seen to understand how it works.
 
 You can change the config file using env variables.
