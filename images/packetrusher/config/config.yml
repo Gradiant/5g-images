@@ -39,5 +39,5 @@ ue:
     nea3: false
 
 amfif:
-  ip: "${AMF_ADDR}"
-  port: 38412
+  - ip: "${AMF_ADDR}"
+    port: 38412
