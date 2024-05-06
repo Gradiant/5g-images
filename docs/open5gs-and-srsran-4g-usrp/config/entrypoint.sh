@@ -53,6 +53,7 @@ case "$command" in
         ;;
     enb)
         echo "Launching srsenb"
+        tail -f /dev/null
         envsubst < /etc/srsran/enb.conf > enb.conf
         if [ "$ZMQ" = true ] ; then
             sed -i 's/#device_name = zmq/device_name = zmq\ndevice_args = tx_port=tcp:\/\/*:2000,rx_port=tcp:\/\/${UE_ADDRESS}:2001,id=enb,base_srate=23.04e6/' enb.conf

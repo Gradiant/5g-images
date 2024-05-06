@@ -44,8 +44,7 @@ RUN cd /opt/srsRAN_4G/target/etc/srsran && \
     sed -i 's/^s1c_bind_addr =.*/s1c_bind_addr = ${S1C_BIND_ADDR}/' enb.conf && \
     sed -i 's/^n_prb =.*/n_prb = ${N_PRB}/' enb.conf && \
     sed -i 's/^tx_gain =.*/tx_gain = ${TX_GAIN}/' enb.conf && \
-    sed -i 's/^rx_gain =.*/rx_gain = ${RX_GAIN}/' enb.conf && \
-    sed -i 's/#device_name = zmq/device_name = zmq\ndevice_args = tx_port=tcp:\/\/*:2000,rx_port=tcp:\/\/${UE_ADDRESS}:2001,id=enb,base_srate=23.04e6/' enb.conf
+    sed -i 's/^rx_gain =.*/rx_gain = ${RX_GAIN}/' enb.conf
 
 # Embed env variables in rr.conf files
 RUN cd /opt/srsRAN_4G/target/etc/srsran && \
@@ -56,21 +55,7 @@ RUN cd /opt/srsRAN_4G/target/etc/srsran && \
     sed -E -i 's/^algo +=.*/algo = ${ALGO}/' ue.conf && \
     sed -E -i 's/^#?opc +=.*/opc = ${OPC}/' ue.conf && \
     sed -E -i 's/^k +=.*/k = ${KEY}/' ue.conf && \
-    sed -i 's/^imsi =.*/imsi = ${MCC}${MNC}${MSISDN}/' ue.conf && \
-    sed -i 's/#device_name = zmq/device_name = zmq\ndevice_args = tx_port=tcp:\/\/${UE_ADDRESS}:2001,rx_port=tcp:\/\/${ENB_ADDRESS}:2000,id=ue,base_srate=23.04e6/' ue.conf && \
-    sed -i 's/^dl_earfcn =.*/dl_earfcn = ${DL_EARFCN}/' ue.conf && \
-    sed -i 's/^# bands = .*/bands = ${BANDS}/' ue.conf && \
-    sed -i 's/^#apn =.*/apn = ${APN}/' ue.conf && \
-    sed -i 's/^#apn_protocol =.*/apn_protocol = ${APN_PROTOCOL}/' ue.conf && \
-    sed -i 's/^#srate =.*/srate = ${SRATE}e6/' ue.conf && \
-    sed -i 's/^#rx_gain =.*/rx_gain = ${RX_GAIN}/' ue.conf && \
-    sed -i 's/^tx_gain =.*/tx_gain = ${TX_GAIN}/' ue.conf  && \
-    sed -E -i '/^\[rat\.eutra\]/{n;n;s/^#nof_carriers = .*/nof_carriers = ${EUTRA_NOF_CARRIERS}/}' ue.conf && \
-    sed -E -i '/^\[rat\.nr\]/{n;n;s/^# nof_carriers = .*/nof_carriers = ${NR_NOF_CARRIERS}/}' ue.conf && \
-    sed -i '/\[rat.nr\]/a\max_nof_prb = ${NR_MAX_NOF_PRB}' ue.conf && \
-    sed -i '/\[rat.nr\]/a\nof_prb = ${NR_NOF_PRB}' ue.conf 
-
-
+    sed -i 's/^imsi =.*/imsi = ${MCC}${MNC}${MSISDN}/' ue.conf
 
 # Embed env variables in epc.conf files
 RUN cd /opt/srsRAN_4G/target/etc/srsran && \

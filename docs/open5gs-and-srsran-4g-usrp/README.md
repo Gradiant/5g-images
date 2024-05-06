@@ -7,23 +7,23 @@
 deploy the EPC core (open5gs) with:
 
 ```
-docker-compose -f epc.yaml up -d
+docker compose -f epc.yaml up -d
 ```
 
-Register subscriber in ngc with `/register_subscriber.sh`.
+Register subscriber in ngc with `./register_subscriber.sh`.
 
 
 # Download uhd_images
 
 
-python3 ../../uhd_image_downloader.py -i ../../uhd_images
+python3 uhd_image_downloader.py -i ../../uhd_images
 
 # Deployment RAN (enodeB)
 
 Deploy with
 
 ```
-docker-compose -f srs-enb.yaml up -d
+docker compose -f srs-enb.yaml up -d
 ```
 
 
@@ -39,7 +39,7 @@ To test ue connectivity use a commercial smartphone, insert the SIM card previou
 Undeploy with:
 
 ```
-docker-compose -f srslte.yaml down
-docker-compose -f epc.yaml down -v
+docker compose -f srs-enb.yaml down
+docker compose -f epc.yaml down -v
 
 ```
