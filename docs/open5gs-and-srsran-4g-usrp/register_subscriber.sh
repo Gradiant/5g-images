@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MONGO_CONTAINER=open5gs-and-srs-enb-usrp-mongo-1
+MONGO_CONTAINER=open5gs-and-srsran-4g-usrp-mongo-1
 
 : 'open5gs-dbctl: Open5GS Database Configuration Tool (0.10.3)
     FLAGS: --db_uri=mongodb://localhost
@@ -31,13 +31,13 @@ MONGO_CONTAINER=open5gs-and-srs-enb-usrp-mongo-1
 docker cp open5gs-dbctl $MONGO_CONTAINER:/
 
 # docker run -ti --rm \
-#     --net open5gs-and-srs-enb-usrp_default \
+#     --net open5gs-and-srsran-4g-usrp_default \
 #     -e DB_URI=mongodb://$MONGO_CONTAINER/open5gs \
 #     gradiant/open5gs-dbctl:0.10.3 "open5gs-dbctl add 999700000000001 465B5CE8B199B49FAA5F0A2EE238A6BC E8ED289DEBA952E4283B54E88E6183CA"
 
 #SISMOCOM SIM
 docker run -ti --rm \
-    --net open5gs-and-srs-enb-usrp_default \
+    --net open5gs-and-srsran-4g-usrp_default \
     -e DB_URI=mongodb://$MONGO_CONTAINER/open5gs \
     gradiant/open5gs-dbctl:0.10.3 "open5gs-dbctl add 999700000053413 E4902EF16990CD9BB1FCC283D42D60EE 7309B7233842606E80C64DF837A6C9B7"
 
