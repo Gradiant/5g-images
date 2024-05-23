@@ -39,16 +39,18 @@ if [ "$DEVICE_DRIVER" = "zmq" ]; then
             print "  prach:"
             print "    prach_config_index: 1"
         }
-    }' /opt/srsRAN_Project/target/share/srsran/gnb_rf_b200_tdd_n78_20mhz.yml > tmpfile && mv tmpfile /opt/srsRAN_Project/target/share/srsran/gnb_rf_b200_tdd_n78_20mhz.yml
+    }' /opt/srsRAN_Project/target/share/srsran/gnb_rf_b200_tdd_n78_20mhz.yml > tmpfile
 
-    sed -i -e "/device_args:/s/tx_port=tcp:\/\/:/tx_port=tcp:\/\/${GNB_ADDRESS}:/" \
-           -e "/device_args:/s/rx_port=tcp:\/\/:/rx_port=tcp:\/\/${UE_ADDRESS}:/" \
-           /opt/srsRAN_Project/target/share/srsran/gnb_rf_b200_tdd_n78_20mhz.yml
+    envsubst < tmpfile >/opt/srsRAN_Project/target/share/srsran/gnb_rf_b200_tdd_n78_20mhz.yml
+    rm tmpfile
+    if [ "$DEVICE_ARGS" = "default" ]; then
+        sed -i '/device_args:/c\  device_args: tx_port=tcp://${GNB_ADDRESS}:2000,rx_port=tcp://${UE_ADDRESS}:2001,id=gnb,base_srate=${SRATE}e6' \
+        /opt/srsRAN_Project/target/share/srsran/gnb_rf_b200_tdd_n78_20mhz.yml
+    fi
 fi
 
 
 envsubst < /opt/srsRAN_Project/target/share/srsran/gnb_rf_b200_tdd_n78_20mhz.yml > gnb.yml
-
 
 
 

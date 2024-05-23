@@ -18,6 +18,8 @@ services:
     restart : on-failure 
   mme:
     image: gradiant/open5gs:2.7.0
+    volumes:
+     - ./config/mme.yaml:/opt/open5gs/etc/open5gs/mme.yaml
     command: open5gs-mmed
     restart: on-failure
     ports:
@@ -52,7 +54,6 @@ services:
       DB_URI: mongodb://mongo/open5gs
     restart: on-failure
   nrf:
-    image: gradiant/open5gs:2.4.4
+    image: gradiant/open5gs:2.7.0
     command: open5gs-nrfd   
     restart : on-failure 
-

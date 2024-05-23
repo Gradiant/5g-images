@@ -2,6 +2,22 @@
 
 5G end to end communication demo with open5gs, srsRANProject and srsUE (srsRAN4G).
 
+# GNB config options
+
+By default, the driver name and arguments are:
+
+```
+DEVICE_DRIVER=uhd 
+DEVICE_ARGS=type=b200,num_recv_frames=64,num_send_frames=64 
+```
+
+When using DEVICE_DRIVER=zmq and setting DEVICE_ARGS=default, the default values that will be used for zmq are:
+```
+device_args: tx_port=tcp://${GNB_ADDRESS}:2000,rx_port=tcp://${UE_ADDRESS}:2001,id=gnb,base_srate=${SRATE}e6
+```
+
+If different DEVICE_ARGS are set with ZMQ, ensure that they match the addresses of the GNB and UE devices.
+
 # Deployment of the core and register subscribers
 
 deploy the core (open5gs) with:
