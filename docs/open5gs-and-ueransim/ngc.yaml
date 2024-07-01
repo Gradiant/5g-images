@@ -52,6 +52,9 @@ services:
 
   smf:
     image: openverso/open5gs:2.7.0
+    #It is necessary to mount the configuration file if pcfr is not deployed
+    volumes:
+    - ./config/smf.yaml:/opt/open5gs/etc/open5gs/smf.yaml
     restart: on-failure
     command: open5gs-smfd
 

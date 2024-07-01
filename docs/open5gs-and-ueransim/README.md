@@ -13,7 +13,7 @@ deploy the ngc core (open5gs) with:
 docker compose -f ngc.yaml up -d
 ```
 
-Register subscribers in ngc with `/register_subscriber.sh`.
+Register subscribers in ngc with `./register_subscriber.sh`.
 
 
 # Deploy gnodeb
