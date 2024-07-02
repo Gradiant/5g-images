@@ -8,6 +8,7 @@ tac: ${TAC}             # Tracking Area Code
 linkIp: ${RADIO_BIND_IP}   # gNB's local IP address for Radio Link Simulation (Usually same with local IP)
 ngapIp: ${N2_BIND_IP}  # gNB's local IP address for N2 Interface (Usually same with local IP)
 gtpIp: ${N3_BIND_IP}    # gNB's local IP address for N3 Interface (Usually same with local IP)
+gtpAdvertiseIp: ${N3_ADVERTISE_IP}  # gNB's IP for external access (Ususarlly the same as gtpIp)
 
 # List of AMF address information
 amfConfigs:
