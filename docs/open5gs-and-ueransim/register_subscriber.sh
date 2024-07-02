@@ -32,29 +32,29 @@ docker cp open5gs-dbctl $MONGO_CONTAINER:/
 docker run -ti --rm \
     --net open5gs-and-ueransim_default \
     -e DB_URI=mongodb://$MONGO_CONTAINER/open5gs \
-    openverso/open5gs-dbctl:0.10.3 "open5gs-dbctl add 999700000000001 465B5CE8B199B49FAA5F0A2EE238A6BC E8ED289DEBA952E4283B54E88E6183CA"
+    gradiant/open5gs-dbctl:0.10.3 "open5gs-dbctl add 999700000000001 465B5CE8B199B49FAA5F0A2EE238A6BC E8ED289DEBA952E4283B54E88E6183CA"
 
 docker run -ti --rm \
     --net open5gs-and-ueransim_default \
     -e DB_URI=mongodb://$MONGO_CONTAINER/open5gs \
-    openverso/open5gs-dbctl:0.10.3 "open5gs-dbctl add 999700000000002 465B5CE8B199B49FAA5F0A2EE238A6BC E8ED289DEBA952E4283B54E88E6183CA"
+    gradiant/open5gs-dbctl:0.10.3 "open5gs-dbctl add 999700000000002 465B5CE8B199B49FAA5F0A2EE238A6BC E8ED289DEBA952E4283B54E88E6183CA"
 
 docker run -ti --rm \
     --net open5gs-and-ueransim_default \
     -e DB_URI=mongodb://$MONGO_CONTAINER/open5gs \
-    openverso/open5gs-dbctl:0.10.3 "open5gs-dbctl add 999700000000003 465B5CE8B199B49FAA5F0A2EE238A6BC E8ED289DEBA952E4283B54E88E6183CA"
+    gradiant/open5gs-dbctl:0.10.3 "open5gs-dbctl add 999700000000003 465B5CE8B199B49FAA5F0A2EE238A6BC E8ED289DEBA952E4283B54E88E6183CA"
 
 docker run -ti --rm \
     --net open5gs-and-ueransim_default \
     -e DB_URI=mongodb://$MONGO_CONTAINER/open5gs \
-    openverso/open5gs-dbctl:0.10.3 "open5gs-dbctl add 999700000000011 465B5CE8B199B49FAA5F0A2EE238A6BC E8ED289DEBA952E4283B54E88E6183CA"
+    gradiant/open5gs-dbctl:0.10.3 "open5gs-dbctl add 999700000000011 465B5CE8B199B49FAA5F0A2EE238A6BC E8ED289DEBA952E4283B54E88E6183CA"
 
 docker run -ti --rm \
     --net open5gs-and-ueransim_default \
     -e DB_URI=mongodb://$MONGO_CONTAINER/open5gs \
-    openverso/open5gs-dbctl:0.10.3 "open5gs-dbctl add 999700000000012 465B5CE8B199B49FAA5F0A2EE238A6BC E8ED289DEBA952E4283B54E88E6183CA"
+    gradiant/open5gs-dbctl:0.10.3 "open5gs-dbctl add 999700000000012 465B5CE8B199B49FAA5F0A2EE238A6BC E8ED289DEBA952E4283B54E88E6183CA"
 
 docker run -ti --rm \
     --net open5gs-and-ueransim_default \
     -e DB_URI=mongodb://$MONGO_CONTAINER/open5gs \
-    openverso/open5gs-dbctl:0.10.3 "open5gs-dbctl add 999700000000013 465B5CE8B199B49FAA5F0A2EE238A6BC E8ED289DEBA952E4283B54E88E6183CA"
+    gradiant/open5gs-dbctl:0.10.3 "open5gs-dbctl add 999700000000013 465B5CE8B199B49FAA5F0A2EE238A6BC E8ED289DEBA952E4283B54E88E6183CA"

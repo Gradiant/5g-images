@@ -1,19 +1,22 @@
 version: '3'
 services: 
   enodeb:
-    image: openverso/srs-lte:20_10_1
+    image: gradiant/srsran-4g:23_11
     command: 
       - enb
     privileged: true
     volumes:
-      - ./config/srs/:/etc/srslte/
+      - ./config/srs/:/etc/srsran/
       - /dev/bus/usb:/dev/bus/usb
       - ../../uhd_images:/usr/share/uhd/images
+      - ./config/entrypoint.sh:/entrypoint.sh
     cap_add:
       - all
     environment:
       MME_HOSTNAME: mme
       ENB_HOSTNAME: enodeb
-      MCC: "901"
+      MCC: "999"
       MNC: "70"
-      TAC: "0001"
+      TAC: "1"
+      SRSUE_5G: false
+      ZMQ: false

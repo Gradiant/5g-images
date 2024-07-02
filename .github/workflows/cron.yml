@@ -24,7 +24,7 @@ jobs:
         id: generate-matrix
         run: |
           IMAGES=$( ls -1 ${{ env.IMAGES_DIR }} | tr '\n' ',' | sed 's/[^,]\+/"\0"/g;s/,$//' )
-          echo "::set-output name=matrix::{ \"image\": [ ${IMAGES} ] }"
+          echo "matrix={ \"image\": [ ${IMAGES} ] }" >> $GITHUB_OUTPUT
   # ---
 
   # Update the version of the existing images when possible and launch pull request
@@ -46,11 +46,10 @@ jobs:
         id: update_tag
         run: |
           cd ${{ env.IMAGE_DIR }}
-          echo "::set-output name=old-version::$( sed -n '/IMAGE_TAG/s/^.*=//p' image_info.sh || echo 'NOT_FOUND' )"
+          echo "old-version=$( sed -n '/IMAGE_TAG/s/^.*=//p' image_info.sh || echo 'NOT_FOUND' )" >> $GITHUB_OUTPUT
 
           [[ -f ./update_current_tag.sh ]] && ./update_current_tag.sh 
-
-          echo "::set-output name=new-version::$( sed -n '/IMAGE_TAG/s/^.*=//p' image_info.sh || echo 'NOT_FOUND' )"
+          echo "new-version=$( sed -n '/IMAGE_TAG/s/^.*=//p' image_info.sh || echo 'NOT_FOUND' )" >> $GITHUB_OUTPUT
         continue-on-error: true
 
       # Launch Pull Request only when the version is updated 

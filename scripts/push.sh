@@ -1,6 +1,6 @@
 #!/bin/bash
 
-REGISTRY=docker.io/openverso
+REGISTRY=docker.io/gradiant
 
 if [ -z "$IMAGE_LIST" ]; then
     LIST_CHANGED=`git diff --name-only main -- images | cut -f1-2 -d'/' | uniq`

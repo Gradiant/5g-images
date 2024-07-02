@@ -1,7 +1,7 @@
 version: '3'
 services:
   enodeb:
-    image: openverso/srsran:21_10
+    image: gradiant/srsran:21_10
     container_name: srsenb
     stdin_open: true
     tty: true

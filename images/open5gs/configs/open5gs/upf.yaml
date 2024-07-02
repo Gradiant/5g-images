@@ -19,6 +19,7 @@ upf:
     - dev: eth0
   session:
   - subnet: 10.45.0.1/16
+    dnn: internet
   - subnet: 2001:db8:cafe::1/48
   metrics:
     server:

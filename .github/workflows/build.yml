@@ -28,7 +28,7 @@ jobs:
         id: generate-matrix
         run: |
           changed=`echo "${{ steps.files.outputs.all_changed_files }}" | sed 's/ /\n/g' | grep $images_dir | cut -f2 -d'/' | uniq | sed 's/^/"/;s/$/"/' | sed -z 's/\n/,/g;s/,$/\n/'`
-          echo "::set-output name=matrix::{ \"image\": [ ${changed} ] }"
+          echo "matrix={ \"image\": [ ${changed} ] }" >> $GITHUB_OUTPUT
           
   # build image if changes in code
   build-image:
@@ -45,9 +45,9 @@ jobs:
         id: image-info
         run: |
           source ./images/${{ matrix.image }}/image_info.sh
-          echo "::set-output name=platforms::$PLATFORMS"
-          echo "::set-output name=image_tag::$IMAGE_TAG"
-          echo "::set-output name=image::${{ matrix.image }}"
+          echo "platforms=$PLATFORMS" >> $GITHUB_OUTPUT
+          echo "image_tag=$IMAGE_TAG" >> $GITHUB_OUTPUT
+          echo "image=${{ matrix.image }}" >> $GITHUB_OUTPUT
           
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -60,7 +60,7 @@ jobs:
         with:
           context: ./images/${{ steps.image-info.outputs.image }}/
           push: false
-          tags: openverso/${{ steps.image-info.outputs.image }}:${{ steps.image-info.outputs.image_tag }}
+          tags: gradiant/${{ steps.image-info.outputs.image }}:${{ steps.image-info.outputs.image_tag }}
           build-args: version=${{ steps.image-info.outputs.image_tag }}
           platforms: ${{ steps.image-info.outputs.platforms }}
           cache-from: type=gha
@@ -90,7 +90,7 @@ jobs:
           context: ./images/${{ steps.image-info.outputs.image }}/
           file: ./images/${{ steps.image-info.outputs.image }}/Dockerfile.ubi
           push: false
-          tags: openverso/${{ steps.image-info.outputs.image }}:${{ steps.image-info.outputs.image_tag }}-ubi
+          tags: gradiant/${{ steps.image-info.outputs.image }}:${{ steps.image-info.outputs.image_tag }}-ubi
           build-args: version=${{ steps.image-info.outputs.image_tag }}
           platforms: ${{ steps.image-info.outputs.platforms }}
           cache-from: type=gha

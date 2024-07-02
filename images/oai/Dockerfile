@@ -1,12 +1,14 @@
 FROM ubuntu:focal AS build
 
-ARG version=2023.w28
-
+ARG version
 ENV VERSION=$version
 
+ARG BUILD_OPTION
 ARG NEEDED_GIT_PROXY
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Europe
+ENV BUILD_UHD_FROM_SOURCE=True
+ENV UHD_VERSION=4.4.0.0
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 #install developers pkg/repo
@@ -42,10 +44,19 @@ RUN /bin/sh oaienv && \
 RUN /bin/sh oaienv && \ 
     cd cmake_targets && \
     mkdir -p log && \
-    ./build_oai --eNB --gNB --RU --UE --nrUE --ninja --build-lib "telnetsrv enbscope uescope nrscope nrqtscope" -w USRP -t Ethernet --verbose-ci --noavx512 -c --cmake-opt -DCMAKE_C_FLAGS=-Werror --cmake-opt -DCMAKE_CXX_FLAGS=-Werror
+    ./build_oai -c --ninja \
+    --eNB --gNB --RU --UE --nrUE \
+    --build-lib "telnetsrv enbscope uescope nrscope nrqtscope" \
+    -w USRP -t Ethernet \
+    --build-e2 --cmake-opt -DXAPP_MULTILANGUAGE=OFF \
+    --noavx512 \
+    --cmake-opt -DCMAKE_C_FLAGS=-Werror --cmake-opt -DCMAKE_CXX_FLAGS=-Werror $BUILD_OPTION && \
+    # Mainly to see if the sanitize option was perfectly executed
+    ldd ran_build/build/nr-softmodem
 
 #start from scratch for target executable
 FROM ubuntu:focal as oai
+ARG BUILD_OPTION
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Europe
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
@@ -73,13 +84,10 @@ RUN apt-get update && \
         python3-six \
         python3-requests \
         libusb-1.0-0 && \
-    # Install UHD driver from ettus
-    add-apt-repository ppa:ettusresearch/uhd --yes && \
-    apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install --yes \
-        libuhd-dev \ 
-        libuhd4.4.0 \
-        uhd-host && \
+    /bin/bash -c 'if [[ "$BUILD_OPTION" = "--sanitize" ]]; then DEBIAN_FRONTEND=noninteractive apt-get install --yes \
+        libasan5 \
+        libubsan1 \
+        liblapacke; fi' && \
     rm -rf /var/lib/apt/lists/*
 
 COPY --from=build \ 
@@ -92,6 +100,20 @@ COPY --from=build \
     /opt/oai/bin/
 COPY --from=build /oai-ran/docker/scripts/*.sh /
 COPY --from=build /oai-ran/cmake_targets/ran_build/build/*.so /usr/local/lib/
+
+COPY --from=build /usr/local/bin/uhd_find_devices /usr/local/bin
+COPY --from=build /usr/local/lib/libuhd.so.4.4.0 /usr/local/lib
+COPY --from=build /usr/local/lib/uhd/utils/uhd_images_downloader.py /opt/oai/bin
+COPY --from=build \
+    /usr/lib/x86_64-linux-gnu/libboost_chrono.so.1.71.0 \
+    /usr/lib/x86_64-linux-gnu/libboost_date_time.so.1.71.0 \
+    /usr/lib/x86_64-linux-gnu/libboost_filesystem.so.1.71.0 \
+    /usr/lib/x86_64-linux-gnu/libboost_regex.so.1.71.0 \
+    /usr/lib/x86_64-linux-gnu/libboost_serialization.so.1.71.0 \
+    /usr/lib/x86_64-linux-gnu/libboost_thread.so.1.71.0 \
+    /usr/lib/x86_64-linux-gnu/libboost_system.so.1.71.0 \
+    /usr/lib/x86_64-linux-gnu/libboost_program_options.so.1.71.0 \
+    /usr/lib/x86_64-linux-gnu/
 
 RUN cd /opt/oai/bin && \
     ln -s nr-softmodem nr-softmodem.Rel15 && \

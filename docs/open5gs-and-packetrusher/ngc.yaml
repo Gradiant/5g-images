@@ -1,0 +1,104 @@
+version: '3'
+
+services: 
+  mongo:
+    image: mongo:7.0.2
+    environment:
+      MONGO_INITDB_DATABASE: open5gs
+  
+  amf:
+    image: gradiant/open5gs:2.7.0
+    command: 
+      - open5gs-amfd 
+    restart : on-failure
+    
+  ausf:
+    image: gradiant/open5gs:2.7.0
+    command: 
+      - open5gs-ausfd
+    restart : on-failure
+    
+  bsf:
+    image: gradiant/open5gs:2.7.0
+    command: 
+      - open5gs-bsfd
+    restart : on-failure
+
+  nrf:
+    image: gradiant/open5gs:2.7.0
+    command: open5gs-nrfd
+    restart : on-failure
+    
+  nssf:
+    image: gradiant/open5gs:2.7.0
+    command: open5gs-nssfd   
+    restart : on-failure
+
+  pcf:
+    image: gradiant/open5gs:2.7.0
+    command: 
+      - open5gs-pcfd
+    environment:
+      DB_URI: mongodb://mongo/open5gs
+    restart : on-failure
+  
+  scp:
+    image: gradiant/open5gs:2.7.0
+    command: open5gs-scpd
+    environment:
+      DB_URI: mongodb://mongo/open5gs
+    restart : on-failure
+
+  smf:
+    image: gradiant/open5gs:2.7.0
+    command: open5gs-smfd    
+    restart : on-failure
+    volumes:
+      - ./config/smf.yaml:/opt/open5gs/etc/open5gs/smf.yaml
+    
+  udm:
+    image: gradiant/open5gs:2.7.0
+    restart: on-failure
+    command: 
+      - open5gs-udmd
+    
+  udr:
+    image: gradiant/open5gs:2.7.0
+    restart: on-failure
+    environment:
+      DB_URI: mongodb://mongo/open5gs
+    command: 
+      - open5gs-udrd
+    
+  upf:
+    image: gradiant/open5gs:2.7.0
+    command:
+      - open5gs-upfd
+    cap_add:
+      - all
+    privileged: true
+    restart: on-failure
+    # environment:
+    # ENABLE_NAT: "false"
+    ports:
+      - 2152:2152
+    # network_mode: host
+
+  webui:
+    image: gradiant/open5gs-webui:2.7.0
+    restart: on-failure
+    environment:
+      DB_URI: mongodb://mongo/open5gs
+      NODE_ENV: dev
+    ports:
+      - 3000:3000
+
+  populate:
+    image: gradiant/open5gs-dbctl:0.10.3
+    restart: on-failure
+    environment:
+      DB_URI: mongodb://mongo/open5gs
+    entrypoint:
+      - "/bin/bash"
+      - "-c"
+      - "open5gs-dbctl add_ue_with_slice 999700000000001 491BB1C6E1179AED538028AE7AD525B3 3B7FB099B3A6D16873B33F023B1679E9 internet 1 ffffff"

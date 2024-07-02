@@ -35,6 +35,7 @@ smf:
       port: 9090
   session:
   - subnet: 10.45.0.1/16
+    dnn: internet
   - subnet: 2001:db8:cafe::1/48
   dns:
   - 8.8.8.8

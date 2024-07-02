@@ -1,7 +1,7 @@
 version: '3'
 services: 
   gnb1:
-    image: openverso/ueransim:3.1.6
+    image: gradiant/ueransim:3.1.6
     container_name: gnb1
     command: 
       - gnb
@@ -11,7 +11,7 @@ services:
       MCC: '208'
       MNC: '93'
   ue1:
-    image: openverso/ueransim:3.1.6
+    image: gradiant/ueransim:3.1.6
     container_name: ue1
     command: 
       - ue
