@@ -97,6 +97,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
 ENV APP_ROOT=/opt/open5gs
 COPY --from=builder /opt/open5gs ${APP_ROOT}
 
+RUN cd ${APP_ROOT}/lib && ln -s $(uname -m)-linux-gnu/freeDiameter .
 ENV PATH=${APP_ROOT}/bin:${PATH} HOME=${APP_ROOT}
 WORKDIR ${APP_ROOT}
 COPY entrypoint.sh /entrypoint.sh
