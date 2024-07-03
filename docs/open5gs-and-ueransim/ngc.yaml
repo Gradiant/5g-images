@@ -7,66 +7,65 @@ services:
       MONGO_INITDB_DATABASE: open5gs
 
   amf:
-    image: openverso/open5gs:2.6.4
-    command: 
-      - open5gs-amfd 
-    restart : on-failure
-    
+    image: gradiant/open5gs:2.7.0
+    command:
+    - open5gs-amfd
+    restart: on-failure
+
   ausf:
-    image: openverso/open5gs:2.6.4
-    command: 
-      - open5gs-ausfd
-    restart : on-failure
-    
+    image: gradiant/open5gs:2.7.0
+    command:
+    - open5gs-ausfd
+    restart: on-failure
+
   bsf:
-    image: openverso/open5gs:2.6.4
-    command: open5gs-bsfd
-    restart : on-failure
-    
+    image: gradiant/open5gs:2.7.0
+    command:
+    - open5gs-bsfd
+    restart: on-failure
+
   nrf:
-    image: openverso/open5gs:2.6.4
+    image: gradiant/open5gs:2.7.0
     command: open5gs-nrfd
     restart: on-failure
 
   nssf:
-    image: openverso/open5gs:2.6.4
-    command: open5gs-nssfd   
-    restart : on-failure 
-    
+    image: gradiant/open5gs:2.7.0
+    command: open5gs-nssfd
+    restart: on-failure
+
+
   pcf:
-    image: openverso/open5gs:2.6.4
-    command: 
-      - open5gs-pcfd
-    environment:
-      DB_URI: mongodb://mongo/open5gs
-    restart : on-failure
-    
-  pcrf:
-    image: openverso/open5gs:2.6.4
-    command: ["open5gs-pcrfd"]
+    image: gradiant/open5gs:2.7.0
+    command:
+    - open5gs-pcfd
     environment:
       DB_URI: mongodb://mongo/open5gs
     restart: on-failure
 
   scp:
-    image: openverso/open5gs:2.6.4
+    image: gradiant/open5gs:2.7.0
     command: open5gs-scpd
     environment:
       DB_URI: mongodb://mongo/open5gs
     restart: on-failure
 
   smf:
-    image: openverso/open5gs:2.6.4
+    image: gradiant/open5gs:2.7.0
+    #It is necessary to mount the configuration file if pcfr is not deployed
+    volumes:
+    - ./config/smf.yaml:/opt/open5gs/etc/open5gs/smf.yaml
+    restart: on-failure
     command: open5gs-smfd
 
   udm:
-    image: openverso/open5gs:2.6.4
+    image: gradiant/open5gs:2.7.0
     restart: on-failure
     command:
     - open5gs-udmd
 
   udr:
-    image: openverso/open5gs:2.6.4
+    image: gradiant/open5gs:2.7.0
     restart: on-failure
     environment:
       DB_URI: mongodb://mongo/open5gs
@@ -74,7 +73,7 @@ services:
     - open5gs-udrd
 
   upf:
-    image: openverso/open5gs:2.6.4
+    image: gradiant/open5gs:2.7.0
     command:
     - open5gs-upfd
     cap_add:
@@ -87,7 +86,7 @@ services:
     - 2152:2152
 
   webui:
-    image: openverso/open5gs-webui:2.6.4
+    image: gradiant/open5gs-webui:2.7.0
     restart: on-failure
     environment:
       DB_URI: mongodb://mongo/open5gs
