@@ -3,6 +3,8 @@ FROM ubuntu:20.04 as builder
 ARG version
 ENV VERSION=$version
 
+RUN echo "Building srsRAN version $VERSION"
+
 LABEL org.opencontainers.image.authors="Álvaro Vázquez <avrodriguez@gradiant.org>" \
       org.opencontainers.image.vendor="Gradiant" \
       org.opencontainers.image.licenses="Apache-2.0" \
@@ -13,15 +15,15 @@ RUN apt-get update && \
     git \
     build-essential \
     cmake \
-    make \ 
-    gcc \ 
-    g++ \ 
-    pkg-config \ 
-    libfftw3-dev \ 
-    libmbedtls-dev \ 
-    libsctp-dev \ 
-    libyaml-cpp-dev \ 
-    libgtest-dev \ 
+    make \
+    gcc \
+    g++ \
+    pkg-config \
+    libfftw3-dev \
+    libmbedtls-dev \
+    libsctp-dev \
+    libyaml-cpp-dev \
+    libgtest-dev \
     libzmq3-dev \
     libboost-program-options-dev \
     libconfig++-dev \
@@ -92,7 +94,6 @@ RUN apt-get update && \
     apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install --yes \
         libuhd-dev \ 
-        libuhd4.6.0 \
         uhd-host && \
     uhd_images_downloader && \
     rm -rf /var/lib/apt/lists/*
