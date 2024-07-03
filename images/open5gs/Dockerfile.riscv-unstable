@@ -1,4 +1,4 @@
-FROM debian:bullseye as builder
+FROM debian:unstable as builder
 
 ARG version
 ARG branch=main
@@ -28,7 +28,7 @@ RUN apt-get update && \
         libgnutls28-dev \
         libgcrypt-dev \
         libssl-dev \
-        libidn11-dev \
+        libidn-dev \
         libmongoc-dev \
         libbson-dev \
         libyaml-dev \
@@ -65,7 +65,7 @@ COPY configs/open5gs/* /opt/open5gs/etc/open5gs/
 COPY configs/freeDiameter/* /opt/open5gs/etc/freeDiameter/
 
 
-FROM debian:bullseye-slim
+FROM debian:unstable-slim
 
 ARG version
 ENV VERSION=$version
@@ -78,26 +78,28 @@ LABEL org.opencontainers.image.authors="Carlos Giraldo <cgiraldo@gradiant.org>" 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
     curl \
     libtalloc2 \
-    libgnutls30 \
+    libgnutls30t64 \
     libgcrypt20 \
-    libssl1.1 \
+    libssl3t64 \
     libbson-1.0-0 \
-    libtins4.0 \
+    libtins4.5 \
     libcurl4-gnutls-dev \
     libyaml-0-2 \
     libmongoc-1.0-0 \
     libsctp1 \
-    libidn11 \
-    libcurl4 \
+    libidn12 \
+    libcurl4t64 \
     libmicrohttpd12 \
     libnghttp2-14 \
     wondershaper iproute2 iputils-ping procps net-tools iptables iperf3 traceroute tcpdump && \
     rm -rf /var/lib/apt/lists/*
 
+RUN update-alternatives --set iptables /usr/sbin/iptables-legacy
+
 ENV APP_ROOT=/opt/open5gs
 COPY --from=builder /opt/open5gs ${APP_ROOT}
 
-RUN cd ${APP_ROOT}/lib && ln -s $(uname -m)-linux-gnu/freeDiameter .
+RUN cd ${APP_ROOT}/lib && ln -s $(uname -m)-linux-gnu/freeDiameter .  
 ENV PATH=${APP_ROOT}/bin:${PATH} HOME=${APP_ROOT}
 WORKDIR ${APP_ROOT}
 COPY entrypoint.sh /entrypoint.sh

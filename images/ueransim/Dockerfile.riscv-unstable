@@ -1,9 +1,10 @@
-FROM ubuntu:22.04 AS builder
+FROM debian:unstable AS builder
 
-ARG version=3.1.0
+ARG version=3.2.6
 ARG commit=
 ENV VERSION=$version
 ENV COMMIT=$commit
+
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive \
@@ -29,7 +30,7 @@ RUN cd /tmp && git clone https://github.com/aligungr/UERANSIM.git && \
     
 RUN cd /tmp/UERANSIM && echo "cmake --version" && make
 
-FROM ubuntu:22.04 AS release 
+FROM debian:unstable
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive \
@@ -56,5 +57,9 @@ ENV RADIO_IFACE=eth0
 ENV AMF_HOSTNAME=amf
 ENV GNB_HOSTNAME=localhost
 
+# ueransim expects rt_tables to be in /etc/iproute2
+RUN ln -s /usr/share/iproute2 /etc/iproute2
+
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["/bin/sh"]
+

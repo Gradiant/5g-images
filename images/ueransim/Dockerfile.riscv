@@ -1,9 +1,10 @@
-FROM ubuntu:22.04 AS builder
+FROM riscv64/ubuntu:22.04 AS builder
 
 ARG version=3.1.0
 ARG commit=
 ENV VERSION=$version
 ENV COMMIT=$commit
+
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive \
@@ -29,7 +30,7 @@ RUN cd /tmp && git clone https://github.com/aligungr/UERANSIM.git && \
     
 RUN cd /tmp/UERANSIM && echo "cmake --version" && make
 
-FROM ubuntu:22.04 AS release 
+FROM riscv64/ubuntu:22.04
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive \
