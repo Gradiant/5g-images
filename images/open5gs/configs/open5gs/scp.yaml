@@ -1,5 +1,6 @@
 logger:
-  file: /opt/open5gs/var/log/open5gs/scp.log
+  path:
+    file: /opt/open5gs/var/log/open5gs/scp.log
 #  level: info   # fatal|error|warn|info(default)|debug|trace
 
 global:

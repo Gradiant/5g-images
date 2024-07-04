@@ -1,6 +1,5 @@
 logger:
-  path:
-    file: /opt/open5gs/var/log/open5gs/smf.log
+  file: /opt/open5gs/var/log/open5gs/smf.log
 #  level: info   # fatal|error|warn|info(default)|debug|trace
 
 global:
@@ -36,7 +35,6 @@ smf:
       port: 9090
   session:
   - subnet: 10.45.0.1/16
-    dnn: internet
   - subnet: 2001:db8:cafe::1/48
   dns:
   - 8.8.8.8
@@ -48,8 +46,9 @@ smf:
   #    - 127.0.0.1
   #    - ::1
   ctf:
-    enabled: auto # auto(default)|yes|no
-  freeDiameter: /opt/open5gs/etc/freeDiameter/smf.conf
+    enabled: no # auto(default)|yes|no
+  # This line is commented so it doesn't try to reach to the pcrf 
+  # freeDiameter: /opt/open5gs/etc/freeDiameter/smf.conf
 ################################################################################
 # SMF Info
 ################################################################################
