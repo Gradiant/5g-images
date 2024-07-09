@@ -1,7 +1,7 @@
 version: '3'
 services:
   gnb:
-    image: gradiant/srsran-5g:23_10_1
+    image: gradiant/srsran-5g:24_04
     command: 
       - gnb 
     privileged: true
