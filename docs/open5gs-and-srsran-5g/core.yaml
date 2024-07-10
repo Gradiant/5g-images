@@ -39,12 +39,6 @@ services:
       DB_URI: mongodb://mongo/open5gs
     restart : on-failure
     
-  pcrf:
-    image: gradiant/open5gs:2.7.1
-    command: ["open5gs-pcrfd"]
-    environment:
-      DB_URI: mongodb://mongo/open5gs
-    restart: on-failure
   scp:
     image: gradiant/open5gs:2.7.1
     command: open5gs-scpd
@@ -53,6 +47,9 @@ services:
     restart: on-failure    
   smf:
     image: gradiant/open5gs:2.7.1
+    #It is necessary to mount the configuration file if pcfr is not deployed
+    volumes:
+    - ./config/smf.yaml:/opt/open5gs/etc/open5gs/smf.yaml
     command: open5gs-smfd
     restart : on-failure 
     
