@@ -46,7 +46,7 @@ RUN /bin/sh oaienv && \
     mkdir -p log && \
     ./build_oai -c --ninja \
     --eNB --gNB --RU --UE --nrUE \
-    --build-lib "telnetsrv enbscope uescope nrscope nrqtscope" \
+    --build-lib "telnetsrv enbscope uescope nrscope" \
     -w USRP -t Ethernet \
     --build-e2 --cmake-opt -DXAPP_MULTILANGUAGE=OFF \
     --noavx512 \
@@ -55,7 +55,7 @@ RUN /bin/sh oaienv && \
     ldd ran_build/build/nr-softmodem
 
 #start from scratch for target executable
-FROM ubuntu:focal as oai
+FROM ubuntu:focal AS oai
 ARG BUILD_OPTION
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Europe
