@@ -1,4 +1,4 @@
-FROM ubuntu:focal AS build
+FROM ubuntu:jammy AS build
 
 ARG version
 ENV VERSION=$version
@@ -19,11 +19,19 @@ RUN apt-get update && \
        build-essential \
        psmisc \
        git \
+       gcc-12 \
+       g++-12 \
        xxd \
+       libpcre2-dev \
+       python3-dev \
+       bison \
+       flex \
+       m4 \
        #unzip is needed for protobuf
        unzip \
        # python3-pip for conf template generation
        python3-pip && \
+    update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 --slave /usr/bin/g++ g++ /usr/bin/g++-12 && \
     pip3 install --ignore-installed pyyaml
 
 # In some network environments, GIT proxy is required
@@ -55,7 +63,7 @@ RUN /bin/sh oaienv && \
     ldd ran_build/build/nr-softmodem
 
 #start from scratch for target executable
-FROM ubuntu:focal AS oai
+FROM ubuntu:jammy AS oai
 ARG BUILD_OPTION
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Europe
@@ -79,7 +87,6 @@ RUN apt-get update && \
         iproute2 \
         dnsutils \
         gdb \
-        python \
         python3 \
         python3-six \
         python3-requests \
@@ -105,14 +112,14 @@ COPY --from=build /usr/local/bin/uhd_find_devices /usr/local/bin
 COPY --from=build /usr/local/lib/libuhd.so.4.4.0 /usr/local/lib
 COPY --from=build /usr/local/lib/uhd/utils/uhd_images_downloader.py /opt/oai/bin
 COPY --from=build \
-    /usr/lib/x86_64-linux-gnu/libboost_chrono.so.1.71.0 \
-    /usr/lib/x86_64-linux-gnu/libboost_date_time.so.1.71.0 \
-    /usr/lib/x86_64-linux-gnu/libboost_filesystem.so.1.71.0 \
-    /usr/lib/x86_64-linux-gnu/libboost_regex.so.1.71.0 \
-    /usr/lib/x86_64-linux-gnu/libboost_serialization.so.1.71.0 \
-    /usr/lib/x86_64-linux-gnu/libboost_thread.so.1.71.0 \
-    /usr/lib/x86_64-linux-gnu/libboost_system.so.1.71.0 \
-    /usr/lib/x86_64-linux-gnu/libboost_program_options.so.1.71.0 \
+    /usr/lib/x86_64-linux-gnu/libboost_chrono.so.1.74.0 \
+    /usr/lib/x86_64-linux-gnu/libboost_date_time.so.1.74.0 \
+    /usr/lib/x86_64-linux-gnu/libboost_filesystem.so.1.74.0 \
+    /usr/lib/x86_64-linux-gnu/libboost_regex.so.1.74.0 \
+    /usr/lib/x86_64-linux-gnu/libboost_serialization.so.1.74.0 \
+    /usr/lib/x86_64-linux-gnu/libboost_thread.so.1.74.0 \
+    /usr/lib/x86_64-linux-gnu/libboost_system.so.1.74.0 \
+    /usr/lib/x86_64-linux-gnu/libboost_program_options.so.1.74.0 \
     /usr/lib/x86_64-linux-gnu/
 
 RUN cd /opt/oai/bin && \
