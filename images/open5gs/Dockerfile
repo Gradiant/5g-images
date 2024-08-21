@@ -102,7 +102,7 @@ ENV PATH=${APP_ROOT}/bin:${PATH} HOME=${APP_ROOT}
 WORKDIR ${APP_ROOT}
 COPY entrypoint.sh /entrypoint.sh
 
-# TODO: run with non-root user
+#Run with non-root user
 RUN groupadd -r open5gs && useradd --no-log-init -r -g open5gs open5gs
 RUN chown -R open5gs:open5gs ${APP_ROOT}
 USER open5gs
