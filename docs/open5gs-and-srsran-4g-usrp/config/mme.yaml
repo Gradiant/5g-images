@@ -1,5 +1,6 @@
 logger:
-  file: /opt/open5gs/var/log/open5gs/mme.log
+  file:
+    path: /opt/open5gs/var/log/open5gs/mme.log
 #  level: info   # fatal|error|warn|info(default)|debug|trace
 
 global:

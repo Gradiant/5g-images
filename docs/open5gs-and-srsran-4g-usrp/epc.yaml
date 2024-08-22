@@ -34,6 +34,7 @@ services:
     restart : on-failure
   upf:
     image: gradiant/open5gs:2.7.1
+    user: root
     command: ["open5gs-upfd"]
     cap_add:
       - all
