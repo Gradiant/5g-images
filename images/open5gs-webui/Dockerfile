@@ -1,4 +1,4 @@
-FROM node:20.10.0-bullseye as dev
+FROM node:20.10.0-bullseye AS dev
 LABEL maintainer="cgiraldo@gradiant.org" \
       organization="gradiant.org"
 
@@ -19,8 +19,7 @@ RUN cd /opt/open5gs-${VERSION}/webui && npm install  && npm run build
 FROM node:20.10.0-bullseye-slim
 
 
-ENV VERSION=$version \
-    USER=open5gs \
+ENV USER=open5gs \
     GROUP=open5gs \
     DB_URI=mongodb://mongo/open5gs
 
@@ -33,5 +32,7 @@ WORKDIR /opt/open5gs-webui
 RUN npm run-script build
 ENV NODE_ENV=production
 ENV HOSTNAME="0.0.0.0"
+RUN chown -R $GROUP:$USER /opt/open5gs-webui/
+USER open5gs
 ENTRYPOINT ["node", "server/index.js"]
 
