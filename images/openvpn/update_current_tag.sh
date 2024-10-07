@@ -1,4 +1,8 @@
-## CURRENTLY DISABLED
+#!/bin/bash
+
+set -x
+
+docker run --pull=always -ti --rm alpine:latest apk info --no-cache openvpn
 
 CURRENT_TAG=$(docker run --pull=always -ti --rm alpine:latest apk info --no-cache openvpn | grep -Po '(?<=openvpn-)[\d\.]+' | head -1)
 
