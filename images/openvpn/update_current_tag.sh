@@ -2,7 +2,7 @@
 
 set -x
 
-CURRENT_TAG=$(docker run --pull=always -ti --rm alpine:latest apk info --no-cache openvpn | grep -Po '(?<=openvpn-)[\d\.]+' | head -1)
+CURRENT_TAG=$(curl -sSL https://dl-cdn.alpinelinux.org/alpine/v3.20/main/x86_64/ | grep "openvpn" | awk 'NR==2' | awk -F'[-]' '{print $2}')
 
 # Load IMAGE_TAG
 [[ -f image_info.sh ]] && source image_info.sh || exit 1
