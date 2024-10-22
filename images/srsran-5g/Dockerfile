@@ -1,4 +1,4 @@
-FROM ubuntu:20.04 as builder
+FROM ubuntu:22.04 AS builder
 
 ARG version
 ENV VERSION=$version
@@ -58,7 +58,7 @@ RUN cd /opt/srsRAN_Project/target/share/srsran && \
     sed -i 's/otw_format:.*/otw_format: ${OTW_FORMAT}/' gnb_rf_b200_tdd_n78_20mhz.yml
 
 
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 ARG version
 ENV VERSION=$version
