@@ -37,6 +37,7 @@ RUN apt-get update && \
       bash \
       bind9-dnsutils \
       curl \
+      wget \
       gettext \
       iperf3 \
       iproute2 \
