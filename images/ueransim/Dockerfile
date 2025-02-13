@@ -5,6 +5,11 @@ ARG commit=
 ENV VERSION=$version
 ENV COMMIT=$commit
 
+RUN rm /var/lib/dpkg/info/libc-bin.*
+RUN apt-get clean
+RUN apt-get update
+RUN apt-get install libc-bin
+
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive \
     apt-get install -y --no-install-recommends \  
@@ -30,6 +35,11 @@ RUN cd /tmp && git clone https://github.com/aligungr/UERANSIM.git && \
 RUN cd /tmp/UERANSIM && echo "cmake --version" && make
 
 FROM ubuntu:22.04 AS release 
+
+RUN rm /var/lib/dpkg/info/libc-bin.*
+RUN apt-get clean
+RUN apt-get update
+RUN apt-get install libc-bin
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive \
