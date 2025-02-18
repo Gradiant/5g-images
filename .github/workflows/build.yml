@@ -14,7 +14,7 @@ env:
 jobs:
   # Generate the values for images with changes
   generate-matrix:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     outputs:
       matrix: ${{ steps.generate-matrix.outputs.matrix }}
     steps:
@@ -33,7 +33,7 @@ jobs:
   # build image if changes in code
   build-image:
     needs: generate-matrix
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     strategy:
       matrix: ${{ fromJson( needs.generate-matrix.outputs.matrix ) }}
     steps:

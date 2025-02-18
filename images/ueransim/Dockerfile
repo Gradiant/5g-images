@@ -1,4 +1,4 @@
-FROM ubuntu:22.04 AS builder
+FROM ubuntu:24.04 AS builder
 
 ARG version=3.1.0
 ARG commit=
@@ -29,7 +29,7 @@ RUN cd /tmp && git clone https://github.com/aligungr/UERANSIM.git && \
     
 RUN cd /tmp/UERANSIM && echo "cmake --version" && make
 
-FROM ubuntu:22.04 AS release 
+FROM ubuntu:24.04 AS release 
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive \
