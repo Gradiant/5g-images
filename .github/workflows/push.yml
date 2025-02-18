@@ -15,12 +15,12 @@ env:
 jobs:
   # Generate the values for images with changes
   generate-matrix:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     outputs:
       matrix: ${{ steps.generate-matrix.outputs.matrix }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - id: files
@@ -34,12 +34,12 @@ jobs:
   # build image if changes in code
   build-image:
     needs: generate-matrix
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     strategy:
       matrix: ${{ fromJson( needs.generate-matrix.outputs.matrix ) }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Get Image Info
@@ -51,10 +51,12 @@ jobs:
           echo "image=${{ matrix.image }}" >> $GITHUB_OUTPUT
           
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
+        uses: docker/setup-qemu-action@v3.4.0
+        with:
+          image: tonistiigi/binfmt:qemu-v7.0.0-28
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3.9.0
       -
         name: Login to DockerHub
         uses: docker/login-action@v2
@@ -63,7 +65,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
       -
         name: Build and push
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v6.13.0
         with:
           context: ./images/${{ steps.image-info.outputs.image }}/
           push: true
