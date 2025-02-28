@@ -1,0 +1,33 @@
+version: '3'
+services: 
+  gnb2:
+    image: gradiant/ueransim:3.2.7
+    container_name: gnb2
+    command: 
+      - gnb
+    environment:
+      AMF_HOSTNAME: amf
+      GNB_HOSTNAME: gnb2
+      TAC: '1'
+      MCC: '999'
+      MNC: '70'
+      SST: '2'
+      SD: '0x222222'
+
+  ues2:
+    image: gradiant/ueransim:3.2.7
+    command: ['ue','-n','3']
+    cap_add:
+      - all
+    privileged: true
+    environment:
+      GNB_HOSTNAME: gnb2
+      APN: internet
+      MSISDN: '0000000011'
+      MCC: '999'
+      MNC: '70'
+      KEY: '465B5CE8B199B49FAA5F0A2EE238A6BC'
+      OP_TYPE: OPC
+      OP: 'E8ED289DEBA952E4283B54E88E6183CA'
+      SST: '2'
+      SD: '0x222222'

@@ -1,0 +1,29 @@
+logger:
+  path:
+    file: /opt/open5gs/var/log/open5gs/nssf.log
+#  level: info   # fatal|error|warn|info(default)|debug|trace
+
+global:
+  max:
+#   ue: 1024 # The number of UE can be increased depending on memory size.
+#    peer: 64
+
+nssf:
+  sbi:
+    server:
+    - dev: eth0
+      port: 7777
+    client:
+      #      nrf:
+      #        - uri: http://127.0.0.10:7777
+      scp:
+      - uri: http://scp:7777
+      nsi:
+      - uri: http://nrf:7777
+        s_nssai:
+          sst: 1
+          sd: 0x111111
+      - uri: http://nrf:7777
+        s_nssai:
+          sst: 2
+          sd: 0x222222
