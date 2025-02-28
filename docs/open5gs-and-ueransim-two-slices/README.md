@@ -1,9 +1,8 @@
-# open5gs and ueransim 
+# open5gs and ueransim with two slices
 
-5G end to end communication demo with open5gs and ueransim.
+This tutorial is an adaptation of the Open5GS and UERANSIM tutorial.
 
-TL;DR -> [![asciicast](https://asciinema.org/a/617049.png)](https://asciinema.org/a/617049)
-
+The slices values were changed in the gNBs, and the NSSF and AMF configuration files were added in the config folder. Also, the SMF configuration file was modified, and the register_subscriber.sh script was updated with the new slice values.
 
 # Deployment NGC and register subscribers
 
