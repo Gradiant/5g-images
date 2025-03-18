@@ -1,4 +1,4 @@
-FROM ubuntu:focal as builder
+FROM ubuntu:focal AS builder
 
 RUN apt-get update && apt install wget git make -y
 
