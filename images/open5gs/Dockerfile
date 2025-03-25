@@ -1,4 +1,4 @@
-FROM debian:bullseye as builder
+FROM debian:bullseye AS builder
 
 ARG version
 ARG branch=main
