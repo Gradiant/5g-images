@@ -7,36 +7,36 @@ services:
       MONGO_INITDB_DATABASE: open5gs
 
   amf:
-    image: gradiant/open5gs:2.7.4
+    image: gradiant/open5gs:2.7.5
     command:
     - open5gs-amfd
     restart: on-failure
 
   ausf:
-    image: gradiant/open5gs:2.7.4
+    image: gradiant/open5gs:2.7.5
     command:
     - open5gs-ausfd
     restart: on-failure
 
   bsf:
-    image: gradiant/open5gs:2.7.4
+    image: gradiant/open5gs:2.7.5
     command:
     - open5gs-bsfd
     restart: on-failure
 
   nrf:
-    image: gradiant/open5gs:2.7.4
+    image: gradiant/open5gs:2.7.5
     command: open5gs-nrfd
     restart: on-failure
 
   nssf:
-    image: gradiant/open5gs:2.7.4
+    image: gradiant/open5gs:2.7.5
     command: open5gs-nssfd
     restart: on-failure
 
 
   pcf:
-    image: gradiant/open5gs:2.7.4
+    image: gradiant/open5gs:2.7.5
     command:
     - open5gs-pcfd
     environment:
@@ -44,14 +44,14 @@ services:
     restart: on-failure
 
   scp:
-    image: gradiant/open5gs:2.7.4
+    image: gradiant/open5gs:2.7.5
     command: open5gs-scpd
     environment:
       DB_URI: mongodb://mongo/open5gs
     restart: on-failure
 
   smf:
-    image: gradiant/open5gs:2.7.4
+    image: gradiant/open5gs:2.7.5
     #It is necessary to mount the configuration file if pcfr is not deployed
     volumes:
     - ./config/smf.yaml:/opt/open5gs/etc/open5gs/smf.yaml
@@ -59,13 +59,13 @@ services:
     command: open5gs-smfd
 
   udm:
-    image: gradiant/open5gs:2.7.4
+    image: gradiant/open5gs:2.7.5
     restart: on-failure
     command:
     - open5gs-udmd
 
   udr:
-    image: gradiant/open5gs:2.7.4
+    image: gradiant/open5gs:2.7.5
     restart: on-failure
     environment:
       DB_URI: mongodb://mongo/open5gs
@@ -73,7 +73,7 @@ services:
     - open5gs-udrd
 
   upf:
-    image: gradiant/open5gs:2.7.4
+    image: gradiant/open5gs:2.7.5
     user: root
     command:
     - open5gs-upfd
@@ -87,7 +87,7 @@ services:
     - 2152:2152
 
   webui:
-    image: gradiant/open5gs-webui:2.7.4
+    image: gradiant/open5gs-webui:2.7.5
     restart: on-failure
     environment:
       DB_URI: mongodb://mongo/open5gs
