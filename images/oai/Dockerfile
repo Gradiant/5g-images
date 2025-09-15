@@ -99,12 +99,16 @@ RUN apt-get update && \
 
 COPY --from=build \ 
     /oai-ran/cmake_targets/ran_build/build/*softmodem \
-    /oai-ran/cmake_targets/ran_build/build/oairu \ 
-    /oai-ran/cmake_targets/nas_sim_tools/build/conf2uedata \
-    /oai-ran/cmake_targets/nas_sim_tools/build/nvram \
-    /oai-ran/cmake_targets/nas_sim_tools/build/usim \
-    /oai-ran/cmake_targets/ran_build/build/nr-cuup \
     /opt/oai/bin/
+
+COPY --from=build /oai-ran/cmake_targets/ /tmp/all_targets/
+RUN cd /tmp/all_targets && \
+    find . -name "oairu" -type f -exec cp {} /opt/oai/bin/ \; 2>/dev/null || true && \
+    find . -name "nr-cuup" -type f -exec cp {} /opt/oai/bin/ \; 2>/dev/null || true && \
+    find . -name "conf2uedata" -type f -exec cp {} /opt/oai/bin/ \; 2>/dev/null || true && \
+    find . -name "nvram" -type f -exec cp {} /opt/oai/bin/ \; 2>/dev/null || true && \
+    find . -name "usim" -type f -exec cp {} /opt/oai/bin/ \; 2>/dev/null || true && \
+    rm -rf /tmp/all_targets
 COPY --from=build /oai-ran/docker/scripts/*.sh /
 COPY --from=build /oai-ran/cmake_targets/ran_build/build/*.so /usr/local/lib/
 
@@ -133,6 +137,7 @@ WORKDIR /opt/oai
 
 #This is a patch to support IP extraction from interface names and host names
 COPY entrypoint.sh /
+RUN chmod +x /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
 
