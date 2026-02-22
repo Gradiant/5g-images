@@ -1,3 +1,3 @@
-IMAGE_TAG=2f625c6
+IMAGE_TAG=6c785cf
 #comma separated list of platforms. If empty, image will not be multiarch.
 PLATFORMS=
