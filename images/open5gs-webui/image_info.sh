@@ -1,3 +1,3 @@
-IMAGE_TAG=2.7.7
+IMAGE_TAG=2.8.0
 #comma separated list of platforms. If empty, image will not be multiarch.
 PLATFORMS=linux/amd64 #,linux/arm64
