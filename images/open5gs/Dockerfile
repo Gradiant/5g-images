@@ -91,6 +91,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
     libcurl4 \
     libmicrohttpd12 \
     libnghttp2-14 \
+    tini \
     wondershaper iproute2 iputils-ping procps net-tools iptables iperf iperf3 traceroute tcpdump && \
     rm -rf /var/lib/apt/lists/*
 
@@ -116,6 +117,7 @@ ENV IPV4_TUN_SUBNET="10.45.0.0/16" \
     ENABLE_NAT=true
 
 
-ENTRYPOINT ["/entrypoint.sh"]
+# tini is PID 1: it forwards signals to the daemon and reaps orphaned processes
+ENTRYPOINT ["/usr/bin/tini", "--", "/entrypoint.sh"]
 CMD ["/bin/bash"]
 

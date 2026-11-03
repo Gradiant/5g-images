@@ -40,6 +40,6 @@ if [[ "$COMMAND"  == *"open5gs-pcrfd" ]] \
 sleep 10
 fi
 
-$@
-
-exit 1
+# Replace the shell with the daemon, so that it receives the signals sent to
+# the container and the container exits with the daemon's exit code.
+exec $@
