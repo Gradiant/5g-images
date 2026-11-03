@@ -1,5 +1,7 @@
 FROM debian:bullseye AS builder
 
+RUN sed -i 's|deb.debian.org/debian-security|archive.debian.org/debian-security|g' /etc/apt/sources.list
+
 ARG version
 ARG branch=main
 ENV VERSION=$version
@@ -66,6 +68,8 @@ COPY configs/freeDiameter/* /opt/open5gs/etc/freeDiameter/
 
 
 FROM debian:bullseye-slim
+
+RUN sed -i 's|deb.debian.org/debian-security|archive.debian.org/debian-security|g' /etc/apt/sources.list
 
 ARG version
 ENV VERSION=$version
