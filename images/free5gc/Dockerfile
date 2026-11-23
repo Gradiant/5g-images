@@ -1,54 +1,32 @@
-FROM golang:1.14 AS builder
+ARG version=4.3.0
 
-ARG version=3.0.6
+FROM --platform=$BUILDPLATFORM golang:1.26-trixie AS builder
+
+ARG version
+WORKDIR /src/free5gc
+
+RUN git clone --depth 1 --branch "v${version}" --recurse-submodules=NFs --shallow-submodules \
+        https://github.com/free5gc/free5gc.git .
+
+ARG TARGETOS
+ARG TARGETARCH
+RUN GOOS="$TARGETOS" GOARCH="$TARGETARCH" GOTOOLCHAIN=local make -j2 nfs
+
+FROM debian:trixie-slim
+
+ARG version
 ENV VERSION=$version
 
 LABEL org.opencontainers.image.authors="Carlos Giraldo <cgiraldo@gradiant.org>" \
       org.opencontainers.image.vendor="Gradiant" \
       org.opencontainers.image.licenses="Apache-2.0" \
       org.opencontainers.image.version="$version"
-
 
 RUN apt-get update && \
-    apt -y install \
-        git gcc cmake autoconf libtool pkg-config libmnl-dev libyaml-dev
-
-RUN go get -u github.com/sirupsen/logrus
-
-RUN mkdir -p /tmp && cd /tmp && \
-    git clone --recursive -b v$VERSION -j `nproc` https://github.com/free5gc/free5gc.git && \
-    cd free5gc && \ 
-    make
-
-RUN cd /tmp/free5gc && \ 
-    make upf
-RUN cp /tmp/free5gc/NFs/upf/build/bin/free5gc-upfd /tmp/free5gc/bin/upf && \
-    cp /tmp/free5gc/NFs/upf/build/config/upfcfg.yaml /tmp/free5gc/config/
-
-RUN mkdir -p /tmp/free5gc/lib && \
-    cp -rP /tmp/free5gc/NFs/upf/build/updk/src/third_party/libgtp5gnl/lib/libgtp5gnl.so* /tmp/free5gc/lib/ && \
-    cp /tmp/free5gc/NFs/upf/build/utlt_logger/liblogger.so /tmp/free5gc/lib/
-
-
-
-FROM debian:stable-slim
-
-ARG version=3.0.6
-ENV VERSION=$version
-
-LABEL org.opencontainers.image.authors="Carlos Giraldo <cgiraldo@gradiant.org>" \
-      org.opencontainers.image.vendor="Gradiant" \
-      org.opencontainers.image.licenses="Apache-2.0" \
-      org.opencontainers.image.version="$version"
-
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
-    libyaml-0-2 \
-    libmnl0 \
-    iproute2 iputils-ping procps net-tools iptables && \
+    apt-get install -y --no-install-recommends \
+        ca-certificates iproute2 iputils-ping iptables net-tools procps && \
     rm -rf /var/lib/apt/lists/*
 
-COPY --from=builder /tmp/free5gc/bin/ /usr/local/bin/
-COPY --from=builder /tmp/free5gc/lib/ /lib/x86_64-linux-gnu/
-COPY --from=builder /tmp/free5gc/config/ /etc/free5gc/
-
-
+COPY --from=builder /src/free5gc/bin/ /usr/local/bin/
+COPY --from=builder /src/free5gc/config/ /etc/free5gc/
+COPY --from=builder /src/free5gc/LICENSE /src/free5gc/THIRD-PARTY-NOTICES.txt /usr/share/doc/free5gc/
